@@ -322,3 +322,192 @@ async function handleDownload() {
     alert("Download failed. Please try again later.");
   }
 }
+
+/*=============== PROJECT MODAL  ===============*/
+
+// Project Modal functionality
+const projectData = {
+  "savannah-bites": {
+    title: "Savannah Bites",
+    description: `
+            This project is my largest undertaking to date, where I developed a fully functional 
+            restaurant website with comprehensive features:
+
+            • Database Integration: Powered by MongoDB Atlas for secure client data storage
+            • Backend Architecture: Built with Node.js, enabling robust server-side operations
+            • API Development: Created seamless frontend-backend integration with RESTful APIs
+            • Payment Processing: Implemented secure transactions using Stripe payment gateway
+            • Email Automation: Set up automated order confirmation emails to enhance user experience
+            
+            Key Technical Achievements:
+            • Developed comprehensive API endpoints for menu management and order processing
+            • Created intuitive routes and data models for efficient information flow
+            • Implemented secure user authentication and authorization
+            • Integrated real-time order tracking and status updates
+            
+            This project significantly enhanced my expertise in:
+            • Full-stack development practices
+            • Database design and management
+            • API integration and optimization
+            • Payment gateway implementation
+            • Email service integration
+            • Security best practices
+            
+            The result is a robust, user-friendly platform that delivers a seamless 
+            dining experience from browsing to checkout.`,
+    videoUrl: "/assets/videos/savannah-preview.mp4",
+    liveUrl: "https://savannah-bites.onrender.com/",
+    githubUrl: "https://github.com/RuiSeca/savannah-bites",
+    technologies: [
+      "MongoDB",
+      "Express.js",
+      "React.js",
+      "Node.js",
+      "Stripe API",
+      "JWT Auth",
+      "Nodemailer",
+      "RESTful API",
+    ],
+  },
+  "weather-cast": {
+    title: "Weather Cast",
+    description: `
+            A modern weather forecasting application delivering real-time data through 
+            an intuitive interface.
+
+            Key Features:
+            • Real-time weather updates using OpenWeatherMap API integration
+            • Dynamic UI that adapts to different weather conditions
+            • Daily and weekend forecast presentations
+            • Severe weather alerts and notifications
+            • Location-based weather tracking
+            
+            Technical Highlights:
+            • First-time implementation of external API integration
+            • Advanced switch statement logic for weather condition handling
+            • Dynamic UI updates based on real-time data
+            • Efficient data fetching and caching mechanisms
+            
+            Design Philosophy:
+            • Minimalist, user-focused interface
+            • Intuitive navigation and information hierarchy
+            • Clear visual presentation of weather data
+            • Responsive design for all devices
+            
+            Learning Outcomes:
+            • Mastered API integration and data handling
+            • Improved conditional logic implementation
+            • Enhanced UI/UX design skills
+            • Developed efficient data management strategies
+            
+            The result is a sleek, functional weather application that prioritizes 
+            user experience while delivering accurate, timely weather information.`,
+    videoUrl: "/assets/videos/weather-preview.mp4",
+    liveUrl: "https://weather-cast-show.netlify.app/",
+    githubUrl: "https://github.com/RuiSeca/weatherApp",
+    technologies: [
+      "OpenWeatherMap API",
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "REST API",
+      "Local Storage",
+      "Dynamic UI",
+    ],
+  },
+  "project-3": {
+    title: "Project 3",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Detailed description of project 3 goes here...",
+    videoUrl: "/assets/videos/project3-preview.mp4",
+    liveUrl: "https://example3.com",
+    githubUrl: "https://github.com/yourusername/project3",
+    technologies: ["React", "Node.js", "MongoDB"],
+  },
+  "project-4": {
+    title: "Project 4",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Detailed description of project 4 goes here...",
+    videoUrl: "/assets/videos/project4-preview.mp4",
+    liveUrl: "https://example4.com",
+    githubUrl: "https://github.com/yourusername/project4",
+    technologies: ["Vue.js", "Firebase", "Sass"],
+  },
+  "project-5": {
+    title: "Project 5",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Detailed description of project 5 goes here...",
+    videoUrl: "/assets/videos/project5-preview.mp4",
+    liveUrl: "https://example5.com",
+    githubUrl: "https://github.com/yourusername/project5",
+    technologies: ["Angular", "TypeScript", "AWS"],
+  },
+};
+
+function openProjectModal(projectId) {
+  const modal = document.getElementById("projectModal");
+  const project = projectData[projectId];
+
+  if (!project) return;
+
+  // Populate modal content
+  modal.querySelector(".project-modal__title").textContent = project.title;
+
+  const modalBody = modal.querySelector(".project-modal__body");
+  modalBody.innerHTML = `
+      ${
+        project.videoUrl
+          ? `
+          <div class="project-modal__video">
+              <video src="${project.videoUrl}" autoplay muted loop playsinline></video>
+          </div>
+      `
+          : ""
+      }
+      <div class="project-modal__description">${project.description}</div>
+      <div class="project-modal__tech">
+          ${project.technologies
+            .map(
+              (tech) => `
+              <span class="project-modal__tech-item">${tech}</span>
+          `
+            )
+            .join("")}
+      </div>
+      <div class="project-modal__buttons">
+          <a href="${
+            project.liveUrl
+          }" target="_blank" rel="noopener noreferrer" class="project-modal__button">
+              Visit Website
+          </a>
+          <a href="${
+            project.githubUrl
+          }" target="_blank" rel="noopener noreferrer" class="project-modal__button project-modal__button--outline">
+              View Source
+          </a>
+      </div>
+  `;
+
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeProjectModal() {
+  const modal = document.getElementById("projectModal");
+  modal.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+// Close modal when clicking outside
+document.getElementById("projectModal").addEventListener("click", function (e) {
+  if (e.target === this) {
+    closeProjectModal();
+  }
+});
+
+// Close modal on escape key
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    closeProjectModal();
+  }
+});

@@ -457,67 +457,67 @@
       </section>
 
       <!--==================== PROJECTS ====================-->
-      <section class="projects section" id="projects">
+      <section id="projects" class="section projects section">
         <h2 class="section__title">Projects</h2>
-
         <div class="project__container container grid">
           <div class="swiper mySwiper">
             <div class="swiper-wrapper">
-              <!-- Project Card 1 -->
+              <!-- Project Card 1 - Savannah Bites -->
               <div class="card swiper-slide reveal">
                 <div class="card__image">
                   <img
                     src="assets/img/project-img-1.jpg"
-                    alt="Description of Project 1"
+                    alt="Savannah Bites Restaurant Website"
+                  />
+                </div>
+                <div class="card__content">
+                  <span class="card_title">Savannah Bites</span>
+                  <p class="card__text">
+                    I developed a restaurant website with a MongoDB Atlas
+                    database and Node.js backend, focusing on seamless
+                    frontend-backend integration. There a implementation of a
+                    secure Stripe payment system and email confirmation for
+                    orders.
+                  </p>
+                  <button
+                    class="card__btn"
+                    onclick="openProjectModal('savannah-bites')"
+                  >
+                    More
+                  </button>
+                </div>
+              </div>
+
+              <!-- Project Card 2 - Weather Cast -->
+              <div class="card swiper-slide reveal">
+                <div class="card__image">
+                  <img
+                    src="assets/img/project-img-2.jpg"
+                    alt="Weather Cast Application"
                   />
                 </div>
                 <div class="card__content">
                   <span class="card_title">Weather Cast</span>
                   <p class="card__text">
-                    Welcome to Weather Cast your sunny source for weather
-                    updates! From daily forecasts to weekend outlooks, we've got
-                    your back. Clear skies or stormy weather, stay ahead with us
-                    andmaking every day a breeze!
+                    Weather Cast is a weather forecasting app that uses the
+                    OpenWeatherMap API to provide real-time weather data. I
+                    implemented dynamic UI updates with switch statements based
+                    on incoming weather data, offering forecasts updates in
+                    real-timing in a user-friendly design.
                   </p>
                   <button
                     class="card__btn"
-                    onclick="redirectToAnotherWebsite('https://weather-cast-show.netlify.app/')"
+                    onclick="openProjectModal('weather-cast')"
                   >
                     More
                   </button>
                 </div>
               </div>
 
-              <!-- Project Card 2 -->
-              <div class="card swiper-slide reveal">
-                <div class="card__image">
-                  <img
-                    src="assets/img/project-img-3.jpg"
-                    alt="Description of Project 2"
-                  />
-                </div>
-                <div class="card__content">
-                  <span class="card_title">Project 2</span>
-                  <p class="card__text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Ipsam dolorem totam eum voluptatum animi delectus
-                    necessitatibus perferendis iure!
-                  </p>
-                  <button
-                    class="card__btn"
-                    onclick="redirectToAnotherWebsite('https://example2.com')"
-                  >
-                    More
-                  </button>
-                </div>
-              </div>
               <!-- Project Card 3 -->
               <div class="card swiper-slide reveal">
                 <div class="card__image">
-                  <img
-                    src="assets/img/project-img-5.jpg"
-                    alt="Description of Project 3"
-                  />
+                  <img src="assets/img/project-img-3.jpg" alt="Project 3" />
                 </div>
                 <div class="card__content">
                   <span class="card_title">Project 3</span>
@@ -528,19 +528,17 @@
                   </p>
                   <button
                     class="card__btn"
-                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                    onclick="openProjectModal('project-3')"
                   >
                     More
                   </button>
                 </div>
               </div>
+
               <!-- Project Card 4 -->
               <div class="card swiper-slide reveal">
                 <div class="card__image">
-                  <img
-                    src="assets/img/project-img-4.jpg"
-                    alt="Description of Project 4"
-                  />
+                  <img src="assets/img/project-img-4.jpg" alt="Project 4" />
                 </div>
                 <div class="card__content">
                   <span class="card_title">Project 4</span>
@@ -551,7 +549,7 @@
                   </p>
                   <button
                     class="card__btn"
-                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                    onclick="openProjectModal('project-4')"
                   >
                     More
                   </button>
@@ -561,10 +559,7 @@
               <!-- Project Card 5 -->
               <div class="card swiper-slide reveal">
                 <div class="card__image">
-                  <img
-                    src="assets/img/project-img-2.jpg"
-                    alt="Description of Project 2"
-                  />
+                  <img src="assets/img/project-img-5.jpg" alt="Project 5" />
                 </div>
                 <div class="card__content">
                   <span class="card_title">Project 5</span>
@@ -575,23 +570,35 @@
                   </p>
                   <button
                     class="card__btn"
-                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                    onclick="openProjectModal('project-5')"
                   >
-                    More
+                    View Project
                   </button>
                 </div>
               </div>
-
-              <!-- Add more project cards as needed... -->
             </div>
-            <!-- End of .swiper-wrapper -->
+            <div class="swiper-scrollbar"></div>
           </div>
-          <div class="swiper-scrollbar"></div>
-          <!-- End of .swiper -->
         </div>
-        <!-- End of .project__container -->
-      </section>
 
+        <!-- Modal Container -->
+        <div id="projectModal" class="project-modal">
+          <div class="project-modal__content">
+            <div class="project-modal__header">
+              <h3 class="project-modal__title"></h3>
+              <button
+                class="project-modal__close"
+                onclick="closeProjectModal()"
+              >
+                &times;
+              </button>
+            </div>
+            <div class="project-modal__body">
+              <!-- Modal content will be dynamically inserted here -->
+            </div>
+          </div>
+        </div>
+      </section>
       <!--==================== SERVICES ====================-->
       <section class="services section" id="services">
         <h3 class="section__subtitle">Services</h3>
@@ -742,6 +749,11 @@
         </span>
       </div>
     </footer>
+
+    <!-- Add these before your other scripts -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
 
