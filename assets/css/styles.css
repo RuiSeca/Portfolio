@@ -156,94 +156,6 @@ svg {
   overflow: hidden; /* For animation ScrollReveal */
 }
 
-/* White Mode Styles */
-.white-mode {
-  --first-color: hsl(
-    var(--hue),
-    70%,
-    45%
-  ); /* Slightly darker for better contrast */
-  --first-color-alt: hsl(var(--hue), 56%, 35%);
-  --title-color: #333333; /* Darker gray for titles */
-  --text-color: #555555; /* Medium gray for text */
-  --body-color: #f8f8f8; /* Light gray background */
-  --container-color: #ffffff; /* White container background */
-
-  /* Additional adjustments */
-  --body-font: "Poppins", sans-serif;
-  --biggest-font-size: 2rem;
-  --bigger-font-size: 1.25rem;
-  --h1-font-size: 1.5rem;
-  --h2-font-size: 1.25rem;
-  --h3-font-size: 1rem;
-  --normal-font-size: 0.938rem;
-  --small-font-size: 0.813rem;
-  --smaller-font-size: 0.75rem;
-}
-
-/* Adjust specific elements for white mode */
-.white-mode .toggle-slot {
-  background-color: #e0e0e0; /* Light gray for toggle background */
-}
-
-.white-mode .toggle-button {
-  background-color: #ffffff;
-  box-shadow: inset 0px 0px 0px 0.75em var(--first-color);
-}
-
-.white-mode .sun-icon,
-.white-mode .moon-icon {
-  color: var(--first-color);
-}
-
-.white-mode .header {
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.white-mode .nav__link:hover {
-  color: var(--first-color);
-}
-
-.white-mode .home {
-  background-color: var(--body-color);
-}
-
-.white-mode .button {
-  background-color: var(--first-color);
-  color: #ffffff;
-}
-
-.white-mode .button:hover {
-  box-shadow: 0 8px 24px hsla(var(--hue), 100%, 40%, 0.25);
-}
-
-.white-mode .about__blob path {
-  stroke: var(--first-color);
-}
-
-.white-mode .contact__input {
-  background-color: #f0f0f0; /* Light gray for input fields */
-  color: var(--text-color);
-  border: 1px solid #e0e0e0;
-}
-
-.white-mode .contact__input:focus {
-  border-color: var(--first-color);
-  box-shadow: 0 0 10px rgba(var(--hue), 70%, 45%, 0.2);
-}
-
-.white-mode .skills__box,
-.white-mode .card,
-.white-mode .services__card {
-  background-color: #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.white-mode .footer {
-  background-color: #f0f0f0; /* Light gray footer background */
-}
-
 /*=============== HEADER & NAV ===============*/
 /* Default styles (Desktop) */
 .header {
@@ -254,92 +166,7 @@ svg {
   left: 0;
   z-index: var(--z-fixed);
 }
-.toggle-checkbox {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
 
-.toggle-slot {
-  font-size: 9px;
-  position: relative;
-  height: 3.5em;
-  width: 7em;
-  border: 0px solid transparent;
-  border-radius: 10em;
-  background-color: #374151;
-  transition: background-color 250ms;
-}
-
-.toggle-checkbox:checked ~ .toggle-slot {
-  background-color: #ffeccf;
-}
-
-.toggle-button {
-  transform: translate(0.3em, 0.25em);
-  position: absolute;
-  height: 3em;
-  width: 3em;
-  border-radius: 50%;
-  background-color: #485367;
-  box-shadow: inset 0px 0px 0px 0.75em white;
-  transition: background-color 250ms, border-color 250ms,
-    transform 500ms cubic-bezier(0.26, 2, 0.46, 0.71);
-}
-
-.toggle-checkbox:checked ~ .toggle-slot .toggle-button {
-  background-color: #ffeccf;
-  box-shadow: inset 0px 0px 0px 0.75em #ffbb52;
-  transform: translate(3.65em, 0.25em);
-}
-
-.sun-icon {
-  position: absolute;
-  height: 6em;
-  width: 6em;
-  color: #ffbb52;
-}
-
-.sun-icon-wrapper {
-  position: absolute;
-  height: 6em;
-  width: 6em;
-  opacity: 1;
-  transform: translate(2em, 2em) rotate(15deg);
-  transform-origin: 50% 50%;
-  transition: opacity 150ms, transform 500ms cubic-bezier(0.26, 2, 0.46, 0.71);
-}
-
-.toggle-checkbox:checked ~ .toggle-slot .sun-icon-wrapper {
-  opacity: 0;
-  transform: translate(3em, 2em) rotate(0deg);
-}
-
-.moon-icon {
-  position: absolute;
-  height: 6em;
-  width: 6em;
-  color: #ffbb52;
-}
-
-.moon-icon-wrapper {
-  position: absolute;
-  height: 6em;
-  width: 6em;
-  opacity: 0;
-  transform: translate(11em, 2em) rotate(0deg);
-  transform-origin: 50% 50%;
-  transition: opacity 150ms, transform 500ms cubic-bezier(0.26, 2.5, 0.46, 0.71);
-}
-
-.toggle-checkbox:checked ~ .toggle-slot .moon-icon-wrapper {
-  opacity: 1;
-  transform: translate(2em, 2em) rotate(-15deg);
-}
-
-/*=============== NAV ===============*/
 .nav {
   height: var(--header-height);
   display: flex;
@@ -365,7 +192,7 @@ svg {
   .nav__links {
     position: fixed;
     top: 0;
-    right: 100%;
+    right: -100%; /* Start hidden to the right */
     width: 75%;
     height: 100%;
     padding: 4.5rem 0 0 3rem;
@@ -403,9 +230,17 @@ svg {
     position: absolute;
     top: 1rem;
     right: 1.5rem;
+    font-size: 1.5rem; /* Increase size for visibility */
+    color: var(--first-color);
+    transition: transform 0.4s ease; /* Smooth transition */
   }
-  .nav-links {
-    right: 0;
+
+  .nav__close:hover {
+    transform: rotate(90deg); /* Rotate icon on hover for a playful effect */
+  }
+
+  .nav__open {
+    right: 0; /* Move the menu into view when open */
   }
 }
 
@@ -418,7 +253,7 @@ svg {
 .nav__link {
   color: var(--title-color);
   font-weight: var(--font-medium);
-  transition: color 0.4s;
+  transition: color 0.4s ease; /* Smooth color transition */
 }
 
 .nav__link:hover {
@@ -493,7 +328,7 @@ span {
 
 .home__description {
   margin-block: 1rem 1.5rem;
-  color: var(--text-color); /* Specify your text color here */
+  color: var(--first-color); /* Specify your text color here */
   margin-bottom: 20em;
 }
 
@@ -586,6 +421,7 @@ span {
   font-size: 16px;
   margin-left: 20px;
   margin-right: 20px;
+  color: var(--title-color);
 }
 
 .about__image {
@@ -656,6 +492,25 @@ span {
 .contact__button {
   justify-self: center;
   cursor: pointer;
+  background-color: #ff0000; /* Main background color */
+  color: #fff; /* Text color */
+  font-size: 16px; /* Font size */
+  padding: 12px 24px; /* Padding for better click area */
+  border: none; /* No border */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center; /* Center text */
+}
+
+.contact__button:hover {
+  background-color: #fc0707cb; /* Darker shade on hover */
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.contact__button:active {
+  transform: translateY(0); /* Reset on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduce shadow on click */
 }
 
 .contact__message {
@@ -672,7 +527,9 @@ span {
   position: relative;
   z-index: 1;
 }
-
+.wrapper {
+  visibility: hidden;
+}
 .circle {
   width: 20px;
   height: 20px;
@@ -772,7 +629,8 @@ span {
   transform: translateX(-50%);
   height: 4px;
   width: 100px;
-  background-color: #2ecc71;
+  background-color: #2ecc71; /* Highlight color for emphasis */
+  border-radius: 2px; /* Soft edges for the line */
 }
 
 .skills__container {
@@ -791,6 +649,11 @@ span {
   padding: 1rem;
   color: #ddd;
   cursor: pointer;
+  transition: transform 0.3s ease; /* Smooth hover effect */
+}
+
+.skills__box:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
 }
 
 .skills__title {
@@ -801,15 +664,21 @@ span {
   margin-bottom: 0.5rem;
 }
 
+.skills__name {
+  color: var(--title-color);
+}
+
 .img {
   width: 90px;
   height: 90px;
   position: relative;
-  border-radius: 45px;
+  border-radius: 50%; /* Fully round shape */
   background-color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden; /* Clip overflowing parts */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
 }
 
 .img:after {
@@ -831,197 +700,35 @@ span {
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .header__skills {
-    /* Center the text and adjust padding for mobile */
-    text-align: center;
     padding: 0.5rem;
   }
 
   .header__skills:after {
-    /* Adjust the width for mobile */
     width: 60px;
   }
 
   .skills__container {
-    /* Change grid to a single column for mobile */
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Single column layout for mobile */
     padding: 1rem;
   }
 
   .skills__box {
-    /* Adjust padding for mobile */
     padding: 0.5rem;
   }
 
   .img {
-    /* Adjust width and height for mobile */
     width: 60px;
     height: 60px;
   }
 
   .img:after {
-    /* Adjust the height for mobile */
     height: 60px;
   }
 
   .skills__icon {
-    /* Adjust width for mobile */
     width: 40px;
   }
 }
-/*===================PROJECTS =====================*/
-.project__container {
-  background-color: red;
-
-  row-gap: 2rem;
-  text-align: center;
-}
-.swiper {
-  width: 100%;
-  background: var(--body-color);
-  padding: 125px 9%;
-}
-
-.swiper h2 {
-  font-size: 3rem;
-  color: #0faa0f;
-}
-
-.swiper h2 span {
-  color: #fff;
-  font-weight: 400;
-}
-
-.swiper-wrapper {
-  width: 100%;
-  height: 30em;
-  display: flex;
-  align-items: center;
-}
-
-.card {
-  width: 20em;
-  height: auto;
-  background: var(--container-color);
-  border-radius: 2em;
-  box-shadow: 0 0 2em rgba(0, 0, 0, 0.2);
-  padding: 2rem 1em;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 0 2em;
-  margin-top: 5em;
-  margin-bottom: 10em;
-}
-
-.swiper-slide:not(.swiper-slide-active) {
-  filter: blur(1px);
-}
-
-.card__image {
-  width: 12em;
-  height: 12em;
-  border-radius: 50%;
-  border: 2px solid none;
-  padding: 3px;
-  margin-bottom: 2em;
-}
-
-.card__image img {
-  width: 100%;
-  height: 100%;
-  border-radius: 25%;
-  object-fit: cover;
-}
-
-.card__content {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.card__text {
-  text-align: center;
-  font-size: 1.5rem;
-  margin: 1em 0;
-}
-
-.card__btn {
-  background: red;
-  color: var(--title-color);
-  font-size: 1rem;
-  text-transform: uppercase;
-  font-weight: 600;
-  border: none;
-  padding: 0.5em;
-  border-radius: 0.5em;
-  margin-top: 0.5em;
-  cursor: pointer;
-}
-
-.swiper-scrollbar {
-  width: 100%;
-  height: 5px; /* Adjust the height of the scrollbar as needed */
-  background-color: #ccc; /* Background color of the scrollbar track */
-}
-
-.swiper-scrollbar-thumb {
-  background-color: #2ecc71; /* Color of the scrollbar thumb */
-  border-radius: 5px; /* Rounded corners for the scrollbar thumb */
-}
-
-/*Example of a Media Query for Adjusting on Smaller Screens*/
-@media only screen and (max-width: 600px) {
-  .card {
-    width: 20em;
-    margin: 1em;
-  }
-  .swiper h2 {
-    font-size: 2rem;
-  }
-}
-
-/* ScrollUp */
-#scrollTopButton {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.65) 0%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  text-decoration: none;
-  border-radius: 50%;
-  display: block;
-  height: 50px;
-  width: 50px;
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  z-index: 99;
-  cursor: pointer;
-}
-
-#scrollTopButton::after {
-  content: "↑";
-  display: block;
-  color: #fff;
-  font-weight: 200;
-  font-size: 30px;
-  text-align: center;
-  padding-top: 5px;
-}
-
-.scroll-show {
-  display: block; /* Make visible */
-  transform: scale(1); /* Zoom in */
-  opacity: 1; /* Fully visible */
-}
-
-.scroll-hide {
-  transform: scale(0.7); /* Zoom out */
-  opacity: 0; /* Fade out */
-  pointer-events: none; /* Prevent interaction when hidden */
-}
-
-/* styles.css */
 
 /*===================Services =====================*/
 .services__container {
@@ -1070,7 +777,7 @@ span {
   text-align: center;
 }
 
-@media (max-width: 1090px) {
+@media (max-width: 768px) {
   .services__container {
     /* Adjust the number of columns and gap for mobile */
     grid-template-columns: 1fr; /* Single column for mobile */
@@ -1129,3 +836,150 @@ span {
   font-size: var(--smaller-font-size);
   margin-top: 2rem;
 }
+
+/*===================PROJECTS =====================*/
+.project__container {
+  background-color: red;
+
+  row-gap: 2rem;
+  text-align: center;
+}
+.swiper {
+  width: 100%;
+  background: var(--body-color);
+  padding: 60px 5%; /* Reduced padding */
+}
+
+.swiper h2 {
+  font-size: 3rem;
+  color: #0faa0f;
+  margin-bottom: 1rem; /* Added margin */
+}
+
+.swiper h2 span {
+  color: #fff;
+  font-weight: 400;
+}
+
+.swiper-wrapper {
+  width: 100%;
+  height: 30em;
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  width: 20em;
+  height: auto;
+  background: var(--container-color);
+  border-radius: 2em;
+  box-shadow: 0 0 2em rgba(0, 0, 0, 0.2);
+  padding: 2rem 1em;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 2em;
+  margin-top: 5em;
+  margin-bottom: 10em;
+}
+
+.swiper-slide:not(.swiper-slide-active) {
+  filter: blur(1px);
+}
+
+.card__image {
+  width: 12em;
+  height: 12em;
+  border-radius: 50%;
+  border: 2px solid none;
+  padding: 3px;
+  margin-bottom: 1.5em; /* Reduced margin */
+}
+
+.card__image img {
+  width: 100%;
+  height: 100%;
+  border-radius: 25%;
+  object-fit: cover;
+}
+
+.card__content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card__text {
+  text-align: center;
+  font-size: 1rem; /* Reduced font size */
+  margin: 0.8em 0; /* Reduced margin */
+}
+
+.card__btn {
+  background: red;
+  color: var(--title-color);
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: none;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  margin-top: 0.5em;
+  cursor: pointer;
+}
+
+.swiper-scrollbar {
+  width: 100%;
+  height: 5px; /* Adjust the height of the scrollbar as needed */
+  background-color: #ccc; /* Background color of the scrollbar track */
+}
+
+.swiper-scrollbar-thumb {
+  background-color: #2ecc71; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded corners for the scrollbar thumb */
+}
+
+/*Example of a Media Query for Adjusting on Smaller Screens*/
+@media only screen and (max-width: 600px) {
+  .card {
+    width: 20em;
+    margin: 1em;
+  }
+  .swiper h2 {
+    font-size: 2rem;
+  }
+}
+
+/* ScrollUp */
+#scrollTopButton {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  text-decoration: none;
+  border-radius: 50%;
+  display: none; /* Initially hidden */
+  height: 60px;
+  width: 60px;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#scrollTopButton::after {
+  content: "↑";
+  display: block;
+  color: #fff;
+  font-weight: 200;
+  font-size: 30px;
+  text-align: center;
+  padding-top: 5px;
+}
+
+/* Add blur to header */
+
+/* Active link */

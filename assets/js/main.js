@@ -50,7 +50,10 @@ var swiper = new Swiper(".mySwiper", {
     dragSize: 150, // Adjust as needed
   },
 });
-
+// Redirect to another website via card
+function redirectToAnotherWebsite(url) {
+  window.location.href = url;
+}
 // Sync the scrollbar with Swiper's scroll position
 swiper.on("scroll", function () {
   var scrollbarThumb = document.querySelector(".swiper-scrollbar-thumb");
@@ -127,10 +130,9 @@ window.onscroll = function () {
 
 /*=============== SHOW SCROLL UP ===============*/
 // Get the header element
-const header = document.querySelector("header");
-
-// Set the distance to scroll before hiding the header
+const scrollTopButton = document.getElementById("scrollTopButton");
 const scrollDistance = 100; // Adjust this value as needed
+let lastScrollY = window.scrollY; // Store the last scroll position
 
 // Function to handle scroll events
 function handleScroll() {
@@ -144,40 +146,24 @@ function handleScroll() {
 // Attach the scroll event listener
 window.addEventListener("scroll", handleScroll);
 
+/*=============== SCROLL SECTIONS ACTIVE LINK ===============*/
+
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 const sr = ScrollReveal({
   origin: "top",
   distance: "60px",
   duration: 2500,
   delay: 400,
-  scale: 0.85, // Add scale for the zoom effect
 });
 
-// Reveal for titles and descriptions with zoom
-sr.reveal(".section__title, .about__description", { scale: 0.85 });
+sr.reveal(".section__title, .about__description");
+sr.reveal(".about__image", { origin: "bottom" });
 
-// Specific reveal for the image with origin bottom and zoom
-sr.reveal(".about__image", { origin: "bottom", scale: 0.85 });
+sr.reveal(".header__skills, .skills__box, .skills__name, .skills__icon");
 
-// Skills with zoom effect and staggered delay
-sr.reveal(".header__skills, .skills__box, .skills__name, .skills__icon", {
-  scale: 0.85,
-  interval: 75,
-});
+sr.reveal(".services__card, .services__description");
 
-// Services section with zoom
-sr.reveal(".services__card, .services__description", {
-  duration: 2000,
-  distance: "80px",
-  scale: 0.85,
-});
-
-// Project container with zoom and different origin
-sr.reveal(".project__container", {
-  origin: "left",
-  distance: "100px",
-  scale: 0.85,
-});
+sr.reveal(".project__container");
 
 /*=============== Typer ===============*/
 
@@ -195,105 +181,3 @@ new TypeIt("#auto-type", {
   waitUntilVisible: false,
   cursor: false,
 }).go();
-
-/*=============== LIVE CHAT  ===============*/
-document.addEventListener("DOMContentLoaded", function () {
-  // Paste Drift code snippet here
-  // Ensure any variables or functions referenced in the Drift code are defined or available here
-
-  !(function () {
-    var t = (window.driftt = window.drift = window.driftt || []);
-    if (!t.init) {
-      if (t.invoked)
-        return void (
-          window.console &&
-          console.error &&
-          console.error("Drift snippet included twice.")
-        );
-      (t.invoked = !0),
-        (t.methods = [
-          "identify",
-          "config",
-          "track",
-          "reset",
-          "debug",
-          "show",
-          "ping",
-          "page",
-          "hide",
-          "off",
-          "on",
-        ]),
-        (t.factory = function (e) {
-          return function () {
-            var n = Array.prototype.slice.call(arguments);
-            return n.unshift(e), t.push(n), t;
-          };
-        }),
-        t.methods.forEach(function (e) {
-          t[e] = t.factory(e);
-        }),
-        (t.load = function (t) {
-          var e = 3e5,
-            n = Math.ceil(new Date() / e) * e,
-            o = document.createElement("script");
-          (o.type = "text/javascript"),
-            (o.async = !0),
-            (o.crossorigin = "anonymous"),
-            (o.src = "https://js.driftt.com/include/" + n + "/" + t + ".js");
-          var i = document.getElementsByTagName("script")[0];
-          i.parentNode.insertBefore(o, i);
-        });
-    }
-  })();
-
-  drift.SNIPPET_VERSION = "0.3.1";
-
-  // Hide Drift button by default
-  drift.config({
-    showWelcomeMessage: false, // Optional: Set to false if you don't want to show the welcome message
-    enableWelcomeMessage: false, // Optional: Set to false if you don't want to enable the welcome message
-    showGeneratedMarkup: false, // Hide the button initially
-  });
-
-  drift.load("7ixnh64c3k5t");
-
-  // Show Drift button after home section is loaded
-  var homeSection = document.getElementById("home-section");
-  if (homeSection) {
-    homeSection.addEventListener("load", function () {
-      drift.showChat();
-    });
-  }
-});
-
-/*=============== TOGGLE_DARK&WHITE_MODE  ===============*/
-function toggleMode() {
-  const body = document.body;
-  body.classList.toggle("white-mode");
-}
-
-/*=============== DOWNLOAD  ===============*/
-async function handleDownload() {
-  try {
-    const label = document.getElementById("download-label");
-
-    // Add active class to trigger animations
-    label.classList.add("active");
-
-    // Trigger download
-    const link = document.createElement("a");
-    link.href = "/assets/docs/CV-Rui_Seca.pdf";
-    link.download = "CV-Rui_Seca.pdf";
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Remove active class after animation completes
-    setTimeout(() => label.classList.remove("active"), 4000); // Adjust time to match animations
-  } catch (error) {
-    console.error("Download failed:", error);
-    alert("Download failed. Please try again later.");
-  }
-}
