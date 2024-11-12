@@ -28,12 +28,12 @@
   </head>
 
   <body>
-    <!--=============== Header ===============--> 
+    <!--=============== Header ===============-->
     <header class="header" id="header">
       <nav class="nav container">
         <a href="#" class="nav__logo"> Rui <span>Seca</span> </a>
+
         <div class="nav__links" id="nav-links">
-          
           <ul class="nav__list">
             <li class="nav__item">
               <a href="#home" class="nav__link">Home</a>
@@ -54,14 +54,39 @@
             <li class="nav__item">
               <a href="#contact" class="nav__link">Contact</a>
             </li>
-          </ul>   
-               
+          </ul>
+          <div class="nav__togg">
+            <label for="toggle-checkbox">
+              <input
+                id="toggle-checkbox"
+                class="toggle-checkbox"
+                type="checkbox"
+                onclick="toggleMode()"
+              />
+              <div class="toggle-slot">
+                <div class="moon-icon-wrapper">
+                  <div
+                    class="iconify moon-icon"
+                    data-icon="feather-moon"
+                    data-inline="false"
+                  ></div>
+                </div>
+                <div class="toggle-button"></div>
+                <div class="sun-icon-wrapper">
+                  <div
+                    class="iconify sun-icon"
+                    data-icon="feather-sun"
+                    data-inline="false"
+                  ></div>
+                </div>
+              </div>
+            </label>
+          </div>
           <div class="nav__close" id="nav-close">
             <i class="ri-close-line"></i>
           </div>
-
         </div>
-          
+
         <div class="nav__toggle" id="nav-toggle">
           <i class="ri-menu-line"></i>
         </div>
@@ -74,7 +99,7 @@
         <div class="home__container container grid">
           <div class="home__content">
             <div class="home__data">
-              <h3 class="home__subtitle">Hello, <span>I’m</span></h3>
+              <h3 class="home__subtitle">HelloTest, <span>I’m</span></h3>
               <div class="home__image">
                 <svg
                   class="home__blob"
@@ -157,8 +182,27 @@
                 Whenever there is a challenge, I am here to program a solution.
               </p>
 
-              <a href="/assets/docs/CV-Rui_Seca.pdf" class="button" download>Download CV</a>
-
+              <label class="label" id="download-label">
+                <button class="installer-btn" onclick="handleDownload()">
+                  <svg
+                    class="icon"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="1.5"
+                      d="M12 19V5m0 14-4-4m4 4 4-4"
+                    ></path>
+                  </svg>
+                  <div class="square"></div>
+                </button>
+                <p class="title">Download CV</p>
+              </label>
             </div>
 
             <div class="home__social">
@@ -314,8 +358,8 @@
               <h3>HTML</h3>
             </div>
             <p>
-              HTML, the magic behind web pages,
-             is like the code that brings my online persona to life. 
+              HTML, the magic behind web pages, is like the code that brings my
+              online persona to life.
             </p>
           </div>
 
@@ -332,8 +376,8 @@
               <h3>C Sharp</h3>
             </div>
             <p>
-              Crafting in C#, just like I sculpt code,
-              blending logic with creativity to bring software to life.
+              Crafting in C#, just like I sculpt code, blending logic with
+              creativity to bring software to life.
             </p>
           </div>
 
@@ -350,9 +394,8 @@
               <h3>Azure</h3>
             </div>
             <p>
-              Navigating Azure like a digital maestro, 
-              orchestrating cloud resources to compose the symphony of my online world.
-              
+              Navigating Azure like a digital maestro, orchestrating cloud
+              resources to compose the symphony of my online world.
             </p>
           </div>
 
@@ -370,7 +413,7 @@
             </div>
             <p>
               In the realm of JavaScript, I wield the power of interactivity,
-               shaping dynamic online experiences that reflect my coding finesse.
+              shaping dynamic online experiences that reflect my coding finesse.
             </p>
           </div>
 
@@ -386,8 +429,9 @@
               <h3>.Net</h3>
             </div>
             <p>
-              In the expansive world of .NET, I code my digital universe with precision and versatility,
-              sculpting applications that mirror the intricacies of my tech-driven aspirations.
+              In the expansive world of .NET, I code my digital universe with
+              precision and versatility, sculpting applications that mirror the
+              intricacies of my tech-driven aspirations.
             </p>
           </div>
 
@@ -403,9 +447,8 @@
               <h3>Rest</h3>
             </div>
             <p>
-              In the REST, I architect my digital interactions,
-              weaving simplicity and efficiency into the fabric of my online presence.
-              
+              In the REST, I architect my digital interactions, weaving
+              simplicity and efficiency into the fabric of my online presence.
             </p>
           </div>
 
@@ -429,13 +472,19 @@
                   />
                 </div>
                 <div class="card__content">
-                  <span class="card_title">Project 1</span>
+                  <span class="card_title">Weather Cast</span>
                   <p class="card__text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Ipsam dolorem totam eum voluptatum animi delectus
-                    necessitatibus perferendis iure!
+                    Welcome to Weather Cast your sunny source for weather
+                    updates! From daily forecasts to weekend outlooks, we've got
+                    your back. Clear skies or stormy weather, stay ahead with us
+                    andmaking every day a breeze!
                   </p>
-                  <button class="card__btn">More</button>
+                  <button
+                    class="card__btn"
+                    onclick="redirectToAnotherWebsite('https://weather-cast-show.netlify.app/')"
+                  >
+                    More
+                  </button>
                 </div>
               </div>
 
@@ -454,7 +503,12 @@
                     Ipsam dolorem totam eum voluptatum animi delectus
                     necessitatibus perferendis iure!
                   </p>
-                  <button class="card__btn">More</button>
+                  <button
+                    class="card__btn"
+                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                  >
+                    More
+                  </button>
                 </div>
               </div>
               <!-- Project Card 3 -->
@@ -472,7 +526,12 @@
                     Ipsam dolorem totam eum voluptatum animi delectus
                     necessitatibus perferendis iure!
                   </p>
-                  <button class="card__btn">More</button>
+                  <button
+                    class="card__btn"
+                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                  >
+                    More
+                  </button>
                 </div>
               </div>
               <!-- Project Card 4 -->
@@ -490,7 +549,12 @@
                     Ipsam dolorem totam eum voluptatum animi delectus
                     necessitatibus perferendis iure!
                   </p>
-                  <button class="card__btn">More</button>
+                  <button
+                    class="card__btn"
+                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                  >
+                    More
+                  </button>
                 </div>
               </div>
 
@@ -509,7 +573,12 @@
                     Ipsam dolorem totam eum voluptatum animi delectus
                     necessitatibus perferendis iure!
                   </p>
-                  <button class="card__btn">More</button>
+                  <button
+                    class="card__btn"
+                    onclick="redirectToAnotherWebsite('https://example2.com')"
+                  >
+                    More
+                  </button>
                 </div>
               </div>
 
@@ -536,9 +605,8 @@
             <h2 class="services__title">Web Developer</h2>
 
             <p class="services__description">
-              Development of custom web pages.<br />
-              Using current technologies and <br />
-              libraries of the labor field.
+              Reating the digital tapestry of the internet<br />
+              one line of code at a time. <br />
             </p>
           </article>
 
@@ -548,21 +616,20 @@
             <h2 class="services__title">Mobile Developer</h2>
 
             <p class="services__description">
-              Development of custom web pages.<br />
-              Using current technologies and<br />
-              libraries of the labor field.
+              Crafting sleek and seamless experiences<br />
+              for your pocket-sized companions.<br />
             </p>
           </article>
 
           <article class="services__card">
             <i class="ri-database-2-fill services__icon"></i>
 
-            <h2 class="services__title">Data Base</h2>
+            <h2 class="services__title">DataBase</h2>
 
             <p class="services__description">
-              Development of custom web pages.<br />
-              Using current technologies and<br />
-              libraries of the labor field.
+              Architecting the data realms<br />
+              where information reigns supreme<br />
+              and the ensurence of an end to end point is secure.
             </p>
           </article>
         </div>
@@ -624,7 +691,7 @@
             <div class="shadow"></div>
             <div class="shadow"></div>
             <div class="shadow"></div>
-        </div>
+          </div>
         </div>
       </section>
 
@@ -695,5 +762,8 @@
 
     <!-- Custom JavaScript -->
     <script src="assets/js/main.js"></script>
+
+    <!-- Custom ChatBot -->
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
   </body>
 </html>
