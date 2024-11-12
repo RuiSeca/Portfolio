@@ -450,7 +450,6 @@ function openProjectModal(projectId) {
 
   if (!project) return;
 
-  // Populate modal content
   modal.querySelector(".project-modal__title").textContent = project.title;
 
   const modalBody = modal.querySelector(".project-modal__body");
@@ -459,7 +458,15 @@ function openProjectModal(projectId) {
         project.videoUrl
           ? `
           <div class="project-modal__video">
-              <video src="${project.videoUrl}" autoplay muted loop playsinline></video>
+              <div class="loading-spinner"></div>
+              <video 
+                src="${project.videoUrl}" 
+                autoplay 
+                muted 
+                loop 
+                playsinline
+                style="opacity: 0; transition: opacity 0.3s ease;"
+              ></video>
           </div>
       `
           : ""
@@ -475,18 +482,34 @@ function openProjectModal(projectId) {
             .join("")}
       </div>
       <div class="project-modal__buttons">
-          <a href="${
-            project.liveUrl
-          }" target="_blank" rel="noopener noreferrer" class="project-modal__button">
-              Visit Website
+          <a href="${project.liveUrl}" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="project-modal__button">
+              <i class="ri-global-line"></i>
+              <span>Visit Website</span>
           </a>
-          <a href="${
-            project.githubUrl
-          }" target="_blank" rel="noopener noreferrer" class="project-modal__button project-modal__button--outline">
-              View Source
+          <a href="${project.githubUrl}" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             class="project-modal__button project-modal__button--outline">
+              <i class="ri-github-fill"></i>
+              <span>View Source</span>
           </a>
       </div>
   `;
+
+  // Add video load handler
+  const video = modalBody.querySelector("video");
+  if (video) {
+    video.addEventListener("loadeddata", function () {
+      video.style.opacity = "1";
+      const spinner = modalBody.querySelector(".loading-spinner");
+      if (spinner) {
+        spinner.style.display = "none";
+      }
+    });
+  }
 
   modal.classList.add("active");
   document.body.style.overflow = "hidden";
