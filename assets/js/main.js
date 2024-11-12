@@ -355,6 +355,7 @@ const projectData = {
             • Email service integration
             • Security best practices
             • Deployment, maintenance & github
+            • Enviroments Production and Developement 
             
             The result is a robust, user-friendly platform that delivers a seamless 
             dining experience from browsing to checkout.`,
