@@ -344,6 +344,8 @@ const projectData = {
             • Created intuitive routes and data models for efficient information flow
             • Implemented secure user authentication and authorization
             • Integrated real-time order tracking and status updates
+            • Implemented robust error handling and validation
+            • Optimized codebase for render production deployment
             
             This project significantly enhanced my expertise in:
             • Full-stack development practices
@@ -352,6 +354,7 @@ const projectData = {
             • Payment gateway implementation
             • Email service integration
             • Security best practices
+            • Deployment, maintenance & github
             
             The result is a robust, user-friendly platform that delivers a seamless 
             dining experience from browsing to checkout.`,
