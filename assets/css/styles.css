@@ -1395,7 +1395,7 @@ span {
 .project-modal {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -1405,6 +1405,7 @@ span {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   padding: 1rem;
+  backdrop-filter: blur(8px);
 }
 
 .project-modal.active {
@@ -1538,6 +1539,7 @@ span {
 .project-modal__button:hover {
   background: hsl(var(--hue), 70%, 45%);
   transform: translateY(-2px);
+  will-change: transform;
 }
 
 .project-modal__button--outline {
@@ -1684,8 +1686,25 @@ span {
   font-size: 1.1rem;
 }
 
+.project-modal__button:hover {
+  transform: scale(1.05);
+  transition: all 0.2s ease;
+}
+
 .project-modal__button span {
   line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border-width: 2px;
+  }
+}
+
+.project-modal__video {
+  min-height: 200px; /* Adjust as needed */
 }
 
 #scrollTopButton {
