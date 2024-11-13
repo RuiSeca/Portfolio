@@ -380,11 +380,6 @@ svg {
   }
 }
 
-@media screen and (min-width: 768px) {
-  .white-mode .nav__links {
-    background-color: #ffffff;
-  }
-}
 /*=============== HEADER & NAV ===============*/
 /* Default styles (Desktop) */
 .header {
