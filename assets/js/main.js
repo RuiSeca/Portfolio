@@ -457,7 +457,8 @@ function openProjectModal(projectId) {
   if (!project) return;
 
   // Store current scroll position and lock body
-  scrollPosition = window.pageYOffset;
+  scrollPosition = window.scrollY;
+  document.body.style.position = "fixed";
   document.body.style.top = `-${scrollPosition}px`;
   document.body.classList.add("modal-open");
 
