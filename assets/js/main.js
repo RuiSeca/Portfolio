@@ -448,11 +448,18 @@ const projectData = {
   },
 };
 
+let scrollPosition = 0;
+
 function openProjectModal(projectId) {
   const modal = document.getElementById("projectModal");
   const project = projectData[projectId];
 
   if (!project) return;
+
+  // Store current scroll position and lock body
+  scrollPosition = window.pageYOffset;
+  document.body.style.top = `-${scrollPosition}px`;
+  document.body.classList.add("modal-open");
 
   modal.querySelector(".project-modal__title").textContent = project.title;
 
@@ -469,7 +476,7 @@ function openProjectModal(projectId) {
                 muted 
                 loop 
                 playsinline
-                style="opacity: 0; transition: opacity 0.3s ease;"
+                webkit-playsinline
               ></video>
           </div>
       `
@@ -503,26 +510,36 @@ function openProjectModal(projectId) {
       </div>
   `;
 
-  // Add video load handler
+  // Handle video loading
   const video = modalBody.querySelector("video");
   if (video) {
     video.addEventListener("loadeddata", function () {
-      video.style.opacity = "1";
-      const spinner = modalBody.querySelector(".loading-spinner");
-      if (spinner) {
-        spinner.style.display = "none";
-      }
+      requestAnimationFrame(() => {
+        video.style.opacity = "1";
+        const spinner = modalBody.querySelector(".loading-spinner");
+        if (spinner) {
+          spinner.style.display = "none";
+        }
+      });
     });
   }
 
-  modal.classList.add("active");
-  document.body.style.overflow = "hidden";
+  // Show modal
+  requestAnimationFrame(() => {
+    modal.classList.add("active");
+  });
 }
 
 function closeProjectModal() {
   const modal = document.getElementById("projectModal");
+
+  // Restore body scroll
+  document.body.classList.remove("modal-open");
+  document.body.style.position = "";
+  document.body.style.top = "";
+  window.scrollTo(0, scrollPosition);
+
   modal.classList.remove("active");
-  document.body.style.overflow = "";
 }
 
 // Close modal when clicking outside
@@ -538,3 +555,14 @@ document.addEventListener("keydown", function (e) {
     closeProjectModal();
   }
 });
+
+// Prevent touchmove on modal background for iOS
+document.getElementById("projectModal").addEventListener(
+  "touchmove",
+  function (e) {
+    if (e.target === this) {
+      e.preventDefault();
+    }
+  },
+  { passive: false }
+);

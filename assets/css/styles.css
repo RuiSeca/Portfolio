@@ -1394,7 +1394,10 @@ span {
 /* Modal styles */
 .project-modal {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(8px);
   display: flex;
@@ -1405,7 +1408,7 @@ span {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   padding: 1rem;
-  backdrop-filter: blur(8px);
+  /* Remove overscroll-behavior and handle scroll lock via JS instead */
 }
 
 .project-modal.active {
@@ -1424,11 +1427,20 @@ span {
   transform: scale(0.95);
   opacity: 0;
   transition: transform 0.3s ease, opacity 0.3s ease;
+  scroll-behavior: smooth;
 }
 
 .project-modal.active .project-modal__content {
   transform: scale(1);
   opacity: 1;
+}
+
+/* Lock body scroll when modal is open */
+body.modal-open {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .project-modal__header {
@@ -1705,6 +1717,32 @@ span {
 
 .project-modal__video {
   min-height: 200px; /* Adjust as needed */
+}
+
+.project-modal__content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.project-modal__content::-webkit-scrollbar-track {
+  background: var(--container-color);
+}
+
+.project-modal__content::-webkit-scrollbar-thumb {
+  background-color: var(--first-color);
+  border-radius: 20px;
+  border: 2px solid var(--container-color);
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .project-modal {
+    padding: 0.5rem;
+  }
+
+  .project-modal__content {
+    width: 95%;
+    max-height: 85vh;
+  }
 }
 
 #scrollTopButton {
