@@ -293,9 +293,29 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /*=============== TOGGLE_DARK&WHITE_MODE  ===============*/
+// Function to initialize the theme based on stored preference
+function initializeTheme() {
+  const body = document.body;
+  const storedTheme = localStorage.getItem("theme");
+
+  if (storedTheme === "white") {
+    body.classList.add("white-mode");
+  } else {
+    body.classList.remove("white-mode");
+  }
+}
+
+// Function to toggle between themes
 function toggleMode() {
   const body = document.body;
   body.classList.toggle("white-mode");
+
+  // Store the current preference
+  if (body.classList.contains("white-mode")) {
+    localStorage.setItem("theme", "white");
+  } else {
+    localStorage.setItem("theme", "dark");
+  }
 }
 
 /*=============== DOWNLOAD  ===============*/
