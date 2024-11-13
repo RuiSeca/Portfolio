@@ -1189,7 +1189,7 @@ span {
   gap: 0.5em; /* Add small consistent gap between elements */
 }
 
-..card__text {
+.card__text {
   text-align: left; /* Natural text alignment instead of justify */
   font-size: 1rem;
   max-width: 180px;
@@ -1551,6 +1551,55 @@ span {
 .project-modal__button span {
   line-height: 1;
 }
+
+#scrollTopButton {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  text-decoration: none;
+  border-radius: 50%;
+  display: block;
+  height: 50px;
+  width: 50px;
+  display: none; /* Initially hidden */
+  height: 60px;
+  width: 60px;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#scrollTopButton::after span {
+  padding-top: 5px;
+}
+
+.scroll-show {
+  display: block; /* Make visible */
+  transform: scale(1); /* Zoom in */
+  opacity: 1; /* Fully visible */
+}
+
+.scroll-hide {
+  transform: scale(0.7); /* Zoom out */
+  opacity: 0; /* Fade out */
+  pointer-events: none; /* Prevent interaction when hidden */
+}
+
+#scrollTopButton::after {
+  content: "↑";
+  display: block;
+  color: #fff;
+  font-weight: 200;
+  font-size: 30px;
+  text-align: center;
+  padding-top: 5px;
+}
+
 /*===================Services =====================*/
 .services__container {
   row-gap: 2rem;
