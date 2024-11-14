@@ -294,14 +294,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /*=============== TOGGLE_DARK&WHITE_MODE  ===============*/
 // Function to initialize the theme based on stored preference
+// Function to initialize the theme based on stored preference
+function initializeTheme() {
+  const body = document.body;
+  const storedTheme = localStorage.getItem("theme");
+  const toggleButton = document.querySelector(".theme-toggle"); // Update this selector to match your toggle button class
+
+  if (storedTheme === "white") {
+    body.classList.add("white-mode");
+    if (toggleButton) {
+      toggleButton.classList.add("active"); // Add any class you use for the active state
+    }
+  } else {
+    body.classList.remove("white-mode");
+    if (toggleButton) {
+      toggleButton.classList.remove("active");
+    }
+  }
+}
+
+// Function to toggle between themes
+// Function to initialize the theme based on stored preference
 function initializeTheme() {
   const body = document.body;
   const storedTheme = localStorage.getItem("theme");
 
   if (storedTheme === "white") {
     body.classList.add("white-mode");
-  } else {
-    body.classList.remove("white-mode");
   }
 }
 
@@ -317,6 +336,9 @@ function toggleMode() {
     localStorage.setItem("theme", "dark");
   }
 }
+
+// Initialize theme when page loads
+document.addEventListener("DOMContentLoaded", initializeTheme);
 
 /*=============== DOWNLOAD  ===============*/
 async function handleDownload() {
