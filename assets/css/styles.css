@@ -432,6 +432,11 @@ svg {
     transform 500ms cubic-bezier(0.26, 2, 0.46, 0.71);
 }
 
+.toggle-button:hover {
+  cursor: pointer;
+  background-color: #26bd42;
+}
+
 .toggle-checkbox:checked ~ .toggle-slot .toggle-button {
   background-color: #ffeccf;
   box-shadow: inset 0px 0px 0px 0.75em #ffbb52;
