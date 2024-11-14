@@ -490,8 +490,6 @@ const projectData = {
   },
 };
 
-let scrollPosition = 0;
-
 function openProjectModal(projectId) {
   const modal = document.getElementById("projectModal");
   const project = projectData[projectId];
@@ -499,61 +497,66 @@ function openProjectModal(projectId) {
   if (!project) return;
 
   // Store current scroll position and lock body
-  scrollPosition = window.pageYOffset || window.scrollY;
+  scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
   document.body.style.position = "fixed";
   document.body.style.top = `-${scrollPosition}px`;
   document.body.classList.add("modal-open");
 
+  // Update modal content
   modal.querySelector(".project-modal__title").textContent = project.title;
 
   const modalBody = modal.querySelector(".project-modal__body");
   modalBody.innerHTML = `
+    ${
+      project.videoUrl
+        ? `
+        <div class="project-modal__video">
+          <div class="loading-spinner"></div>
+          <video 
+            src="${project.videoUrl}" 
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            webkit-playsinline
+          ></video>
+        </div>
+      `
+        : ""
+    }
+    <div class="project-modal__description">${project.description}</div>
+    <div class="project-modal__tech">
+      ${project.technologies
+        .map((tech) => `<span class="project-modal__tech-item">${tech}</span>`)
+        .join("")}
+    </div>
+    <div class="project-modal__buttons">
       ${
-        project.videoUrl
+        project.liveUrl
           ? `
-          <div class="project-modal__video">
-              <div class="loading-spinner"></div>
-              <video 
-                src="${project.videoUrl}" 
-                autoplay 
-                muted 
-                loop 
-                playsinline
-                webkit-playsinline
-              ></video>
-          </div>
+        <a href="${project.liveUrl}" target="_blank" rel="noopener noreferrer" 
+           class="project-modal__button">
+          <i class="ri-global-line"></i>
+          <span>Visit Website</span>
+        </a>
       `
           : ""
       }
-      <div class="project-modal__description">${project.description}</div>
-      <div class="project-modal__tech">
-          ${project.technologies
-            .map(
-              (tech) => `
-              <span class="project-modal__tech-item">${tech}</span>
-          `
-            )
-            .join("")}
-      </div>
-      <div class="project-modal__buttons">
-          <a href="${project.liveUrl}" 
-             target="_blank" 
-             rel="noopener noreferrer" 
-             class="project-modal__button">
-              <i class="ri-global-line"></i>
-              <span>Visit Website</span>
-          </a>
-          <a href="${project.githubUrl}" 
-             target="_blank" 
-             rel="noopener noreferrer" 
-             class="project-modal__button project-modal__button--outline">
-              <i class="ri-github-fill"></i>
-              <span>View Source</span>
-          </a>
-      </div>
+      ${
+        project.githubUrl
+          ? `
+        <a href="${project.githubUrl}" target="_blank" rel="noopener noreferrer" 
+           class="project-modal__button project-modal__button--outline">
+          <i class="ri-github-fill"></i>
+          <span>View Source</span>
+        </a>
+      `
+          : ""
+      }
+    </div>
   `;
 
-  // Handle video loading
+  // Handle video loading with your existing spinner
   const video = modalBody.querySelector("video");
   if (video) {
     video.addEventListener("loadeddata", function () {
@@ -567,7 +570,7 @@ function openProjectModal(projectId) {
     });
   }
 
-  // Show modal
+  // Show modal using your existing CSS classes
   requestAnimationFrame(() => {
     modal.classList.add("active");
   });
@@ -576,36 +579,30 @@ function openProjectModal(projectId) {
 function closeProjectModal() {
   const modal = document.getElementById("projectModal");
 
-  // Restore body scroll
+  // Remove modal-open class
   document.body.classList.remove("modal-open");
+
+  // Reset body position
   document.body.style.position = "";
   document.body.style.top = "";
+
+  // Restore scroll position
   window.scrollTo(0, scrollPosition);
 
+  // Remove active class to trigger your CSS animations
   modal.classList.remove("active");
 }
 
-// Close modal when clicking outside
-document.getElementById("projectModal").addEventListener("click", function (e) {
-  if (e.target === this) {
-    closeProjectModal();
-  }
-});
-
-// Close modal on escape key
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") {
-    closeProjectModal();
-  }
-});
-
-// Prevent touchmove on modal background for iOS
-document.getElementById("projectModal").addEventListener(
-  "touchmove",
-  function (e) {
-    if (e.target === this) {
-      e.preventDefault();
+// Add event listener to the fixed action button
+const fixedActionBtn = document.querySelector(".fixed-action-btn");
+if (fixedActionBtn) {
+  fixedActionBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = e.currentTarget.getAttribute("data-target");
+    if (target === "#projectModal") {
+      openProjectModal("savannah-bites");
+    } else {
+      // Handle other fixed action button functionality
     }
-  },
-  { passive: false }
-);
+  });
+}
