@@ -367,6 +367,7 @@ svg {
 
   .white-mode .img:after {
     height: 60px;
+    background: rgb(0, 0, 0);
   }
 
   .white-mode .skills__icon {
