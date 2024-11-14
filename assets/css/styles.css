@@ -332,7 +332,8 @@ svg {
   left: 0;
   width: 50%;
   height: 100%;
-  background: rgba(240, 240, 240, 0.5);
+  background: rgb(0, 0, 0);
+  background: linear-gradient(180deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
   border-radius: 50%;
 }
 
@@ -368,6 +369,11 @@ svg {
   .white-mode .img:after {
     height: 60px;
     background: rgb(0, 0, 0);
+    background: linear-gradient(
+      180deg,
+      rgb(0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
   }
 
   .white-mode .skills__icon {
@@ -1208,7 +1214,7 @@ span {
   justify-content: center;
   align-items: center;
   overflow: hidden; /* Clip overflowing parts */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.929); /* Shadow for depth */
 }
 
 .img:after {
