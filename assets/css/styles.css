@@ -437,6 +437,11 @@ svg {
   background-color: #26bd42;
 }
 
+.toggle-checkbox:checked ~ .toggle-slot .toggle-button:hover {
+  cursor: pointer;
+  background-color: #ca1515;
+}
+
 .toggle-checkbox:checked ~ .toggle-slot .toggle-button {
   background-color: #ffeccf;
   box-shadow: inset 0px 0px 0px 0.75em #ffbb52;
