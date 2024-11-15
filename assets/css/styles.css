@@ -1452,14 +1452,12 @@ span {
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   padding: 1rem;
-  overflow-y: hidden;
   /* Remove overscroll-behavior and handle scroll lock via JS instead */
 }
 
 .project-modal.active {
   opacity: 1;
   visibility: visible;
-  overflow-y: hidden;
 }
 
 .project-modal__content {
