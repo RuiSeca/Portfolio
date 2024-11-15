@@ -293,52 +293,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /*=============== TOGGLE_DARK&WHITE_MODE  ===============*/
-// Function to initialize the theme based on stored preference
-// Function to initialize the theme based on stored preference
-function initializeTheme() {
-  const body = document.body;
-  const storedTheme = localStorage.getItem("theme");
-  const toggleButton = document.querySelector(".theme-toggle"); // Update this selector to match your toggle button class
-
-  if (storedTheme === "white") {
-    body.classList.add("white-mode");
-    if (toggleButton) {
-      toggleButton.classList.add("active"); // Add any class you use for the active state
-    }
-  } else {
-    body.classList.remove("white-mode");
-    if (toggleButton) {
-      toggleButton.classList.remove("active");
-    }
-  }
-}
-
-// Function to toggle between themes
-// Function to initialize the theme based on stored preference
-function initializeTheme() {
-  const body = document.body;
-  const storedTheme = localStorage.getItem("theme");
-
-  if (storedTheme === "white") {
-    body.classList.add("white-mode");
-  }
-}
-
-// Function to toggle between themes
 function toggleMode() {
   const body = document.body;
   body.classList.toggle("white-mode");
-
-  // Store the current preference
-  if (body.classList.contains("white-mode")) {
-    localStorage.setItem("theme", "white");
-  } else {
-    localStorage.setItem("theme", "dark");
-  }
 }
-
-// Initialize theme when page loads
-document.addEventListener("DOMContentLoaded", initializeTheme);
 
 /*=============== DOWNLOAD  ===============*/
 async function handleDownload() {
@@ -561,7 +519,7 @@ function openProjectModal(projectId) {
   if (video) {
     video.addEventListener("loadeddata", function () {
       requestAnimationFrame(() => {
-        video.style.opacity = "1";
+        video.style.opacity = "2";
         const spinner = modalBody.querySelector(".loading-spinner");
         if (spinner) {
           spinner.style.display = "none";
