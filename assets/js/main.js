@@ -293,10 +293,30 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /*=============== TOGGLE_DARK&WHITE_MODE  ===============*/
+function initializeTheme() {
+  const body = document.body;
+  const storedTheme = localStorage.getItem("theme");
+
+  if (storedTheme === "white") {
+    body.classList.add("white-mode");
+  }
+}
+
+// Function to toggle between themes
 function toggleMode() {
   const body = document.body;
   body.classList.toggle("white-mode");
+
+  // Store the current preference
+  if (body.classList.contains("white-mode")) {
+    localStorage.setItem("theme", "white");
+  } else {
+    localStorage.setItem("theme", "dark");
+  }
 }
+
+// Initialize theme when page loads
+document.addEventListener("DOMContentLoaded", initializeTheme);
 
 /*=============== DOWNLOAD  ===============*/
 async function handleDownload() {

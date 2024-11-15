@@ -381,6 +381,14 @@ svg {
   }
 }
 
+.white-mode .contact__input {
+  margin-bottom: 1rem;
+  background-color: var(--container-color);
+  color: var(--text-color);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease;
+}
+
 @media screen and (max-width: 768px) {
   .white-mode .nav__links {
     background-color: #ffffff;
