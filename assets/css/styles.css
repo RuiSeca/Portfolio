@@ -342,6 +342,18 @@ svg {
   z-index: 2;
 }
 
+.white-mode .card {
+  background: black;
+}
+
+.white-mode .card__text {
+  color: white;
+}
+
+.white-mode .card_title {
+  color: var(--first-color);
+}
+
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .white-mode .header__skills {
@@ -1349,6 +1361,12 @@ span {
   align-items: center;
   flex-direction: column;
   gap: 0.5em; /* Add small consistent gap between elements */
+}
+
+.card_title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--first-color);
 }
 
 .card__text {
