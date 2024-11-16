@@ -35,7 +35,9 @@ window.addEventListener("scroll", () => {
 });
 
 /*=============== CARD SWIPER ===============*/
+
 var swiper = new Swiper(".mySwiper", {
+  // Your Swiper options
   effect: "coverflow",
   grabCursor: true,
   centeredSlides: true,
@@ -49,56 +51,27 @@ var swiper = new Swiper(".mySwiper", {
   },
   pagination: {
     el: ".swiper-pagination",
-    clickable: true,
   },
   scrollbar: {
     el: ".swiper-scrollbar",
-    draggable: true,
-    dragSize: 150,
-  },
-  breakpoints: {
-    768: {
-      slidesPerView: 2,
-      coverflowEffect: {
-        depth: 200,
-      },
-    },
-    1024: {
-      slidesPerView: 3,
-      coverflowEffect: {
-        depth: 300,
-      },
-    },
+    dragSize: 150, // Adjust as needed
   },
 });
-
-// Open and close modal functionality
-function openModal(title, description) {
-  const modal = document.getElementById("modal");
-  const modalTitle = document.getElementById("modal-title");
-  const modalDescription = document.getElementById("modal-description");
-
-  modalTitle.textContent = title;
-  modalDescription.textContent = description;
-
-  modal.classList.remove("hidden");
-  modal.style.display = "block";
+// Redirect to another website via card
+function redirectToAnotherWebsite(url) {
+  window.location.href = url;
 }
+// Sync the scrollbar with Swiper's scroll position
+swiper.on("scroll", function () {
+  var scrollbarThumb = document.querySelector(".swiper-scrollbar-thumb");
+  var scrollbarWidth = document.querySelector(".swiper-scrollbar").offsetWidth;
+  var thumbWidth = scrollbarThumb.offsetWidth;
+  var swiperWidth = swiper.width;
 
-function closeModal() {
-  const modal = document.getElementById("modal");
-  modal.classList.add("hidden");
-  modal.style.display = "none";
-}
+  var scrollPercentage = swiper.translate / (swiperWidth - swiper.width);
+  var scrollThumbPosition = (scrollbarWidth - thumbWidth) * scrollPercentage;
 
-// Attach click event to Swiper slides
-document.querySelectorAll(".swiper-slide").forEach((slide) => {
-  slide.addEventListener("click", function () {
-    const title = this.getAttribute("data-title");
-    const description = this.getAttribute("data-description");
-
-    openModal(title, description);
-  });
+  scrollbarThumb.style.transform = "translateX(" + scrollThumbPosition + "px)";
 });
 
 /*=============== ADD BLUR TO HEADER ===============*/
