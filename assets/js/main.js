@@ -497,7 +497,17 @@ function openProjectModal(projectId) {
       project.videoUrl
         ? `
         <div class="project-modal__video">
-          <div class="loading-spinner"></div>
+          <div class="loading-container">
+            <div class="spinner">
+              <div class="spinnerin"></div>
+            </div>
+              <p class="loading-message">
+                Loading video<span class="dots">
+                  <span>.</span><span>.</span><span>.</span>
+              </span>
+            </p>
+          </div>
+
           <video 
             src="${project.videoUrl}" 
             autoplay 
