@@ -378,7 +378,7 @@ const projectData = {
       <li style="color: grey;">Optimized codebase for render production deployment</li>
     </ul>
 
-    <p style="color: white;">This project significantly enhanced my expertise in:</p>
+    <p><strong style="color: white;">This project significantly enhanced my expertise in:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
       <li style="color: grey;">Full-stack development practices</li>
       <li style="color: grey;">Database design and management</li>
