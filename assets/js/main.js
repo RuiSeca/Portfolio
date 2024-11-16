@@ -356,35 +356,45 @@ const projectData = {
   "savannah-bites": {
     title: "Savannah Bites",
     description: `
-            This project is my largest undertaking to date, where I developed a fully functional 
-            restaurant website with comprehensive features:
+    <p><strong style="color: white;">This project is my largest undertaking to date, where I developed a fully functional 
+    restaurant website with comprehensive features:</strong></p>
+    
+    <p><strong style="color: white;">Key Features:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">Database Integration: Powered by MongoDB Atlas for secure client data storage</li>
+      <li style="color: grey;">Backend Architecture: Built with Node.js, enabling robust server-side operations</li>
+      <li style="color: grey;">API Development: Created seamless frontend-backend integration with RESTful APIs</li>
+      <li style="color: grey;">Payment Processing: Implemented secure transactions using Stripe payment gateway</li>
+      <li style="color: grey;">Email Automation: Set up automated order confirmation emails to enhance user experience</li>
+    </ul>
 
-            • Database Integration: Powered by MongoDB Atlas for secure client data storage
-            • Backend Architecture: Built with Node.js, enabling robust server-side operations
-            • API Development: Created seamless frontend-backend integration with RESTful APIs
-            • Payment Processing: Implemented secure transactions using Stripe payment gateway
-            • Email Automation: Set up automated order confirmation emails to enhance user experience
-            
-            Key Technical Achievements:
-            • Developed comprehensive API endpoints for menu management and order processing
-            • Created intuitive routes and data models for efficient information flow
-            • Implemented secure user authentication and authorization
-            • Integrated real-time order tracking and status updates
-            • Implemented robust error handling and validation
-            • Optimized codebase for render production deployment
-            
-            This project significantly enhanced my expertise in:
-            • Full-stack development practices
-            • Database design and management
-            • API integration and optimization
-            • Payment gateway implementation
-            • Email service integration
-            • Security best practices
-            • Deployment, maintenance & github
-            • Enviroments Production and Developement 
-            
-            The result is a robust, user-friendly platform that delivers a seamless 
-            dining experience from browsing to checkout.`,
+    <p><strong style="color: white;">Key Technical Achievements:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">Developed comprehensive API endpoints for menu management and order processing</li>
+      <li style="color: grey;">Created intuitive routes and data models for efficient information flow</li>
+      <li style="color: grey;">Implemented secure user authentication and authorization</li>
+      <li style="color: grey;">Integrated real-time order tracking and status updates</li>
+      <li style="color: grey;">Implemented robust error handling and validation</li>
+      <li style="color: grey;">Optimized codebase for render production deployment</li>
+    </ul>
+
+    <p style="color: white;">This project significantly enhanced my expertise in:</p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">Full-stack development practices</li>
+      <li style="color: grey;">Database design and management</li>
+      <li style="color: grey;">API integration and optimization</li>
+      <li style="color: grey;">Payment gateway implementation</li>
+      <li style="color: grey;">Email service integration</li>
+      <li style="color: grey;">Security best practices</li>
+      <li style="color: grey;">Deployment, maintenance & GitHub</li>
+      <li style="color: grey;">Environments Production and Development</li>
+    </ul>
+
+    <p> <strong style="color: white;">
+      The result is a robust, user-friendly platform that delivers a seamless dining experience 
+      from browsing to checkout.</strong>
+    </p>
+  `,
     videoUrl: "/assets/videos/savannah-preview.mp4",
     liveUrl: "https://savannah-bites.onrender.com/",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
@@ -402,36 +412,43 @@ const projectData = {
   "weather-cast": {
     title: "Weather Cast",
     description: `
-            A modern weather forecasting application delivering real-time data through 
-            an intuitive interface.
+    <p><strong style="color: white;">A modern weather forecasting application delivering real-time data through an intuitive interface.</strong><br/><br/></p>
 
-            Key Features:
-            • Real-time weather updates using OpenWeatherMap API integration
-            • Dynamic UI that adapts to different weather conditions
-            • Daily and weekend forecast presentations
-            • Severe weather alerts and notifications
-            • Location-based weather tracking
-            
-            Technical Highlights:
-            • First-time implementation of external API integration
-            • Advanced switch statement logic for weather condition handling
-            • Dynamic UI updates based on real-time data
-            • Efficient data fetching and caching mechanisms
-            
-            Design Philosophy:
-            • Minimalist, user-focused interface
-            • Intuitive navigation and information hierarchy
-            • Clear visual presentation of weather data
-            • Responsive design for all devices
-            
-            Learning Outcomes:
-            • Mastered API integration and data handling
-            • Improved conditional logic implementation
-            • Enhanced UI/UX design skills
-            • Developed efficient data management strategies
-            
-            The result is a sleek, functional weather application that prioritizes 
-            user experience while delivering accurate, timely weather information.`,
+    <p><strong style="color: white;">Key Features:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">Real-time weather updates using OpenWeatherMap API integration</li>
+      <li style="color: grey;">Dynamic UI that adapts to different weather conditions</li>
+      <li style="color: grey;">Daily and weekend forecast presentations</li>
+      <li style="color: grey;">Severe weather alerts and notifications</li>
+      <li style="color: grey;">Location-based weather tracking</li>
+    </ul>
+
+    <p><strong style="color: white;">Technical Highlights:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">First-time implementation of external API integration</li>
+      <li style="color: grey;">Advanced switch statement logic for weather condition handling</li>
+      <li style="color: grey;">Dynamic UI updates based on real-time data</li>
+      <li style="color: grey;">Efficient data fetching and caching mechanisms</li>
+    </ul>
+
+    <p><strong style="color: white;">Design Philosophy:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">Minimalist, user-focused interface</li>
+      <li style="color: grey;">Intuitive navigation and information hierarchy</li>
+      <li style="color: grey;">Clear visual presentation of weather data</li>
+      <li style="color: grey;">Responsive design for all devices</li>
+    </ul>
+
+    <p><strong style="color: white;">Learning Outcomes:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li style="color: grey;">Mastered API integration and data handling</li>
+      <li style="color: grey;">Improved conditional logic implementation</li>
+      <li style="color: grey;">Enhanced UI/UX design skills</li>
+      <li style="color: grey;">Developed efficient data management strategies</li>
+    </ul>
+
+    <p><strong style="color: white;">The result is a sleek, functional weather application that prioritizes user experience while delivering accurate, timely weather information.</strong><br/><br/></p>
+  `,
     videoUrl: "/assets/videos/weather-preview.mp4",
     liveUrl: "https://weather-cast-show.netlify.app/",
     githubUrl: "https://github.com/RuiSeca/weatherApp",
