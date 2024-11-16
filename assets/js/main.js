@@ -468,6 +468,8 @@ const projectData = {
   },
 };
 
+let scrollPosition = 0;
+
 function openProjectModal(projectId) {
   const modal = document.getElementById("projectModal");
   const project = projectData[projectId];
@@ -534,12 +536,12 @@ function openProjectModal(projectId) {
     </div>
   `;
 
-  // Handle video loading with your existing spinner
+  // Handle video loading with spinner
   const video = modalBody.querySelector("video");
   if (video) {
     video.addEventListener("loadeddata", function () {
       requestAnimationFrame(() => {
-        video.style.opacity = "2";
+        video.style.opacity = "1";
         const spinner = modalBody.querySelector(".loading-spinner");
         if (spinner) {
           spinner.style.display = "none";
@@ -548,7 +550,7 @@ function openProjectModal(projectId) {
     });
   }
 
-  // Show modal using your existing CSS classes
+  // Show modal using CSS classes
   requestAnimationFrame(() => {
     modal.classList.add("active");
   });
@@ -567,7 +569,7 @@ function closeProjectModal() {
   // Restore scroll position
   window.scrollTo(0, scrollPosition);
 
-  // Remove active class to trigger your CSS animations
+  // Remove active class to trigger CSS animations
   modal.classList.remove("active");
 }
 
