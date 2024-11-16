@@ -1486,6 +1486,7 @@ span {
 
   .card__text {
     font-size: 0.9rem;
+    font-weight: bold;
   }
 }
 
