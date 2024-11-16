@@ -36,27 +36,33 @@ window.addEventListener("scroll", () => {
 
 /*=============== CARD SWIPER ===============*/
 
-var swiper = new Swiper(".mySwiper", {
-  // Your Swiper options
-  effect: "coverflow",
-  grabCursor: true,
-  centeredSlides: true,
-  slidesPerView: "auto",
+const swiper = new Swiper(".mySwiper", {
+  slidesPerView: "auto", // Makes each slide take up its natural width
+  spaceBetween: 20, // Slight gap between slides
+  centeredSlides: true, // Keeps the center slide visible in the middle
+  slideToClickedSlide: true, // Allows clicking to navigate directly to a slide
+  effect: "coverflow", // Adds a 3D stacking effect
   coverflowEffect: {
-    rotate: 0,
-    stretch: 0,
-    depth: 300,
-    modifier: 2,
-    slideShadows: true,
-  },
-  pagination: {
-    el: ".swiper-pagination",
+    rotate: 50, // Degree of rotation
+    stretch: 0, // Stretch factor
+    depth: 150, // Depth of the 3D effect
+    modifier: 1, // Modifier to increase/decrease effect intensity
+    slideShadows: true, // Adds shadow to each slide
   },
   scrollbar: {
     el: ".swiper-scrollbar",
-    dragSize: 150, // Adjust as needed
+    draggable: 150, // Allows for dragging the scrollbar
+  },
+  on: {
+    slideChangeTransitionStart: function () {
+      // Add a fix for Firefox and Safari when slide changes
+      setTimeout(() => {
+        swiper.update(); // Update Swiper after slide change
+      }, 50);
+    },
   },
 });
+
 // Redirect to another website via card
 function redirectToAnotherWebsite(url) {
   window.location.href = url;
