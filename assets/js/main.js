@@ -361,44 +361,41 @@ const projectData = {
   "savannah-bites": {
     title: "Savannah Bites",
     description: `
-    <strong class="title-text">A modern weather forecasting application delivering real-time data through an intuitive interface.</strong>
+    <p><strong class="title-text">Savannah Bites</strong> is my largest project to date, where I developed a fully functional restaurant website with various features to enhance user experience and streamline restaurant operations.</p>
 
     <p><strong class="title-text">Key Features:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
       <li class="description-text">Database Integration: Powered by MongoDB Atlas for secure client data storage</li>
       <li class="description-text">Backend Architecture: Built with Node.js, enabling robust server-side operations</li>
-      <li class="description-text">API Development: Created seamless frontend-backend integration with RESTful APIs</li>
-      <li class="description-text">Payment Processing: Implemented secure transactions using Stripe payment gateway</li>
-      <li class="description-text">Email Automation: Set up automated order confirmation emails to enhance user experience</li>
+      <li class="description-text">API Development: Seamless frontend-backend integration using RESTful APIs</li>
+      <li class="description-text">Payment Processing: Secure transactions via Stripe payment gateway</li>
+      <li class="description-text">Email Automation: Automated order confirmation emails for a smooth user experience</li>
     </ul>
 
     <p><strong class="title-text">Key Technical Achievements:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Developed comprehensive API endpoints for menu management and order processing</li>
-      <li class="description-text">Created intuitive routes and data models for efficient information flow</li>
+      <li class="description-text">Developed API endpoints for menu management and order processing</li>
+      <li class="description-text">Created intuitive routes and models for smooth information flow</li>
       <li class="description-text">Implemented secure user authentication and authorization</li>
       <li class="description-text">Integrated real-time order tracking and status updates</li>
-      <li class="description-text">Implemented robust error handling and validation</li>
-      <li class="description-text">Optimized codebase for render production deployment</li>
+      <li class="description-text">Enhanced error handling and validation for robust performance</li>
+      <li class="description-text">Optimized codebase for production deployment on Render</li>
     </ul>
 
     <p><strong class="title-text">This project significantly enhanced my expertise in:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Full-stack development practices</li>
-      <li class="description-text">Database design and management</li>
+      <li class="description-text">Full-stack development</li>
+      <li class="description-text">Database management and design</li>
       <li class="description-text">API integration and optimization</li>
       <li class="description-text">Payment gateway implementation</li>
       <li class="description-text">Email service integration</li>
       <li class="description-text">Security best practices</li>
-      <li class="description-text">Deployment, maintenance & GitHub</li>
-      <li class="description-text">Environments Production and Development</li>
+      <li class="description-text">Deployment and GitHub workflows</li>
+      <li class="description-text">Managing production and development environments</li>
     </ul>
 
-    <p><strong class="title-text">
-      The result is a robust, user-friendly platform that delivers a seamless dining experience 
-      from browsing to checkout.</strong>
-    </p>
-  `,
+    <p><strong class="title-text">The result is a user-friendly, robust platform that ensures a seamless dining experience, from browsing the menu to completing the checkout process.</strong></p>
+    `,
     videoUrl: "/assets/videos/savannah-preview.mp4",
     liveUrl: "https://savannah-bites.onrender.com/",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
