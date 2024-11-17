@@ -324,6 +324,11 @@ function toggleMode() {
 // Initialize theme when page loads
 document.addEventListener("DOMContentLoaded", initializeTheme);
 
+const toggleButton = document.getElementById("white-mode-toggle");
+if (toggleButton) {
+  toggleButton.addEventListener("click", toggleMode);
+}
+
 /*=============== DOWNLOAD  ===============*/
 async function handleDownload() {
   try {
@@ -356,41 +361,40 @@ const projectData = {
   "savannah-bites": {
     title: "Savannah Bites",
     description: `
-    <p><strong style="color: white;">This project is my largest undertaking to date, where I developed a fully functional 
-    restaurant website with comprehensive features:</strong></p>
-    
-    <p><strong style="color: white;">Key Features:</strong></p>
+    <strong class="title-text">A modern weather forecasting application delivering real-time data through an intuitive interface.</strong>
+
+    <p><strong class="title-text">Key Features:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">Database Integration: Powered by MongoDB Atlas for secure client data storage</li>
-      <li style="color: grey;">Backend Architecture: Built with Node.js, enabling robust server-side operations</li>
-      <li style="color: grey;">API Development: Created seamless frontend-backend integration with RESTful APIs</li>
-      <li style="color: grey;">Payment Processing: Implemented secure transactions using Stripe payment gateway</li>
-      <li style="color: grey;">Email Automation: Set up automated order confirmation emails to enhance user experience</li>
+      <li class="description-text">Database Integration: Powered by MongoDB Atlas for secure client data storage</li>
+      <li class="description-text">Backend Architecture: Built with Node.js, enabling robust server-side operations</li>
+      <li class="description-text">API Development: Created seamless frontend-backend integration with RESTful APIs</li>
+      <li class="description-text">Payment Processing: Implemented secure transactions using Stripe payment gateway</li>
+      <li class="description-text">Email Automation: Set up automated order confirmation emails to enhance user experience</li>
     </ul>
 
-    <p><strong style="color: white;">Key Technical Achievements:</strong></p>
+    <p><strong class="title-text">Key Technical Achievements:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">Developed comprehensive API endpoints for menu management and order processing</li>
-      <li style="color: grey;">Created intuitive routes and data models for efficient information flow</li>
-      <li style="color: grey;">Implemented secure user authentication and authorization</li>
-      <li style="color: grey;">Integrated real-time order tracking and status updates</li>
-      <li style="color: grey;">Implemented robust error handling and validation</li>
-      <li style="color: grey;">Optimized codebase for render production deployment</li>
+      <li class="description-text">Developed comprehensive API endpoints for menu management and order processing</li>
+      <li class="description-text">Created intuitive routes and data models for efficient information flow</li>
+      <li class="description-text">Implemented secure user authentication and authorization</li>
+      <li class="description-text">Integrated real-time order tracking and status updates</li>
+      <li class="description-text">Implemented robust error handling and validation</li>
+      <li class="description-text">Optimized codebase for render production deployment</li>
     </ul>
 
-    <p><strong style="color: white;">This project significantly enhanced my expertise in:</strong></p>
+    <p><strong class="title-text">This project significantly enhanced my expertise in:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">Full-stack development practices</li>
-      <li style="color: grey;">Database design and management</li>
-      <li style="color: grey;">API integration and optimization</li>
-      <li style="color: grey;">Payment gateway implementation</li>
-      <li style="color: grey;">Email service integration</li>
-      <li style="color: grey;">Security best practices</li>
-      <li style="color: grey;">Deployment, maintenance & GitHub</li>
-      <li style="color: grey;">Environments Production and Development</li>
+      <li class="description-text">Full-stack development practices</li>
+      <li class="description-text">Database design and management</li>
+      <li class="description-text">API integration and optimization</li>
+      <li class="description-text">Payment gateway implementation</li>
+      <li class="description-text">Email service integration</li>
+      <li class="description-text">Security best practices</li>
+      <li class="description-text">Deployment, maintenance & GitHub</li>
+      <li class="description-text">Environments Production and Development</li>
     </ul>
 
-    <p> <strong style="color: white;">
+    <p><strong class="title-text">
       The result is a robust, user-friendly platform that delivers a seamless dining experience 
       from browsing to checkout.</strong>
     </p>
@@ -412,42 +416,42 @@ const projectData = {
   "weather-cast": {
     title: "Weather Cast",
     description: `
-    <p><strong style="color: white;">A modern weather forecasting application delivering real-time data through an intuitive interface.</strong><br/><br/></p>
+    <p><strong class="title-text">A modern weather forecasting application delivering real-time data through an intuitive interface.</strong><br/><br/></p>
 
-    <p><strong style="color: white;">Key Features:</strong></p>
+    <p><strong class="title-text">Key Features:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">Real-time weather updates using OpenWeatherMap API integration</li>
-      <li style="color: grey;">Dynamic UI that adapts to different weather conditions</li>
-      <li style="color: grey;">Daily and weekend forecast presentations</li>
-      <li style="color: grey;">Severe weather alerts and notifications</li>
-      <li style="color: grey;">Location-based weather tracking</li>
+      <li class="description-text">Real-time weather updates using OpenWeatherMap API integration</li>
+      <li class="description-text">Dynamic UI that adapts to different weather conditions</li>
+      <li class="description-text">Daily and weekend forecast presentations</li>
+      <li class="description-text">Severe weather alerts and notifications</li>
+      <li class="description-text">Location-based weather tracking</li>
     </ul>
 
-    <p><strong style="color: white;">Technical Highlights:</strong></p>
+    <p><strong class="title-text">Technical Highlights:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">First-time implementation of external API integration</li>
-      <li style="color: grey;">Advanced switch statement logic for weather condition handling</li>
-      <li style="color: grey;">Dynamic UI updates based on real-time data</li>
-      <li style="color: grey;">Efficient data fetching and caching mechanisms</li>
+      <li class="description-text">First-time implementation of external API integration</li>
+      <li class="description-text">Advanced switch statement logic for weather condition handling</li>
+      <li class="description-text">Dynamic UI updates based on real-time data</li>
+      <li class="description-text">Efficient data fetching and caching mechanisms</li>
     </ul>
 
-    <p><strong style="color: white;">Design Philosophy:</strong></p>
+    <p><strong class="title-text">Design Philosophy:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">Minimalist, user-focused interface</li>
-      <li style="color: grey;">Intuitive navigation and information hierarchy</li>
-      <li style="color: grey;">Clear visual presentation of weather data</li>
-      <li style="color: grey;">Responsive design for all devices</li>
+      <li class="description-text">Minimalist, user-focused interface</li>
+      <li class="description-text">Intuitive navigation and information hierarchy</li>
+      <li class="description-text">Clear visual presentation of weather data</li>
+      <li class="description-text">Responsive design for all devices</li>
     </ul>
 
-    <p><strong style="color: white;">Learning Outcomes:</strong></p>
+    <p><strong class="title-text">Learning Outcomes:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li style="color: grey;">Mastered API integration and data handling</li>
-      <li style="color: grey;">Improved conditional logic implementation</li>
-      <li style="color: grey;">Enhanced UI/UX design skills</li>
-      <li style="color: grey;">Developed efficient data management strategies</li>
+      <li class="description-text">Mastered API integration and data handling</li>
+      <li class="description-text">Improved conditional logic implementation</li>
+      <li class="description-text">Enhanced UI/UX design skills</li>
+      <li class="description-text">Developed efficient data management strategies</li>
     </ul>
 
-    <p><strong style="color: white;">The result is a sleek, functional weather application that prioritizes user experience while delivering accurate, timely weather information.</strong><br/><br/></p>
+    <p><strong class="title-text">The result is a sleek, functional weather application that prioritizes user experience while delivering accurate, timely weather information.</strong><br/><br/></p>
   `,
     videoUrl: "/assets/videos/weather-preview.mp4",
     liveUrl: "https://weather-cast-show.netlify.app/",
@@ -496,6 +500,7 @@ let scrollPosition = 0;
 function openProjectModal(projectId) {
   const modal = document.getElementById("projectModal");
   const project = projectData[projectId];
+  const isWhiteMode = document.body.classList.contains("white-mode");
 
   if (!project) return;
 
@@ -509,6 +514,15 @@ function openProjectModal(projectId) {
   modal.querySelector(".project-modal__title").textContent = project.title;
 
   const modalBody = modal.querySelector(".project-modal__body");
+
+  // Modify the description HTML to use CSS classes instead of inline styles
+  const formattedDescription = project.description.replace(
+    /style="color: (white|grey);"/g,
+    `class="${isWhiteMode ? "text-black" : "text-white"} ${
+      isWhiteMode ? "text-black-secondary" : "text-gray"
+    }""`
+  );
+
   modalBody.innerHTML = `
     ${
       project.videoUrl
@@ -537,7 +551,7 @@ function openProjectModal(projectId) {
       `
         : ""
     }
-    <div class="project-modal__description">${project.description}</div>
+    <div class="project-modal__description">${formattedDescription}</div>
     <div class="project-modal__tech">
       ${project.technologies
         .map((tech) => `<span class="project-modal__tech-item">${tech}</span>`)

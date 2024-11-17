@@ -186,6 +186,41 @@ svg {
   background-color: #e0e0e0; /* Light gray for toggle background */
 }
 
+/* Add these to your CSS file */
+.white-mode .text-black {
+  color: black !important;
+}
+
+.white-mode .text-black-secondary {
+  color: #333 !important;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-gray {
+  color: grey;
+}
+
+/* Default dark mode styles */
+.title-text {
+  color: white;
+}
+
+.description-text {
+  color: grey;
+}
+
+/* Light mode overrides */
+.white-mode .title-text {
+  color: black;
+}
+
+.white-mode .description-text {
+  color: #333;
+}
+
 .white-mode .toggle-button {
   background-color: #ffffff;
   box-shadow: inset 0px 0px 0px 0.75em var(--first-color);
@@ -1040,7 +1075,7 @@ span {
 .contact__button {
   justify-self: center;
   cursor: pointer;
-  background-color: #ff0000; /* Main background color */
+  background-color: var(--first-color); /* Main background color */
   color: #fff; /* Text color */
   font-size: 16px; /* Font size */
   padding: 12px 24px; /* Padding for better click area */
@@ -1052,7 +1087,7 @@ span {
 }
 
 .contact__button:hover {
-  background-color: #fc0707cb; /* Darker shade on hover */
+  background-color: #fc0707d4; /* Darker shade on hover */
   transform: translateY(-2px); /* Slight lift effect on hover */
 }
 
@@ -1601,7 +1636,7 @@ body.modal-open {
 }
 
 .project-modal__description {
-  color: var(--text-color);
+  color: var(--title-color);
   margin-bottom: 1.5rem;
   line-height: 1.6;
   white-space: pre-line;
