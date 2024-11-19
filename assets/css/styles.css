@@ -1901,14 +1901,9 @@ body.modal-open {
 
 /* Base Piano Container */
 .piano__container {
-  max-width: 1200px;
+  max-width: 584px; /* Match piano width */
   margin: 0 auto;
-  padding: 0 2rem;
-}
-
-.career.section {
-  padding: 6rem 0;
-  min-height: 50vh;
+  padding: 0;
 }
 
 .section__subtitle-piano {
@@ -1957,30 +1952,30 @@ body.modal-open {
   gap: 4rem;
 }
 
+.piano-container {
+  position: relative;
+  width: 584px; /* Fixed width to match keys */
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-bottom: 8rem;
+  background: linear-gradient(to bottom, #766856, #5c4934);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
 #piano-container {
-  width: 50%;
-  max-width: 400px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   padding-top: 4rem;
-}
-
-/* Piano Specific Container */
-.piano-container {
-  position: relative;
-  width: 100%;
-  height: 15rem;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 8rem;
-  background: linear-gradient(to bottom, #766856, #5c4934);
-  padding: 1.5rem;
-  border-radius: 8px;
-  transform: translateY(-8px); /* Lift on hover */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.15);
 }
 
 .piano-container::before {
@@ -2216,26 +2211,56 @@ body.modal-open {
 }
 
 /* Update Responsive Styles */
+/* Journey Cards - Desktop */
 @media screen and (min-width: 769px) {
   .journey-card {
     transform: translateX(-50%);
   }
 }
 
-/* Mobile Styles */
 @media screen and (max-width: 768px) {
+  .sound-control {
+    top: -2.5rem;
+    right: 0.5rem;
+  }
+
+  .piano-container {
+    transform: scale(0.7);
+    margin-bottom: 3rem;
+    width: 584px; /* Keep original width, let scale handle the resizing */
+  }
+}
+
+/* Tablet and Small Screens */
+@media screen and (max-width: 768px) {
+  .piano__container {
+    padding: 1rem;
+  }
+
+  .piano-container {
+    transform: scale(0.7);
+    margin-bottom: 3rem;
+    width: fit-content;
+  }
+
+  .keys-container {
+    transform: scale(0.9);
+    margin: 0 auto;
+  }
+
   .journey-container {
     margin-top: 1rem;
     display: flex;
     justify-content: center;
     min-height: 16rem;
+    width: 100%;
   }
 
   .journey-card {
     width: 90%;
     max-width: 320px;
     position: absolute;
-    left: 50% !important; /* Override any inline positioning */
+    left: 50% !important;
     transform: translateX(-50%);
     opacity: 0;
     transition: all 0.4s ease-in-out;
@@ -2245,29 +2270,35 @@ body.modal-open {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
-
-  /* Adjust piano container for mobile */
-  .piano-container {
-    transform: scale(0.7);
-    margin-bottom: 2rem;
-  }
-
-  /* Adjust keys container for mobile */
-  .keys-container {
-    transform: scale(0.9);
-  }
 }
 
-/* Small Mobile Styles */
+/* Mobile Screens */
 @media screen and (max-width: 480px) {
-  .journey-card {
-    padding: 1rem;
-    width: 95%;
+  .piano__container {
+    padding: 0.5rem;
   }
 
   .piano-container {
     transform: scale(0.5);
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    width: 584px; /* Keep original width, let scale handle the resizing */
+  }
+
+  .keys-container {
+    transform: scale(0.8);
+    margin: 0 auto;
+  }
+
+  #piano-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .journey-card {
+    padding: 1rem;
+    width: 95%;
   }
 
   .journey-card .font-bold {
