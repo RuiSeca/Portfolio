@@ -21,6 +21,10 @@
       rel="stylesheet"
     />
 
+    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com?plugins=corePlugins.preflight=false"></script>
+
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css" />
 
@@ -45,6 +49,10 @@
 
             <li class="nav__item">
               <a href="#projects" class="nav__link">Projects</a>
+            </li>
+
+            <li class="nav__item">
+              <a href="#career" class="nav__link">Carreer</a>
             </li>
 
             <li class="nav__item">
@@ -337,7 +345,7 @@
         style="display: none; position: fixed; bottom: 10px; right: 10px"
         onclick="scrollToTop()"
       ></button>
-
+      
       <!--==================== SKILLS ====================-->
       <section class="skills section">
         <div class="header__skills">
@@ -597,6 +605,17 @@
           </div>
         </div>
       </section>
+
+      <section class="career section" id="career">
+        <div class="piano__container container grid">
+            <h2 class="section__subtitle-piano">Career Progression</h2>
+            <h3 class="section__title-keys">My <span class="vintage-text">Journey</span></h3>
+            <div id="piano-container" class="career__container">
+                <!-- Dynamic content will be added here -->
+            </div>
+        </div>
+      </section>
+
       <!--==================== SERVICES ====================-->
       <section class="services section" id="services">
         <h3 class="section__subtitle">Services</h3>
@@ -702,11 +721,14 @@
 
       <button
         id="scrollTopButton"
-        style="display: none; position: fixed; bottom: 10px; right: 10px"
-        onclick="scrollToTop()"
+         class="scroll-top-button"
+       onclick="scrollToTop()"
       >
-        Scroll to top
-      </button>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 15l-6-6-6 6"/>
+        </svg>
+     </button>
+
     </main>
 
     <!--==================== FOOTER ====================-->
@@ -769,6 +791,8 @@
 
     <!-- EmailJS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+
 
     <!-- Custom JavaScript -->
     <script src="assets/js/main.js"></script>
