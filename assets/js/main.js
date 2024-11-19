@@ -643,8 +643,8 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       note: "C",
       year: "2020",
-      title: "Beginning",
-      description: "Started Journey",
+      title: "Beginning - Cambridge",
+      description: "Started Journey BSc of CS at Anglia Ruskin University",
       color: "bg-amber-100",
       type: "white",
     },
@@ -739,8 +739,8 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       note: "C2",
       year: "2024",
-      title: "New Chapeter",
-      description: "Major Milestone Masters at Surrey University",
+      title: "New Chapeter - Guilford",
+      description: "Milestone Started MSc at Surrey University",
       color: "bg-orange-700",
       type: "white",
     },
