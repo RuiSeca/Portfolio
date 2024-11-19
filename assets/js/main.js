@@ -210,6 +210,12 @@ sr.reveal(".project__container", {
   scale: 0.85,
 });
 
+sr.reveal(".piano__container", {
+  origin: "right",
+  distance: "100px",
+  scale: 0.85,
+});
+
 /*=============== Typer ===============*/
 
 new TypeIt("#auto-type", {
@@ -630,3 +636,469 @@ if (fixedActionBtn) {
     }
   });
 }
+
+/*=============== Project Piano  ===============*/
+document.addEventListener("DOMContentLoaded", () => {
+  const careerStages = [
+    {
+      note: "C",
+      year: "2020",
+      title: "Beginning",
+      description: "Started Journey",
+      color: "bg-amber-100",
+      type: "white",
+    },
+    {
+      note: "C#",
+      year: "2020",
+      title: "First Steps",
+      description: "Learning Basics",
+      color: "bg-amber-200",
+      type: "black",
+    },
+    {
+      note: "D",
+      year: "2020",
+      title: "Development",
+      description: "Growing Skills",
+      color: "bg-amber-300",
+      type: "white",
+    },
+    {
+      note: "D#",
+      year: "2021",
+      title: "Direction",
+      description: "Finding Path",
+      color: "bg-amber-400",
+      type: "black",
+    },
+    {
+      note: "E",
+      year: "2021",
+      title: "Evolution",
+      description: "Career Growth",
+      color: "bg-amber-500",
+      type: "white",
+    },
+    {
+      note: "F",
+      year: "2021",
+      title: "Focus",
+      description: "Specializing",
+      color: "bg-amber-600",
+      type: "white",
+    },
+    {
+      note: "F#",
+      year: "2022",
+      title: "Forward",
+      description: "Leading Projects",
+      color: "bg-amber-700",
+      type: "black",
+    },
+    {
+      note: "G",
+      year: "2022",
+      title: "Growth",
+      description: "Team Leading",
+      color: "bg-amber-800",
+      type: "white",
+    },
+    {
+      note: "G#",
+      year: "2022",
+      title: "Guidance",
+      description: "Mentoring Others",
+      color: "bg-amber-900",
+      type: "black",
+    },
+    {
+      note: "A",
+      year: "2023",
+      title: "Achievement",
+      description: "Project Success",
+      color: "bg-orange-400",
+      type: "white",
+    },
+    {
+      note: "A#",
+      year: "2023",
+      title: "Advancement",
+      description: "Career Progress",
+      color: "bg-orange-500",
+      type: "black",
+    },
+    {
+      note: "B",
+      year: "2023",
+      title: "Building",
+      description: "Building Teams",
+      color: "bg-orange-600",
+      type: "white",
+    },
+    {
+      note: "C2",
+      year: "2024",
+      title: "Completion",
+      description: "Major Milestone",
+      color: "bg-orange-700",
+      type: "white",
+    },
+
+    {
+      note: "D2",
+      year: "2024",
+      title: "Direction",
+      description: "Future Goals",
+      color: "bg-orange-900",
+      type: "white",
+    },
+  ];
+
+  let isPlaying = false;
+  let isMuted = false; // Start unmuted
+  const mainAudio = new Audio("/assets/audio/wonder.mp3");
+  mainAudio.volume = 0.5;
+
+  // Create main container
+  const container = document.createElement("div");
+  container.className = "max-w-6xl mx-auto p-8 relative";
+  document.getElementById("piano-container").appendChild(container);
+
+  // Create piano container
+  const pianoContainer = document.createElement("div");
+  pianoContainer.className = "piano-container";
+  container.appendChild(pianoContainer);
+
+  // Create keys container
+  const keysContainer = document.createElement("div");
+  keysContainer.className = "keys-container";
+  pianoContainer.appendChild(keysContainer);
+
+  // Create sound control button
+  const soundControl = document.createElement("button");
+  soundControl.className = "sound-control";
+  soundControl.innerHTML =
+    '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  pianoContainer.appendChild(soundControl);
+
+  // Enhanced magic trail creation
+  const createEnhancedMagicTrail = (x, y, isCard = false) => {
+    const trail = document.createElement("div");
+    trail.className = "magic-trail";
+    trail.style.position = "absolute";
+    trail.style.zIndex = "9999";
+    trail.style.pointerEvents = "none";
+    trail.style.width = "100%";
+    trail.style.height = "100%";
+    trail.style.overflow = "hidden";
+
+    const colors = [
+      "rgba(255, 215, 0, 0.8)", // Gold
+      "rgba(255, 223, 0, 0.8)", // Bright gold
+      "rgba(255, 198, 0, 0.8)", // Yellow gold
+      "rgba(255, 185, 15, 0.8)", // Golden yellow
+      "rgba(255, 236, 139, 0.8)", // Light gold
+    ];
+
+    // Screen size detection
+    const isMobile = window.innerWidth <= 768;
+    const isSmallMobile = window.innerWidth <= 480;
+
+    // Adjust parameters based on screen size and element type
+    const particleCount = isCard ? (isMobile ? 20 : 40) : isMobile ? 15 : 30;
+    const spreadRadius = isCard
+      ? isSmallMobile
+        ? 50
+        : isMobile
+        ? 75
+        : 100
+      : isSmallMobile
+      ? 25
+      : isMobile
+      ? 35
+      : 50;
+    const baseVelocity = isCard ? (isMobile ? 1.5 : 2) : isMobile ? 0.75 : 1;
+
+    // Get correct container based on element type
+    const container = isCard
+      ? document.querySelector(".journey-container")
+      : document.querySelector(".piano-container");
+    const containerRect = container.getBoundingClientRect();
+
+    // Scale factor for piano based on screen size
+    const pianoScale = isSmallMobile ? 0.6 : isMobile ? 0.8 : 1;
+
+    // Adjust coordinates based on container position and piano scaling
+    const relativeX = isCard
+      ? x - containerRect.left
+      : (x - containerRect.left) * (1 / pianoScale);
+    const relativeY = isCard
+      ? y - containerRect.top
+      : (y - containerRect.top) * (1 / pianoScale);
+
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement("div");
+      const size =
+        Math.random() *
+          (isCard ? (isSmallMobile ? 6 : 8) : isSmallMobile ? 4 : 6) +
+        (isSmallMobile ? 2 : 4);
+
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      const side = Math.random() > 0.5 ? -1 : 1;
+      const startX = relativeX + side * spreadRadius * (isMobile ? 0.75 : 1);
+      const startY = relativeY;
+
+      const endX = relativeX + -side * spreadRadius * (isMobile ? 0.75 : 1);
+      const endY =
+        relativeY +
+        (Math.random() * (isMobile ? 20 : 40) - (isMobile ? 10 : 20));
+
+      particle.className = "absolute rounded-full";
+      particle.style.position = "absolute";
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.backgroundColor = color;
+      particle.style.filter = `blur(${isMobile ? 0.5 : 1}px)`;
+      particle.style.boxShadow = `0 0 ${
+        size * (isMobile ? 1.5 : 2)
+      }px ${color}`;
+      particle.style.left = `${startX}px`;
+      particle.style.top = `${startY}px`;
+      particle.style.zIndex = "9999";
+      particle.style.transform = isCard
+        ? "translate(-50%, -50%) scale(0)"
+        : `translate(-50%, -50%) scale(0) scale(${1 / pianoScale})`;
+      particle.style.opacity = "0";
+
+      const lifetime =
+        Math.random() * (isMobile ? 800 : 1000) + (isMobile ? 800 : 1000);
+      const velocity = (Math.random() * 0.5 + 0.75) * baseVelocity;
+
+      requestAnimationFrame(() => {
+        particle.style.transition = `
+          all ${lifetime}ms cubic-bezier(0.4, 0, 0.2, 1),
+          opacity ${lifetime * 0.8}ms ease-in-out
+        `;
+
+        const horizontalSpread = isCard
+          ? spreadRadius * (isMobile ? 1.2 : 1.5)
+          : spreadRadius;
+        const verticalSpread = isCard
+          ? isMobile
+            ? 20
+            : 40
+          : isMobile
+          ? 10
+          : 20;
+
+        const scale = isCard
+          ? Math.random() * (isMobile ? 0.3 : 0.5) + (isMobile ? 0.3 : 0.5)
+          : (Math.random() * (isMobile ? 0.3 : 0.5) + (isMobile ? 0.3 : 0.5)) *
+            (1 / pianoScale);
+
+        particle.style.transform = `
+          translate(
+            ${(endX - startX) * velocity}px,
+            ${(endY - startY) * velocity - verticalSpread}px
+          ) 
+          scale(${scale})
+          rotate(${Math.random() * (isMobile ? 180 : 360)}deg)
+        `;
+
+        particle.style.opacity =
+          Math.random() * (isMobile ? 0.5 : 0.7) + (isMobile ? 0.2 : 0.3);
+
+        setTimeout(() => {
+          particle.style.opacity = "0";
+          particle.style.transform += " scale(0)";
+        }, lifetime * 0.8);
+      });
+
+      trail.appendChild(particle);
+      setTimeout(() => particle.remove(), lifetime);
+    }
+
+    container.appendChild(trail);
+    setTimeout(() => trail.remove(), isMobile ? 1500 : 2000);
+  };
+
+  // Function to create piano key
+  const createPianoKey = (stage, index) => {
+    const key = document.createElement("button");
+    const isBlack = stage.type === "black";
+
+    key.className = `piano-key ${isBlack ? "black" : "white"}`;
+
+    // Position calculation for black keys
+    if (isBlack) {
+      const blackKeyPositions = {
+        "C#": 0.7,
+        "D#": 2.2,
+        "F#": 4.2,
+        "G#": 5.7,
+        "A#": 7.2,
+        "C#2": 9.2,
+        "D#2": 10.7,
+      };
+      const noteBase = stage.note.includes("2") ? stage.note : stage.note;
+      const offset = blackKeyPositions[noteBase] * 3.5;
+      key.style.left = `${offset}rem`;
+    } else {
+      const whiteKeyIndex = careerStages
+        .filter((s) => s.type === "white")
+        .findIndex((s) => s.note === stage.note);
+      key.style.left = `${whiteKeyIndex * 3.5}rem`;
+    }
+
+    key.addEventListener("click", () => {
+      document.querySelectorAll(".piano-key").forEach((k) => {
+        k.classList.remove("active");
+        k.querySelector(".glow-effect")?.remove();
+      });
+
+      key.classList.add("active");
+
+      const glowEffect = document.createElement("div");
+      glowEffect.className = "glow-effect";
+      key.appendChild(glowEffect);
+
+      if (!isMuted && !isPlaying) {
+        mainAudio.currentTime = 0;
+        mainAudio.play();
+        isPlaying = true;
+      }
+
+      const keyRect = key.getBoundingClientRect();
+      createEnhancedMagicTrail(
+        keyRect.left + keyRect.width / 2,
+        keyRect.top + keyRect.height,
+        false
+      );
+
+      updateJourneyCard(stage);
+
+      setTimeout(() => {
+        key.classList.remove("active");
+        glowEffect.remove();
+      }, 300);
+    });
+
+    return key;
+  };
+
+  // Create white keys first
+  careerStages
+    .filter((stage) => stage.type === "white")
+    .forEach((stage) => {
+      keysContainer.appendChild(createPianoKey(stage));
+    });
+
+  // Then create black keys on top
+  careerStages
+    .filter((stage) => stage.type === "black")
+    .forEach((stage) => {
+      keysContainer.appendChild(createPianoKey(stage));
+    });
+
+  // Create journey container
+  const journeyContainer = document.createElement("div");
+  journeyContainer.className = "journey-container";
+  container.appendChild(journeyContainer);
+
+  // Sound control functionality
+  soundControl.addEventListener("click", () => {
+    isMuted = !isMuted;
+    soundControl.innerHTML = isMuted
+      ? '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3l-12 12M11 5L6 9H2v6h4l5 4M14 9.5c.5.7.8 1.6.8 2.5s-.3 1.8-.8 2.5M17 7c1.2 1.3 2 3.1 2 5s-.8 3.7-2 5"/></svg>'
+      : '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+
+    if (isMuted && isPlaying) {
+      mainAudio.pause();
+      isPlaying = false;
+    }
+  });
+
+  // Update journey card function
+  const updateJourneyCard = (activeStage) => {
+    const journeyContainer = document.querySelector(".journey-container");
+    const isMobile = window.innerWidth <= 768;
+
+    // Remove existing cards
+    journeyContainer
+      .querySelectorAll(".journey-card")
+      .forEach((card) => card.remove());
+
+    if (isMobile) {
+      // Mobile: Create single card for active stage
+      const card = document.createElement("div");
+      card.className = `journey-card ${activeStage.color}`;
+      card.style.transform = "translateX(-50%) translateY(20px)";
+      card.style.opacity = "0";
+
+      card.innerHTML = `
+        <div class="text-gray-800 relative z-10">
+          <div class="font-bold font-serif">${activeStage.year}</div>
+          <div class="text-lg font-semibold font-serif">${activeStage.title}</div>
+          <div class="text-sm font-serif">${activeStage.description}</div>
+        </div>
+      `;
+
+      journeyContainer.appendChild(card);
+
+      // Trigger animation after a small delay
+      setTimeout(() => {
+        card.style.transform = "translateX(-50%) translateY(0)";
+        card.style.opacity = "1";
+      }, 50);
+    } else {
+      // Desktop: Create all cards with position based on index
+      careerStages.forEach((stage, index) => {
+        const card = document.createElement("div");
+        card.className = `journey-card ${stage.color}`;
+
+        const percentage = (index / (careerStages.length - 1)) * 100;
+        card.style.left = `${percentage}%`;
+
+        // Set initial state
+        card.style.opacity = stage.note === activeStage.note ? "1" : "0";
+        card.style.transform =
+          stage.note === activeStage.note
+            ? "translateX(-50%) translateY(0)"
+            : "translateX(-50%) translateY(20px)";
+
+        card.innerHTML = `
+          <div class="text-gray-800 relative z-10">
+            <div class="font-bold font-serif">${stage.year}</div>
+            <div class="text-lg font-semibold font-serif">${stage.title}</div>
+            <div class="text-sm font-serif">${stage.description}</div>
+          </div>
+        `;
+
+        journeyContainer.appendChild(card);
+      });
+    }
+  };
+
+  // Add window resize listener to handle layout changes
+  window.addEventListener("resize", () => {
+    const activeCard = document.querySelector(
+      '.journey-card[style*="opacity: 1"]'
+    );
+    if (activeCard) {
+      const activeStage = careerStages.find(
+        (stage) =>
+          stage.title === activeCard.querySelector(".text-lg").textContent
+      );
+      if (activeStage) {
+        updateJourneyCard(activeStage);
+      }
+    }
+  });
+
+  // Add audio ended event listener
+  mainAudio.addEventListener("ended", () => {
+    isPlaying = false;
+  });
+});

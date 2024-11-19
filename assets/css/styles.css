@@ -1330,6 +1330,7 @@ span {
     width: 40px;
   }
 }
+
 /*===================PROJECTS =====================*/
 /* Existing project container styles */
 .project__container {
@@ -1895,6 +1896,494 @@ body.modal-open {
   border-radius: 20px;
   border: 2px solid var(--container-color);
 }
+
+/*===================PIANO =====================*/
+
+/* Base Piano Container */
+.piano__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.career.section {
+  padding: 6rem 0;
+  min-height: 50vh;
+}
+
+.section__subtitle-piano {
+  font-family: "Georgia", serif;
+  color: #8b7355;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+}
+
+.section__title-keys {
+  font-family: "Georgia", serif;
+  font-size: 2.5rem;
+  text-align: center;
+  color: #5c4934;
+  margin-bottom: 3rem;
+  letter-spacing: 1px;
+}
+
+.section__title span {
+  color: #8b7355;
+  position: relative;
+  display: inline-block;
+}
+
+.section__title span::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #d4b594;
+}
+
+/* Piano Container Styles */
+.career__container {
+  position: relative;
+  min-height: 50vh;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+}
+
+#piano-container {
+  width: 50%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 4rem;
+}
+
+/* Piano Specific Container */
+.piano-container {
+  position: relative;
+  width: 100%;
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8rem;
+  background: linear-gradient(to bottom, #766856, #5c4934);
+  padding: 1.5rem;
+  border-radius: 8px;
+  transform: translateY(-8px); /* Lift on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.15);
+}
+
+.piano-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(213, 142, 11, 0.4), transparent 60%);
+  opacity: 0.5;
+  pointer-events: none; /* Prevent interaction */
+  transform: scale(1.2);
+  animation: shine 6s infinite ease-in-out; /* Shimmer animation */
+}
+
+@keyframes shine {
+  0%,
+  100% {
+    transform: scale(1.2) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.4) rotate(180deg);
+  }
+}
+
+/* Piano Keys Container */
+.keys-container {
+  position: relative;
+  width: 500px;
+  height: 12rem;
+  margin: 0 auto;
+  padding: 0.5rem 0;
+  background: linear-gradient(to bottom, #5c4934, #4a3a2a);
+  border-radius: 0 0 8px 8px;
+  box-shadow: inset 0 -5px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Piano Key Base Styles */
+.piano-key {
+  position: absolute;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: all 0.15s ease-out;
+}
+
+/* White Keys */
+.piano-key.white {
+  width: 3.5rem;
+  height: 12rem;
+  background: linear-gradient(to bottom, #f4e4d4 0%, #e8d5c4 100%);
+  border-radius: 0 0 6px 6px;
+  z-index: 1;
+  border: 1px solid #a69585;
+  box-shadow: inset 0 -5px 10px rgba(0, 0, 0, 0.1),
+    inset 0 5px 10px rgba(255, 255, 255, 0.5), 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.piano-key.white:hover {
+  background: linear-gradient(to bottom, #f8eae0 0%, #efe0d4 100%);
+}
+
+.piano-key.white:active,
+.piano-key.white.active {
+  background: linear-gradient(to bottom, #e8d5c4 0%, #dcc7b4 100%);
+  transform: translateY(2px);
+  box-shadow: inset 0 -2px 5px rgba(0, 0, 0, 0.1),
+    inset 0 2px 5px rgba(255, 255, 255, 0.3);
+}
+
+/* Black Keys */
+.piano-key.black {
+  width: 2rem;
+  height: 7rem;
+  background: linear-gradient(to bottom, #333333 0%, #000000 100%);
+  border-radius: 0 0 4px 4px;
+  z-index: 2;
+  margin-left: -1rem;
+  box-shadow: -1px 0 2px rgba(0, 0, 0, 0.8), 1px 0 2px rgba(0, 0, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.8), inset 0 -8px 12px rgba(255, 255, 255, 0.05);
+}
+
+.piano-key.black:hover {
+  background: linear-gradient(to bottom, #404040 0%, #1a1a1a 100%);
+}
+
+.piano-key.black:active,
+.piano-key.black.active {
+  background: linear-gradient(to bottom, #000000 0%, #1a1a1a 100%);
+  transform: translateY(2px);
+  box-shadow: -1px 0 1px rgba(0, 0, 0, 0.6), 1px 0 1px rgba(0, 0, 0, 0.6),
+    0 1px 2px rgba(0, 0, 0, 0.6), inset 0 -4px 8px rgba(255, 255, 255, 0.05);
+}
+
+/* Glow Effect */
+.glow-effect {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(
+    to top,
+    rgba(255, 217, 0, 0.3),
+    rgba(255, 217, 0, 0.1) 40%,
+    transparent
+  );
+  opacity: 0;
+  animation: pianoGlow 0.6s ease-out;
+  border-radius: inherit;
+}
+
+@keyframes pianoGlow {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* Sound Control Button */
+.sound-control {
+  position: absolute;
+  top: -3rem;
+  right: 1rem;
+  padding: 0.75rem;
+  background-color: #f4e4d4;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  z-index: 30;
+  cursor: pointer;
+}
+
+.sound-control:hover {
+  background-color: #e8d5c4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.sound-control svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke: #666;
+}
+
+/* Journey Cards */
+.journey-container {
+  position: relative;
+  width: 100%;
+  min-height: 1rem;
+  margin-top: 1rem; /* Reduced margin to bring cards closer to piano */
+  padding-top: 1rem;
+}
+
+.journey-card {
+  position: absolute;
+  width: 280px;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  background: #f4e4d4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* Shine effect */
+.journey-card::before {
+  content: "";
+  position: absolute;
+  top: -150%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 65%,
+    transparent 100%
+  );
+  transform: rotate(45deg);
+  animation: shineAnimation 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shineAnimation {
+  0% {
+    top: -150%;
+    left: -50%;
+  }
+  100% {
+    top: 150%;
+    left: 150%;
+  }
+}
+
+.journey-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card Content Styles */
+.journey-card .font-bold {
+  font-size: 1.1rem;
+  color: #5c4934;
+  margin-bottom: 0.5rem;
+}
+
+.journey-card .text-lg {
+  font-size: 1.2rem;
+  color: #8b7355;
+  margin-bottom: 0.5rem;
+}
+
+.journey-card .text-sm {
+  font-size: 0.9rem;
+  color: #a69585;
+  line-height: 1.4;
+}
+
+/* Update Responsive Styles */
+@media screen and (min-width: 769px) {
+  .journey-card {
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .journey-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    min-height: 16rem;
+  }
+
+  .journey-card {
+    width: 90%;
+    max-width: 320px;
+    position: absolute;
+    left: 50% !important; /* Override any inline positioning */
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: all 0.4s ease-in-out;
+  }
+
+  .journey-card.active {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* Adjust piano container for mobile */
+  .piano-container {
+    transform: scale(0.7);
+    margin-bottom: 2rem;
+  }
+
+  /* Adjust keys container for mobile */
+  .keys-container {
+    transform: scale(0.9);
+  }
+}
+
+/* Small Mobile Styles */
+@media screen and (max-width: 480px) {
+  .journey-card {
+    padding: 1rem;
+    width: 95%;
+  }
+
+  .piano-container {
+    transform: scale(0.5);
+    margin-bottom: 1rem;
+  }
+
+  .journey-card .font-bold {
+    font-size: 1rem;
+  }
+
+  .journey-card .text-lg {
+    font-size: 1.1rem;
+  }
+
+  .journey-card .text-sm {
+    font-size: 0.85rem;
+  }
+}
+
+/* Animation for cards appearing one by one */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Add JS animation classes */
+.journey-card[data-index="0"] {
+  animation-delay: 0s;
+}
+.journey-card[data-index="1"] {
+  animation-delay: 0.3s;
+}
+.journey-card[data-index="2"] {
+  animation-delay: 0.6s;
+}
+
+@keyframes cardShine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .career__container {
+    padding: 1rem;
+  }
+
+  .piano-container {
+    transform: scale(0.8);
+    margin-bottom: 6rem;
+  }
+
+  .journey-card {
+    width: 160px;
+    padding: 1rem;
+  }
+
+  .section__title {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .piano-container {
+    transform: scale(0.6);
+    margin-bottom: 4rem;
+  }
+
+  .journey-card {
+    width: 140px;
+    padding: 0.8rem;
+  }
+
+  .section__title {
+    font-size: 1.75rem;
+  }
+
+  .key-letter {
+    font-size: 1rem;
+  }
+
+  .piano-key.black .key-letter {
+    font-size: 0.875rem;
+  }
+}
+
+/* Timeline */
+.timeline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(166, 149, 133, 0.3);
+}
+
+/* Vintage Paper Texture */
+.vintage-texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.05;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrGuXfbyyBniKykOWQWGqwwMA7QiYAxi+IlPdqo+hYHnUt5ZPfnsHJyNiDtnpJyayNBkF6cWoYGAMY92U2hXHF/C1M8uP/ZtYdiuj26UdAdQQSXQErwSOMzt/XWRWAz5GuSBIkwG1H3FabJ2OsUOUhGC6tK4EMtJO0ttC6IBD3kM0ve0tJwMdSfjZo+EEISaeTr9P3wYrGjXqyC1krcKdhMpxEnt5JetoulscpyzhXN5FRpuPHvbeQaKxFAEB6EN+cYN6xD7RYGpXpNndMmZgM5Dcs3YSNFDHUo2LGfZuukSWyUYirJAdYbF3MfqEKmjM+I2EfhA94iG3L7uKrR+GdWD73ydlIB+6hgref1QTlmgmbM3/LeX5GI1Ux1RWpgxpLuZ2+I+IjzZ8wqE4nilvQdkUdfhzI5QDWy+kw5Wgg2pGpeEVeCCA7b85BO3F9DzxB3cdqvB");
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/*===================SCROLLUPSTYLE =====================*/
 
 #scrollTopButton {
   background: linear-gradient(
