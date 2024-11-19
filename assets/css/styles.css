@@ -1924,13 +1924,13 @@ body.modal-open {
   letter-spacing: 1px;
 }
 
-.section__title span {
+.section__title-keys span {
   color: #8b7355;
   position: relative;
   display: inline-block;
 }
 
-.section__title span::after {
+.section__title-keys span::after {
   content: "";
   position: absolute;
   bottom: -4px;
@@ -2136,7 +2136,7 @@ body.modal-open {
 .journey-container {
   position: relative;
   width: 100%;
-  min-height: 1rem;
+  min-height: 3rem;
   margin-top: 1rem; /* Reduced margin to bring cards closer to piano */
   padding-top: 1rem;
 }
@@ -2144,7 +2144,7 @@ body.modal-open {
 .journey-card {
   position: absolute;
   width: 280px;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 0.5rem;
   background: #f4e4d4;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
@@ -2163,26 +2163,32 @@ body.modal-open {
   width: 200%;
   height: 200%;
   background: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(255, 255, 255, 0) 35%,
-    rgba(255, 255, 255, 0.25) 50%,
-    rgba(255, 255, 255, 0) 65%,
-    transparent 100%
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 30%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.2) 70%,
+    rgba(255, 255, 255, 0) 100%
   );
+  filter: blur(5px);
   transform: rotate(45deg);
-  animation: shineAnimation 3s infinite;
+  animation: modernShineAnimation 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   pointer-events: none;
 }
 
-@keyframes shineAnimation {
+@keyframes modernShineAnimation {
   0% {
     top: -150%;
     left: -50%;
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
   }
   100% {
     top: 150%;
     left: 150%;
+    opacity: 0.5;
   }
 }
 
@@ -2210,6 +2216,14 @@ body.modal-open {
   line-height: 1.4;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.career.section {
+  scroll-margin-top: 2rem; /* Adjusts scroll stopping point */
+}
+
 /* Journey Cards - Desktop */
 @media screen and (min-width: 769px) {
   .journey-card {
@@ -2227,6 +2241,10 @@ body.modal-open {
     transform: scale(0.7);
     margin-bottom: 3rem;
     width: 584px; /* Keep original width, let scale handle the resizing */
+  }
+
+  .career.section {
+    scroll-margin-top: 1rem;
   }
 }
 
@@ -2310,6 +2328,9 @@ body.modal-open {
 
   .journey-card .text-sm {
     font-size: 0.85rem;
+  }
+  .career.section {
+    scroll-margin-top: 0.5rem;
   }
 }
 

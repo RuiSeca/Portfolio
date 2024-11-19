@@ -740,7 +740,8 @@ document.addEventListener("DOMContentLoaded", () => {
       note: "C2",
       year: "2024",
       title: "New Chapeter - Guilford",
-      description: "Milestone Started MSc of Cyber Security at Surrey University",
+      description:
+        "Milestone Started MSc of Cyber Security at Surrey University",
       color: "bg-orange-700",
       type: "white",
     },
@@ -953,17 +954,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     key.addEventListener("click", () => {
+      // Existing key click logic
       document.querySelectorAll(".piano-key").forEach((k) => {
         k.classList.remove("active");
         k.querySelector(".glow-effect")?.remove();
       });
 
       key.classList.add("active");
-
       const glowEffect = document.createElement("div");
       glowEffect.className = "glow-effect";
       key.appendChild(glowEffect);
 
+      // Play sound and create effects
       if (!isMuted && !isPlaying) {
         mainAudio.currentTime = 0;
         mainAudio.play();
@@ -973,9 +975,27 @@ document.addEventListener("DOMContentLoaded", () => {
       const keyRect = key.getBoundingClientRect();
       createEnhancedMagicTrail(
         keyRect.left + keyRect.width / 2,
-        keyRect.top + keyRect.height,
-        false
+        keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9)
       );
+
+      // Add smooth scroll when any key is played
+      const pianoContainer = document.querySelector(".piano-container");
+      const journeyContainer = document.querySelector(".journey-container");
+
+      // Calculate the ideal scroll position
+      const pianoRect = pianoContainer.getBoundingClientRect();
+      const journeyRect = journeyContainer.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+
+      // Calculate position that shows both piano and cards
+      const targetPosition =
+        window.scrollY + pianoRect.top - viewportHeight * 0.2; // 20% from top
+
+      // Smooth scroll to position
+      window.scrollTo({
+        top: targetPosition,
+        behavior: "smooth",
+      });
 
       updateJourneyCard(stage);
 
