@@ -720,7 +720,7 @@ svg {
   font-weight: 600;
   font-family: "Poppins", sans-serif;
   white-space: nowrap;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
   color: var(--title-color);
 }
 
@@ -952,6 +952,89 @@ span {
   }
 }
 
+.nav__togg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-label {
+  font-size: 0.9rem;
+  color: var(--title-color);
+  font-weight: 500;
+}
+
+/* Large screens */
+@media screen and (min-width: 769px) {
+  .nav__togg {
+    margin-left: 1.5rem;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .theme-label {
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    opacity: 0.9;
+  }
+
+  /* Simpler hover effect */
+  .nav__togg:hover {
+    opacity: 0.8;
+  }
+}
+
+/* Tablet screens */
+@media screen and (max-width: 768px) {
+  .nav__togg {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--container-color);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+
+  .theme-label {
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 480px) {
+  .nav__togg {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .theme-label {
+    font-size: 0.8rem;
+  }
+
+  /* When menu is open */
+  .show-menu .nav__togg {
+    position: static;
+    margin: 1rem 0;
+    justify-content: center;
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+/* Very small screens */
+@media screen and (max-width: 350px) {
+  .nav__togg {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .theme-label {
+    font-size: 0.75rem;
+  }
+}
 /* Media query for screens up to 768px (adjust as needed) */
 @media (max-width: 768px) {
   /* Center the .home__container */
