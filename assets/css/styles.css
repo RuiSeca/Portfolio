@@ -1962,17 +1962,17 @@ body.modal-open {
 
 .piano-container {
   position: relative;
-  width: 584px; /* Fixed width to match keys */
+  width: 584px;
   height: 15rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;
   margin-bottom: 8rem;
   background: linear-gradient(to bottom, #766856, #5c4934);
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: visible; /* Ensure button is visible outside container */
 }
 
 #piano-container {
@@ -2114,30 +2114,71 @@ body.modal-open {
 /* Sound Control Button */
 .sound-control {
   position: absolute;
-  top: -3rem;
-  right: 1rem;
-  padding: 0.75rem;
-  background-color: #f4e4d4;
-  border-radius: 50%;
+  top: 15px; /* Moved up slightly */
+  right: 15px; /* Moved right slightly */
+  width: 35px; /* Slightly smaller base size */
+  height: 35px;
+  padding: 8px;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #f4e4d4, #e8d5c4);
   border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2),
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),
+    -5px -5px 10px rgba(255, 255, 255, 0.5),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
   transition: all 0.3s ease;
   z-index: 30;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
 }
 
 .sound-control:hover {
-  background-color: #e8d5c4;
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2),
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25),
+    -6px -6px 12px rgba(255, 255, 255, 0.6),
     inset 0 0 0 1px rgba(255, 255, 255, 0.3);
 }
 
+.sound-control:active {
+  transform: translateY(0);
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2),
+    -3px -3px 6px rgba(255, 255, 255, 0.4), inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.4);
+}
+
 .sound-control svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  stroke: #666;
+  width: 20px;
+  height: 20px;
+  stroke: #8b7355;
+  transition: all 0.3s ease;
+}
+
+.sound-control.muted svg {
+  stroke: #ff3b30;
+}
+
+/* Hover animation */
+.sound-control:hover svg {
+  transform: scale(1.1);
+}
+
+/* Pulse animation when playing */
+@keyframes soundPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.sound-control.playing:not(.muted) {
+  animation: soundPulse 2s infinite ease-in-out;
 }
 
 /* Journey Cards */
@@ -2273,6 +2314,15 @@ html {
     margin: 0 auto;
   }
 
+  .sound-control {
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+    transform: scale(0.9);
+  }
+
   .journey-container {
     margin-top: 1rem;
     display: flex;
@@ -2312,6 +2362,15 @@ html {
   .keys-container {
     transform: scale(0.8);
     margin: 0 auto;
+  }
+
+  .sound-control {
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    padding: 5px;
+    transform: scale(0.85);
   }
 
   #piano-container {
