@@ -772,6 +772,40 @@ document.addEventListener("DOMContentLoaded", () => {
   pianoContainer.className = "piano-container";
   container.appendChild(pianoContainer);
 
+  const statusDot = document.createElement("div");
+  statusDot.className = "status-dot";
+  statusDot.style.cssText = `
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff3b30;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 5px rgba(255, 59, 48, 0.5);
+  z-index: 20;
+`;
+
+  // Update the blinking animation
+  const blinkingAnimation = document.createElement("style");
+  blinkingAnimation.textContent = `
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .status-dot {
+    animation: blink 2s infinite;
+  }
+  .status-dot.playing {
+    background-color: #ffffff !important;
+    box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
+    animation: blink 1s infinite;
+  }
+`;
+  document.head.appendChild(blinkingAnimation);
+  pianoContainer.appendChild(statusDot);
+
   // Create keys container
   const keysContainer = document.createElement("div");
   keysContainer.className = "keys-container";
@@ -987,6 +1021,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mainAudio.currentTime = 0;
         mainAudio.play();
         isPlaying = true;
+        statusDot.classList.add("playing"); // Add this line
       }
 
       const keyRect = key.getBoundingClientRect();
@@ -1054,6 +1089,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isMuted && isPlaying) {
       mainAudio.pause();
       isPlaying = false;
+      statusDot.classList.remove("playing"); // Add this line
     }
   });
 
@@ -1142,5 +1178,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add audio ended event listener
   mainAudio.addEventListener("ended", () => {
     isPlaying = false;
+    statusDot.classList.remove("playing"); // Add this line
   });
 });
