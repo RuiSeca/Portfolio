@@ -701,7 +701,7 @@ svg {
   justify-content: center;
   text-align: center; /* Center text content */
   /* Adjust padding and row-gap as needed */
-  padding-top: 5rem;
+  padding-top: 4.25rem;
   row-gap: 2.25rem;
 }
 
