@@ -670,6 +670,14 @@ svg {
 /*=============== HOME ===============*/
 .home {
   background-color: var(--container-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* Center text content */
+  height: 100vh; /* Full viewport height */
+  padding: 0; /* Remove any default padding */
+  margin: 0; /* Remove any default margin */
 }
 
 /* Center the .container */
@@ -2370,6 +2378,12 @@ html {
 @media screen and (max-width: 768px) {
   .career__container {
     padding: 0.25rem;
+  }
+  .status-dot {
+    left: 8px;
+    top: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   .piano-container {
