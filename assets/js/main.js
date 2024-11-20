@@ -814,10 +814,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Create sound control button
   const soundControl = document.createElement("button");
   soundControl.className = "sound-control";
-  soundControl.innerHTML =
-    '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  soundControl.innerHTML = `
+  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+  </svg>
+`;
   pianoContainer.appendChild(soundControl);
-
   // Card fade timer function
   const startCardFadeTimer = () => {
     if (cardFadeTimeout) {
@@ -1021,6 +1023,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mainAudio.currentTime = 0;
         mainAudio.play();
         isPlaying = true;
+        soundControl.classList.add("playing");
         statusDot.classList.add("playing"); // Add this line
       }
 
@@ -1082,14 +1085,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // Sound control functionality
   soundControl.addEventListener("click", () => {
     isMuted = !isMuted;
+    soundControl.classList.toggle("muted", isMuted);
+
     soundControl.innerHTML = isMuted
-      ? '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3l-12 12M11 5L6 9H2v6h4l5 4M14 9.5c.5.7.8 1.6.8 2.5s-.3 1.8-.8 2.5M17 7c1.2 1.3 2 3.1 2 5s-.8 3.7-2 5"/></svg>'
-      : '<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+      ? `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+           <path d="M23 3l-12 12M11 5L6 9H2v6h4l5 4M14 9.5c.5.7.8 1.6.8 2.5s-.3 1.8-.8 2.5M17 7c1.2 1.3 2 3.1 2 5s-.8 3.7-2 5"/>
+         </svg>`
+      : `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+           <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+         </svg>`;
 
     if (isMuted && isPlaying) {
       mainAudio.pause();
       isPlaying = false;
-      statusDot.classList.remove("playing"); // Add this line
+      soundControl.classList.remove("playing");
+      statusDot.classList.remove("playing");
     }
   });
 
@@ -1178,6 +1188,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add audio ended event listener
   mainAudio.addEventListener("ended", () => {
     isPlaying = false;
+    soundControl.classList.remove("playing");
     statusDot.classList.remove("playing"); // Add this line
   });
 });
