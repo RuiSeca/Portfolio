@@ -990,7 +990,11 @@ span {
 
 @media screen {
   .home__social {
-    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .white-mode .home__social {
+    margin-bottom: 3rem;
   }
 }
 /*===================ABOUT=====================*/
