@@ -1039,6 +1039,50 @@ span {
   }
 }
 
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .about__description {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+
+  .about__image {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .about__blob {
+    width: 300px;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1025px) {
+  .about__description {
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 16px;
+  }
+
+  .about__image {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .about__blob {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .about__description {
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 12px;
+  }
+}
+
 /*===================Contact=====================*/
 
 .contact__container {
