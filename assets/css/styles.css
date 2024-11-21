@@ -449,6 +449,14 @@ svg {
 /*=============== HEADER & NAV ===============*/
 /* Default styles (Desktop) */
 
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
 .toggle-checkbox {
   position: absolute;
   opacity: 0;
@@ -535,13 +543,6 @@ svg {
 }
 
 /*=============== NAV ===============*/
-.header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
 
 .nav {
   height: var(--header-height);
