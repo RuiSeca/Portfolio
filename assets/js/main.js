@@ -1,24 +1,22 @@
+/*=============== SHOW MENU ===============*/
 const navMenu = document.getElementById("nav-links"),
   navToggle = document.getElementById("nav-toggle"),
   navClose = document.getElementById("nav-close");
 
-/*=============== MENU TOGGLE ===============*/
+/*=============== MENU SHOW ===============*/
 if (navToggle) {
   navToggle.addEventListener("click", () => {
-    navMenu.classList.add("nav__open");
-    navToggle.style.display = "none"; // Hide toggle button
-    navClose.style.display = "block"; // Show close button
+    navMenu.classList.add("nav__open"); // Add class to show the menu
   });
 }
 
 /*=============== MENU HIDDEN ===============*/
 if (navClose) {
   navClose.addEventListener("click", () => {
-    navMenu.classList.remove("nav__open");
-    navToggle.style.display = "block"; // Show toggle button
-    navClose.style.display = "none"; // Hide close button
+    navMenu.classList.remove("nav__open"); // Remove class to hide the menu
   });
 }
+
 /*=============== REMOVE MENU MOBILE ===============*/
 const navLink = document.querySelectorAll(".nav__link");
 

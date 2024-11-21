@@ -668,16 +668,8 @@ svg {
   .nav__toggle {
     margin-left: auto;
     -webkit-tap-highlight-color: transparent;
-    transition: transform 0.4s ease;
   }
 
-  .nav__toggle:hover {
-    transform: rotate(90deg);
-  }
-
-  .nav__toggle[aria-expanded="true"] {
-    transform: rotate(90deg);
-  }
   .nav__open {
     right: 0;
   }
