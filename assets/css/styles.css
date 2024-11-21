@@ -389,6 +389,10 @@ svg {
   color: var(--first-color);
 }
 
+.white-mode .nav {
+  background: rgba(255, 255, 255, 0.1); /* Adjust alpha for transparency */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .white-mode .header__skills {
@@ -444,13 +448,7 @@ svg {
 
 /*=============== HEADER & NAV ===============*/
 /* Default styles (Desktop) */
-.header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
+
 .toggle-checkbox {
   position: absolute;
   opacity: 0;
@@ -537,13 +535,22 @@ svg {
 }
 
 /*=============== NAV ===============*/
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
 .nav {
   height: var(--header-height);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
-  background-color: var(--container-color);
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .nav.container {
@@ -681,6 +688,10 @@ svg {
     align-items: center;
     gap: 2rem;
     color: var(--title-color);
+  }
+
+  .nav {
+    position: relative;
   }
 
   .nav__togg {
