@@ -720,7 +720,7 @@ svg {
   font-weight: 600;
   font-family: "Poppins", sans-serif;
   white-space: nowrap;
-  margin-bottom: 50px;
+  margin-bottom: 5px;
   color: var(--title-color);
 }
 
