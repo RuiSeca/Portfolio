@@ -445,12 +445,11 @@ svg {
 /*=============== HEADER & NAV ===============*/
 /* Default styles (Desktop) */
 .header {
-  position: fixed;
   width: 100%;
-  background-color: var(--container-color);
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--z-fixed);
+  z-index: 100;
 }
 .toggle-checkbox {
   position: absolute;
@@ -485,16 +484,6 @@ svg {
   box-shadow: inset 0px 0px 0px 0.75em white;
   transition: background-color 250ms, border-color 250ms,
     transform 500ms cubic-bezier(0.26, 2, 0.46, 0.71);
-}
-
-.toggle-button:hover {
-  cursor: pointer;
-  background-color: #26bd42;
-}
-
-.toggle-checkbox:checked ~ .toggle-slot .toggle-button:hover {
-  cursor: pointer;
-  background-color: #ca1515;
 }
 
 .toggle-checkbox:checked ~ .toggle-slot .toggle-button {
@@ -553,6 +542,13 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 2rem;
+  background-color: var(--container-color);
+}
+
+.nav.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 .nav__logo {
@@ -564,73 +560,11 @@ svg {
   color: var(--first-color);
 }
 
-.nav__toggle,
-.nav__close {
-  display: none;
-}
-
-@media screen and (max-width: 768px) {
-  .nav__links {
-    position: fixed;
-    top: 0;
-    right: -100%; /* Start hidden to the right */
-    width: 75%;
-    height: 100%;
-    padding: 4.5rem 0 0 3rem;
-    backdrop-filter: blur(24px);
-    transition: right 0.4s cubic-bezier(0.75, 0, 0.25, 1); /* Smooth transition with a custom curve */
-    background-color: rgba(30, 30, 30, 0.95); /* Dark background for depth */
-    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.7); /* Increased shadow for a more dynamic look */
-    border-left: 2px solid var(--first-color); /* Futuristic border effect */
-    color: var(--title-color); /* Change text color for contrast */
-  }
-
-  .nav__toggle,
-  .nav__close {
-    display: flex;
-    font-size: 1.25rem;
-    color: var(--title-color);
-    cursor: pointer;
-  }
-
-  .nav__list {
-    display: flex;
-    flex-direction: column;
-    row-gap: 3rem;
-  }
-
-  .nav__link {
-    font-weight: var(--font-medium);
-    transition: color 0.4s ease, transform 0.4s ease; /* Smooth color and transform transition */
-    color: var(--first-color);
-    font-size: 1.2rem; /* Slightly larger font for better readability */
-    padding: 10px 0; /* Increased padding for touch targets */
-  }
-
-  .nav__link:hover {
-    color: #2ecc71; /* Change hover color for contrast */
-    transform: scale(1.05); /* Slight zoom effect on hover */
-    filter: drop-shadow(
-      0 0 5px rgba(255, 255, 255, 0.3)
-    ); /* Add a glowing effect */
-  }
-
-  .nav__close {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-size: 1.5rem; /* Increase size for visibility */
-    color: var(--first-color);
-    transition: transform 0.4s ease; /* Smooth transition */
-  }
-
-  .nav__close:hover {
-    transform: rotate(90deg); /* Rotate icon on hover for a playful effect */
-  }
-
-  .nav__open {
-    right: 0; /* Move the menu into view when open */
-  }
+/* Center the nav links */
+.nav__links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav__list {
@@ -642,31 +576,188 @@ svg {
 .nav__link {
   color: var(--title-color);
   font-weight: var(--font-medium);
-  transition: color 0.4s ease; /* Smooth color transition */
+  transition: color 0.4s ease;
 }
 
 .nav__link:hover {
   color: var(--first-color);
 }
 
-.nav__item {
-  margin-bottom: 15px;
+.nav__toggle,
+.nav__close {
+  display: none;
 }
 
-@media only screen and (min-width: 768px) {
-  .nav__togg {
-    display: block; /* Ensure the toggle button is always visible */
-    position: absolute;
+/* Theme toggle styles */
+.nav__togg {
+  display: absolute;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Mobile styles */
+@media screen and (max-width: 768px) {
+  .nav__links {
+    position: fixed;
     top: 0;
-    right: 0;
-    margin: 6px;
+    right: -100%;
+    width: 75%;
+    height: 100%;
+    padding: 4.5rem 0 0 3rem;
+    backdrop-filter: blur(24px);
+    transition: right 0.4s cubic-bezier(0.75, 0, 0.25, 1);
+    background-color: rgba(30, 30, 30, 0.95);
+    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.7);
+    border-left: 2px solid var(--first-color);
+    transform: none;
+    left: auto;
   }
 
   .nav__list {
-    margin: 70px;
+    flex-direction: column;
+    row-gap: 3rem;
+  }
+
+  .nav__link {
+    color: var(--title-color);
+    font-size: 1.2rem;
+    padding: 10px 0;
+  }
+
+  .nav__link:hover {
+    color: var(--first-color);
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+  }
+
+  .nav__toggle,
+  .nav__close {
+    display: flex;
+    font-size: 1.25rem;
+    color: var(--title-color);
+    cursor: pointer;
+  }
+
+  .nav__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+    transition: transform 0.4s ease;
+  }
+
+  .nav__close:hover {
+    transform: rotate(90deg);
+  }
+
+  .nav__toggle {
+    margin-left: auto;
+  }
+
+  .nav__open {
+    right: 0;
+  }
+
+  .nav__togg {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: var(--container-color);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+
+  .theme-label {
+    font-size: 0.85rem;
   }
 }
 
+/* Desktop styles */
+@media screen and (min-width: 768px) {
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    color: var(--title-color);
+  }
+
+  .nav__togg {
+    margin-top: 0;
+    margin-left: 2rem;
+  }
+
+  .nav__toggle {
+    display: none;
+  }
+}
+
+.nav__togg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-label {
+  font-size: 0.9rem;
+  color: var(--title-color);
+  font-weight: 500;
+}
+
+/* Large screens */
+@media screen and (min-width: 769px) {
+  .nav__togg {
+    margin-left: 1.5rem;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .theme-label {
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    opacity: 0.9;
+  }
+
+  /* Simpler hover effect */
+  .nav__togg:hover {
+    opacity: 0.8;
+  }
+}
+
+/* Mobile screens */
+@media screen and (max-width: 480px) {
+  .nav__togg {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .theme-label {
+    font-size: 0.8rem;
+  }
+
+  /* When menu is open */
+  .show-menu .nav__togg {
+    position: static;
+    margin: 1rem 0;
+    justify-content: center;
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+/* Very small screens */
+@media screen and (max-width: 350px) {
+  .nav__togg {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .theme-label {
+    font-size: 0.75rem;
+  }
+}
 /*=============== HOME ===============*/
 .home {
   background-color: var(--container-color);
@@ -952,89 +1043,6 @@ span {
   }
 }
 
-.nav__togg {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.theme-label {
-  font-size: 0.9rem;
-  color: var(--title-color);
-  font-weight: 500;
-}
-
-/* Large screens */
-@media screen and (min-width: 769px) {
-  .nav__togg {
-    margin-left: 1.5rem;
-    background: transparent;
-    padding: 0;
-    box-shadow: none;
-  }
-
-  .theme-label {
-    font-size: 0.9rem;
-    margin-right: 0.5rem;
-    opacity: 0.9;
-  }
-
-  /* Simpler hover effect */
-  .nav__togg:hover {
-    opacity: 0.8;
-  }
-}
-
-/* Tablet screens */
-@media screen and (max-width: 768px) {
-  .nav__togg {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: var(--container-color);
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-  }
-
-  .theme-label {
-    font-size: 0.85rem;
-  }
-}
-
-/* Mobile screens */
-@media screen and (max-width: 480px) {
-  .nav__togg {
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .theme-label {
-    font-size: 0.8rem;
-  }
-
-  /* When menu is open */
-  .show-menu .nav__togg {
-    position: static;
-    margin: 1rem 0;
-    justify-content: center;
-    box-shadow: none;
-    background-color: transparent;
-  }
-}
-
-/* Very small screens */
-@media screen and (max-width: 350px) {
-  .nav__togg {
-    padding: 0.3rem 0.6rem;
-  }
-
-  .theme-label {
-    font-size: 0.75rem;
-  }
-}
 /* Media query for screens up to 768px (adjust as needed) */
 @media (max-width: 768px) {
   /* Center the .home__container */
