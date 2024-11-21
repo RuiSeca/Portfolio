@@ -89,7 +89,10 @@ body {
 
 input,
 textarea,
-button {
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
   outline: none;
   border: none;
 }
@@ -655,6 +658,7 @@ svg {
     right: 1.5rem;
     font-size: 1.5rem;
     transition: transform 0.4s ease;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .nav__close:hover {
@@ -663,6 +667,7 @@ svg {
 
   .nav__toggle {
     margin-left: auto;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .nav__open {
@@ -1095,6 +1100,7 @@ span {
   /* Adjust margin for .button on smaller screens */
   .label {
     margin-top: 1em; /* Adjust the margin as needed */
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -2456,7 +2462,7 @@ html {
   }
 
   .career.section {
-    scroll-margin-top: 1rem;
+    scroll-margin-top: 2rem;
   }
 }
 
