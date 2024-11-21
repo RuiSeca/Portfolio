@@ -80,17 +80,6 @@ swiper.on("scroll", function () {
   scrollbarThumb.style.transform = "translateX(" + scrollThumbPosition + "px)";
 });
 
-/*=============== ADD BLUR TO HEADER ===============*/
-const blurHeader = () => {
-  const header = document.getElementById("header");
-  //when the scroll is greater than 50 viewport height, add the scroll-header class to the header tag
-
-  window.scrollY >= 50
-    ? header.classList.add("blur-header")
-    : header.classList.remove("blur-header");
-};
-window.addEventListener("scroll", blurHeader);
-
 /*=============== EMAIL JS ===============*/
 const contactForm = document.getElementById("contact-form"),
   contactMessage = document.getElementById("contact-message"),
@@ -218,20 +207,17 @@ sr.reveal(".piano__container", {
 
 /*=============== Typer ===============*/
 
-new TypeIt("#auto-type", {
-  strings: [
-    "Back-End Developer",
-    "Programmer",
-    "Freelancer",
-    "Back-End Developer",
-  ],
-  speed: 75,
-  deleteSpeed: 40,
-  breakLines: false,
-  loop: false,
-  waitUntilVisible: false,
-  cursor: false,
-}).go();
+let typed = new Typed("#typed", {
+  strings: ["Back-End Developer", "Programmer", "Freelancer", "Problem Solver"],
+  typeSpeed: 50,
+  backSpeed: 30,
+  backDelay: 1000,
+  startDelay: 500,
+  loop: true,
+  smartBackspace: true,
+  showCursor: false,
+  autoInsertCss: true,
+});
 
 /*=============== LIVE CHAT  ===============*/
 document.addEventListener("DOMContentLoaded", function () {
