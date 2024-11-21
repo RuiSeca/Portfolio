@@ -549,8 +549,7 @@ svg {
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--container-color);
 }
 
 .nav.container {
@@ -604,6 +603,10 @@ svg {
 
 /* Mobile styles */
 @media screen and (max-width: 768px) {
+  .nav {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
   .nav__links {
     position: fixed;
     top: 0;
@@ -744,6 +747,10 @@ svg {
     font-size: 0.8rem;
   }
 
+  .nav {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
   /* When menu is open */
   .show-menu .nav__togg {
     position: static;
@@ -751,6 +758,11 @@ svg {
     justify-content: center;
     box-shadow: none;
     background-color: transparent;
+  }
+
+  .nav {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 }
 
