@@ -208,12 +208,16 @@ sr.reveal(".piano__container", {
 /*=============== Typer ===============*/
 
 let typed = new Typed("#typed", {
-  strings: ["Back-End Developer", "Programmer", "Freelancer", "Problem Solver"],
+  strings: [
+    "Back-End Developer",
+    "Programmer",
+    "Freelancer",
+    "Back-End Developer",
+  ],
   typeSpeed: 50,
   backSpeed: 30,
   backDelay: 1000,
   startDelay: 500,
-  loop: true,
   smartBackspace: true,
   showCursor: false,
   autoInsertCss: true,
