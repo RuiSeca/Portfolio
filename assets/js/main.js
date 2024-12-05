@@ -458,9 +458,9 @@ const projectData = {
 
     <p><strong class="title-text">The result is a comprehensive security demonstration platform that effectively illustrates CSRF vulnerabilities and protection mechanisms through hands-on experience.</strong><br/><br/></p>
     `,
-    videoUrl: "/assets/videos/csrf-demo-preview.mp4",
+    videoUrl: "/assets/videos/csrf-preview.mp4",
     liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
-    githubUrl: "https://github.com/YourUsername/csrf-demo",
+    githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     technologies: [
       "PHP",
       "MySQL",
