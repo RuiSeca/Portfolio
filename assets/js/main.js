@@ -406,6 +406,74 @@ const projectData = {
       "RESTful API",
     ],
   },
+  "CSRF Attack Demonstrator": {
+    title: "CSRF Attack Demonstrator",
+    description: `
+    <p><strong class="title-text">An educational web application demonstrating Cross-Site Request Forgery (CSRF) vulnerabilities and protection mechanisms through practical examples.</strong><br/><br/></p>
+
+    <p><strong class="title-text">Key Features:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Dual transfer systems: vulnerable and secure implementations</li>
+      <li class="description-text">Real-time balance tracking and transaction history</li>
+      <li class="description-text">Automatic detection and reversal of unauthorized transfers</li>
+      <li class="description-text">Interactive CSRF attack simulation</li>
+      <li class="description-text">Multiple test user accounts for comprehensive testing</li>
+    </ul>
+
+    <p><strong class="title-text">Technical Highlights:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Implementation of CSRF token protection mechanism</li>
+      <li class="description-text">Secure session management and user authentication</li>
+      <li class="description-text">Transaction monitoring and automatic reversal system</li>
+      <li class="description-text">MySQL database with foreign key constraints</li>
+      <li class="description-text">PDO and MySQLi database interfaces</li>
+    </ul>
+
+    <p><strong class="title-text">Security Features:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Secure vs. regular balance separation</li>
+      <li class="description-text">CSRF token validation and regeneration</li>
+      <li class="description-text">Prepared statements for SQL injection prevention</li>
+      <li class="description-text">Session security measures</li>
+      <li class="description-text">Input validation and sanitization</li>
+    </ul>
+
+    <p><strong class="title-text">Educational Components:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Step-by-step attack demonstration</li>
+      <li class="description-text">Visual comparison of secure vs. vulnerable implementations</li>
+      <li class="description-text">Clear security status indicators</li>
+      <li class="description-text">Comprehensive transaction tracking</li>
+      <li class="description-text">Detailed error and success messages</li>
+    </ul>
+
+    <p><strong class="title-text">Learning Outcomes:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Understanding of CSRF vulnerabilities and prevention</li>
+      <li class="description-text">Implementation of secure coding practices</li>
+      <li class="description-text">Database transaction management</li>
+      <li class="description-text">User authentication and session handling</li>
+      <li class="description-text">Real-time security monitoring and response</li>
+    </ul>
+
+    <p><strong class="title-text">The result is a comprehensive security demonstration platform that effectively illustrates CSRF vulnerabilities and protection mechanisms through hands-on experience.</strong><br/><br/></p>
+    `,
+    videoUrl: "/assets/videos/csrf-demo-preview.mp4",
+    liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
+    githubUrl: "https://github.com/YourUsername/csrf-demo",
+    technologies: [
+      "PHP",
+      "MySQL",
+      "JavaScript",
+      "HTML5",
+      "CSS3",
+      "PDO",
+      "MySQLi",
+      "Session Management",
+      "CSRF Protection",
+      "Transaction Management",
+    ],
+  },
   "weather-cast": {
     title: "Weather Cast",
     description: `
@@ -458,15 +526,6 @@ const projectData = {
       "Local Storage",
       "Dynamic UI",
     ],
-  },
-  "project-3": {
-    title: "Project 3",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Detailed description of project 3 goes here...",
-    videoUrl: "/assets/videos/project3-preview.mp4",
-    liveUrl: "https://example3.com",
-    githubUrl: "https://github.com/yourusername/project3",
-    technologies: ["React", "Node.js", "MongoDB"],
   },
   "project-4": {
     title: "Project 4",
