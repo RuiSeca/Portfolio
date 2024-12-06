@@ -409,7 +409,7 @@ const projectData = {
   "CSRF Attack Demonstrator": {
     title: "CSRF Attack Demonstrator",
     description: `
-    <p><strong class="title-text">An educational web application demonstrating Cross-Site Request Forgery (CSRF) vulnerabilities and protection mechanisms through practical examples.</strong><br/><br/></p>
+    <p><strong class="title-text">An educational web application applied for one of modules of my masters degree at Surrey University demonstrating Cross-Site Request Forgery (CSRF) vulnerabilities and protection mechanisms through practical examples.</strong><br/><br/></p>
 
     <p><strong class="title-text">Key Features:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
@@ -686,6 +686,384 @@ if (fixedActionBtn) {
   });
 }
 
+/*=============== STORY MODAL  ===============*/
+function StoryViewer(projects, swiper) {
+  // Initialize properties
+  this.projects = projects;
+  this.swiper = swiper;
+  this.currentIndex = 0;
+  this.lastIndex = 0;
+  this.isPlaying = true;
+  this.progress = 0;
+  this.animationFrameId = null;
+  this.lastTimestamp = null;
+  this.menuOpen = false;
+
+  // Touch tracking
+  this.touchStartX = 0;
+  this.touchStartY = 0;
+  this.minSwipeDistance = 50;
+  this.isMoving = false;
+
+  // Get DOM elements
+  this.modal = document.getElementById("story-modal");
+  this.modalContent = this.modal.querySelector(".story-modal-content");
+  this.video = document.getElementById("modal-video");
+  this.progressContainer = document.getElementById("progress-container");
+  this.progressBarFill = document.querySelector(".progress-bar-fill");
+  this.playPauseIndicator = document.querySelector(".play-pause-indicator");
+  this.menu = this.modal.querySelector(".story-menu");
+
+  // Initialize listeners
+  this.initializeEventListeners();
+  this.initializeMenu();
+}
+
+StoryViewer.prototype.initializeEventListeners = function () {
+  var self = this;
+
+  // Close button
+  this.modal
+    .querySelector(".close-btn")
+    .addEventListener("click", function (e) {
+      e.stopPropagation();
+      self.close();
+    });
+
+  // Menu button
+  this.modal.querySelector(".menu-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    self.toggleMenu();
+  });
+
+  // Video events
+  this.video.addEventListener("loadedmetadata", function () {
+    self.startProgressAnimation();
+  });
+
+  this.video.addEventListener("ended", function () {
+    self.handleVideoEnd();
+  });
+
+  this.video.addEventListener("error", function (e) {
+    console.log("Video error:", e);
+  });
+
+  // Touch/Mouse events
+  this.modalContent.addEventListener("mousedown", function (e) {
+    if (!self.menuOpen) self.handleStart(e);
+  });
+
+  this.modalContent.addEventListener("mousemove", function (e) {
+    if (!self.menuOpen) self.handleMove(e);
+  });
+
+  this.modalContent.addEventListener("mouseup", function (e) {
+    if (!self.menuOpen) self.handleEnd(e);
+  });
+
+  this.modalContent.addEventListener("touchstart", function (e) {
+    if (!self.menuOpen) self.handleStart(e);
+  });
+
+  this.modalContent.addEventListener("touchmove", function (e) {
+    if (!self.menuOpen) self.handleMove(e);
+  });
+
+  this.modalContent.addEventListener("touchend", function (e) {
+    if (!self.menuOpen) self.handleEnd(e);
+  });
+
+  // Close menu when clicking outside
+  this.modal.addEventListener("click", function (e) {
+    if (self.menuOpen && !self.menu.contains(e.target)) {
+      self.closeMenu();
+    }
+  });
+
+  // Prevent right-click menu
+  this.modal.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+  });
+
+  // Cleanup mouse events when leaving modal
+  this.modalContent.addEventListener("mouseleave", function (e) {
+    if (self.touchStartX !== null) {
+      self.handleEnd(e);
+    }
+  });
+};
+
+StoryViewer.prototype.initializeMenu = function () {
+  var self = this;
+
+  this.menu.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var action = e.target.dataset.action;
+    if (action) {
+      self.handleMenuAction(action);
+    }
+  });
+};
+
+StoryViewer.prototype.handleMenuAction = function (action) {
+  var currentProject = this.projects[this.currentIndex];
+
+  switch (action) {
+    case "view-project":
+      // Close the story modal first
+      this.close();
+      // Small timeout to ensure smooth transition
+      setTimeout(() => {
+        var currentSlide = this.swiper.slides[this.currentIndex];
+        var projectButton = currentSlide.querySelector(".card__btn");
+        if (projectButton) projectButton.click();
+      }, 300);
+      break;
+
+    case "github":
+      if (currentProject.githubUrl) {
+        window.open(currentProject.githubUrl, "_blank");
+      }
+      break;
+
+    case "live-demo":
+      if (currentProject.liveUrl) {
+        window.open(currentProject.liveUrl, "_blank");
+      }
+      break;
+  }
+
+  this.closeMenu();
+};
+
+StoryViewer.prototype.toggleMenu = function () {
+  if (this.menuOpen) {
+    this.closeMenu();
+  } else {
+    this.openMenu();
+  }
+};
+
+StoryViewer.prototype.openMenu = function () {
+  this.menu.classList.add("active");
+  this.menuOpen = true;
+};
+
+StoryViewer.prototype.closeMenu = function () {
+  this.menu.classList.remove("active");
+  this.menuOpen = false;
+};
+
+StoryViewer.prototype.startProgressAnimation = function () {
+  var self = this;
+
+  function animate(timestamp) {
+    if (!self.lastTimestamp) self.lastTimestamp = timestamp;
+
+    if (self.isPlaying && !self.video.paused && self.video.duration) {
+      var progress = (self.video.currentTime / self.video.duration) * 100;
+      self.progressBarFill.style.width = progress + "%";
+    }
+
+    self.lastTimestamp = timestamp;
+    self.animationFrameId = requestAnimationFrame(animate);
+  }
+
+  if (this.animationFrameId) {
+    cancelAnimationFrame(this.animationFrameId);
+  }
+
+  this.animationFrameId = requestAnimationFrame(animate);
+};
+
+StoryViewer.prototype.handleStart = function (e) {
+  this.touchStartX = e.type.includes("mouse")
+    ? e.clientX
+    : e.touches[0].clientX;
+  this.touchStartY = e.type.includes("mouse")
+    ? e.clientY
+    : e.touches[0].clientY;
+  this.isMoving = false;
+  this.video.style.pointerEvents = "none";
+};
+
+StoryViewer.prototype.handleMove = function (e) {
+  if (!this.touchStartX) return;
+
+  var currentX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+  var currentY = e.type.includes("mouse") ? e.clientY : e.touches[0].clientY;
+  var deltaX = currentX - this.touchStartX;
+  var deltaY = currentY - this.touchStartY;
+
+  if (Math.abs(deltaY) > Math.abs(deltaX)) return;
+
+  e.preventDefault();
+  this.isMoving = true;
+
+  var rotate = deltaX * 0.1;
+  this.modalContent.style.transform = `translate3d(${deltaX}px, 0, 0) rotateY(${rotate}deg)`;
+  this.modalContent.style.opacity = 1 - Math.abs(deltaX) / 1000;
+};
+
+StoryViewer.prototype.handleEnd = function (e) {
+  if (!this.touchStartX) return;
+
+  var endX = e.type.includes("mouse") ? e.clientX : e.changedTouches[0].clientX;
+  var deltaX = endX - this.touchStartX;
+
+  this.modalContent.style.transform = "";
+  this.modalContent.style.opacity = "";
+  this.video.style.pointerEvents = "auto";
+
+  if (Math.abs(deltaX) > this.minSwipeDistance) {
+    if (deltaX > 0 && this.currentIndex > 0) {
+      this.currentIndex--;
+      this.swiper.slideTo(this.currentIndex, 300, true);
+      this.loadVideo();
+    } else if (deltaX < 0 && this.currentIndex < this.projects.length - 1) {
+      this.currentIndex++;
+      this.swiper.slideTo(this.currentIndex, 300, true);
+      this.loadVideo();
+    } else if (deltaX < 0 && this.currentIndex === this.projects.length - 1) {
+      this.close();
+    }
+  } else if (!this.isMoving) {
+    var rect = this.modalContent.getBoundingClientRect();
+    var x = endX - rect.left;
+    var width = rect.width;
+
+    if (x < width / 3) {
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
+        this.swiper.slideTo(this.currentIndex, 300, true);
+        this.loadVideo();
+      }
+    } else if (x > (width * 2) / 3) {
+      if (this.currentIndex < this.projects.length - 1) {
+        this.currentIndex++;
+        this.swiper.slideTo(this.currentIndex, 300, true);
+        this.loadVideo();
+      } else {
+        this.close();
+      }
+    } else {
+      this.togglePlayPause();
+    }
+  }
+
+  this.touchStartX = null;
+  this.touchStartY = null;
+  this.isMoving = false;
+};
+
+StoryViewer.prototype.togglePlayPause = function () {
+  this.isPlaying = !this.isPlaying;
+  if (this.isPlaying) {
+    this.video.play();
+    this.playPauseIndicator.classList.add("hidden");
+  } else {
+    this.video.pause();
+    this.playPauseIndicator.classList.remove("hidden");
+  }
+};
+
+StoryViewer.prototype.handleVideoEnd = function () {
+  if (this.currentIndex < this.projects.length - 1) {
+    this.currentIndex++;
+    this.swiper.slideTo(this.currentIndex, 300, true);
+    this.loadVideo();
+  } else {
+    this.close();
+  }
+};
+
+StoryViewer.prototype.loadVideo = function () {
+  var self = this;
+
+  if (this.animationFrameId) {
+    cancelAnimationFrame(this.animationFrameId);
+    this.animationFrameId = null;
+  }
+
+  var slideDirection = this.lastIndex < this.currentIndex ? "left" : "right";
+  this.modalContent.classList.add("sliding-" + slideDirection);
+
+  this.progressBarFill.style.transition = "none";
+  this.progressBarFill.style.width = "0%";
+
+  void this.progressBarFill.offsetWidth;
+
+  this.progressBarFill.style.transition = "width linear";
+
+  setTimeout(function () {
+    self.modalContent.classList.remove("sliding-left", "sliding-right");
+    self.video.src = self.projects[self.currentIndex].videoUrl;
+    self.lastTimestamp = null;
+
+    if (self.isPlaying) {
+      self.video.play().catch(function (error) {
+        console.log("Video play failed:", error);
+      });
+    }
+  }, 300);
+
+  this.lastIndex = this.currentIndex;
+  this.closeMenu(); // Close menu when changing videos
+};
+
+StoryViewer.prototype.open = function (startIndex) {
+  this.currentIndex = startIndex || 0;
+  this.lastIndex = this.currentIndex;
+  this.modal.classList.remove("hidden");
+  this.swiper.slideTo(this.currentIndex, 300, true);
+  this.loadVideo();
+};
+
+StoryViewer.prototype.close = function () {
+  if (this.animationFrameId) {
+    cancelAnimationFrame(this.animationFrameId);
+    this.animationFrameId = null;
+  }
+  this.modal.classList.add("hidden");
+  this.video.pause();
+  this.video.src = "";
+  this.progressBarFill.style.width = "0%";
+  this.closeMenu();
+};
+
+// Initialize when DOM is loaded
+document.addEventListener("DOMContentLoaded", function () {
+  var projects = [
+    {
+      videoUrl: "/assets/videos/savannah-preview.mp4",
+      detailUrl: "#savannah-bites",
+      githubUrl: "https://github.com/RuiSeca/savannah-bites",
+      liveUrl: "https://savannah-bites.onrender.com/",
+    },
+    {
+      videoUrl: "/assets/videos/csrf-preview.mp4",
+      detailUrl: "#csrf-attack",
+      githubUrl: "https://github.com/RuiSeca/CSRF-attack",
+      liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
+    },
+    {
+      videoUrl: "/assets/videos/weather-preview.mp4",
+      detailUrl: "#weather-cast",
+      githubUrl: "https://github.com/RuiSeca/weatherApp",
+      liveUrl: "https://weather-cast-show.netlify.app/",
+    },
+  ];
+
+  var swiper = document.querySelector(".mySwiper").swiper;
+  var storyViewer = new StoryViewer(projects, swiper);
+
+  document.querySelectorAll(".card__image img").forEach(function (img, index) {
+    img.addEventListener("click", function () {
+      storyViewer.open(index);
+    });
+  });
+});
 /*=============== Project Piano  ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   const careerStages = [

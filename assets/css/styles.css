@@ -1597,6 +1597,15 @@ span {
   border: 2px solid var(--first-color);
   padding: 3px;
   margin-bottom: 1.5em;
+  cursor: pointer;
+}
+
+.card__image:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+  will-change: transform;
+  z-index: 1;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
 }
 
 .card__image img {
@@ -1876,6 +1885,283 @@ body.modal-open {
 
 .project-modal__button--outline:hover {
   background: var(--first-color);
+}
+
+/* Stories-Modal styles */
+
+/* Story Modal Base */
+.story-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.story-modal.hidden {
+  display: none;
+}
+
+/* Modal Content */
+.story-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  transform-origin: center;
+  perspective: 1000px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Sliding Animations */
+.story-modal-content.sliding-left {
+  transform: translate3d(-100%, 0, 0) rotateY(30deg);
+  opacity: 0;
+}
+
+.story-modal-content.sliding-right {
+  transform: translate3d(100%, 0, 0) rotateY(-30deg);
+  opacity: 0;
+}
+
+/* Progress Bar Container */
+.story-progress-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  gap: 4px;
+}
+
+/* Progress Bar */
+.story-progress-bar {
+  height: 2px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0;
+  background: white;
+  transition: width linear;
+  will-change: width;
+  transform: translateZ(0);
+}
+
+/* Video Player */
+.modal-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Control Buttons */
+.close-btn,
+.menu-btn {
+  position: absolute;
+  top: 40px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  padding: 8px;
+  line-height: 1;
+  transition: opacity 0.2s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.close-btn:hover,
+.menu-btn:hover {
+  opacity: 0.8;
+}
+
+.close-btn {
+  right: 20px;
+}
+
+.menu-btn {
+  left: 20px;
+}
+
+/* Play/Pause Indicator */
+.play-pause-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.play-pause-indicator.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.pause-icon {
+  width: 30px;
+  height: 30px;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Touch Areas */
+.story-touch-area {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 33.333%;
+  z-index: 5;
+}
+
+.story-touch-area-left {
+  left: 0;
+}
+
+.story-touch-area-center {
+  left: 33.333%;
+}
+
+.story-touch-area-right {
+  right: 0;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .story-modal-content {
+    width: 100%;
+    height: 100vh;
+    max-width: none;
+  }
+
+  .close-btn,
+  .menu-btn {
+    top: 20px;
+  }
+
+  .close-btn {
+    right: 10px;
+  }
+
+  .menu-btn {
+    left: 10px;
+  }
+
+  .story-progress-container {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Additional Utility Classes */
+.story-modal .prevent-scroll {
+  overflow: hidden;
+  touch-action: none;
+}
+
+.story-modal .disable-interaction {
+  pointer-events: none;
+}
+
+.story-modal .enable-interaction {
+  pointer-events: auto;
+}
+
+/* Dropdown Menu */
+.story-menu {
+  position: absolute;
+  top: 80px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 8px 0;
+  min-width: 150px;
+  z-index: 11;
+  transform-origin: top left;
+  transform: scale(0.95);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+}
+
+.story-menu.active {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.story-menu-item {
+  padding: 12px 16px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.story-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.story-menu-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 8px 0;
 }
 
 /* Swiper scrollbar */
