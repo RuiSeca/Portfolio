@@ -830,6 +830,10 @@ svg {
   font-size: var(--bigger-font-size);
 }
 
+.hidden {
+  display: none;
+}
+
 .home__container h1 {
   font-size: 40px;
   font-weight: 600;

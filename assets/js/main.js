@@ -225,9 +225,7 @@ let typed = new Typed("#typed", {
 
 /*=============== LIVE CHAT  ===============*/
 document.addEventListener("DOMContentLoaded", function () {
-  // Paste Drift code snippet here
-  // Ensure any variables or functions referenced in the Drift code are defined or available here
-
+  // Drift initialization
   !(function () {
     var t = (window.driftt = window.drift = window.driftt || []);
     if (!t.init) {
@@ -276,22 +274,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
   drift.SNIPPET_VERSION = "0.3.1";
 
-  // Hide Drift button by default
+  // Configure Drift settings
   drift.config({
-    showWelcomeMessage: false, // Optional: Set to false if you don't want to show the welcome message
-    enableWelcomeMessage: false, // Optional: Set to false if you don't want to enable the welcome message
-    showGeneratedMarkup: false, // Hide the button initially
+    showWelcomeMessage: false,
+    enableWelcomeMessage: false,
+    showGeneratedMarkup: false,
   });
 
+  // Load Drift with your ID
   drift.load("7ixnh64c3k5t");
 
-  // Show Drift button after home section is loaded
-  var homeSection = document.getElementById("home-section");
-  if (homeSection) {
-    homeSection.addEventListener("load", function () {
-      drift.showChat();
+  // Function to check if any modal is open
+  function isAnyModalOpen() {
+    const storyModal = document.getElementById("story-modal");
+    const projectModals = document.querySelectorAll(".modal");
+
+    const isStoryModalOpen =
+      storyModal && !storyModal.classList.contains("hidden");
+    const isAnyProjectModalOpen = Array.from(projectModals).some(
+      (modal) => modal.style.display === "block"
+    );
+
+    return isStoryModalOpen || isAnyProjectModalOpen;
+  }
+
+  // Function to toggle Drift visibility
+  function toggleDrift() {
+    if (isAnyModalOpen()) {
+      drift.hide();
+    } else {
+      drift.show();
+    }
+  }
+
+  // Show Drift initially if no modals are open
+  if (!isAnyModalOpen()) {
+    drift.show();
+  }
+
+  // Observe story modal
+  const storyModal = document.getElementById("story-modal");
+  if (storyModal) {
+    new MutationObserver(toggleDrift).observe(storyModal, {
+      attributes: true,
+      attributeFilter: ["class"],
     });
   }
+
+  // Observe project modals
+  const projectModals = document.querySelectorAll(".modal");
+  projectModals.forEach((modal) => {
+    new MutationObserver(toggleDrift).observe(modal, {
+      attributes: true,
+      attributeFilter: ["style"],
+    });
+  });
+
+  // Patch the existing openProjectModal function
+  const originalOpenProjectModal = window.openProjectModal;
+  window.openProjectModal = function (projectId) {
+    if (originalOpenProjectModal) {
+      originalOpenProjectModal(projectId);
+    }
+    toggleDrift();
+  };
+
+  // Patch the existing closeProjectModal function
+  const originalCloseProjectModal = window.closeProjectModal;
+  window.closeProjectModal = function (event, modalId) {
+    if (originalCloseProjectModal) {
+      originalCloseProjectModal(event, modalId);
+    }
+    toggleDrift();
+  };
+
+  // Close modal and show drift on escape key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      toggleDrift();
+    }
+  });
 });
 
 /*=============== TOGGLE_DARK&WHITE_MODE  ===============*/
@@ -687,6 +749,7 @@ if (fixedActionBtn) {
 }
 
 /*=============== STORY MODAL  ===============*/
+// Define the StoryViewer class
 function StoryViewer(projects, swiper) {
   // Initialize properties
   this.projects = projects;
@@ -700,10 +763,14 @@ function StoryViewer(projects, swiper) {
   this.menuOpen = false;
 
   // Touch tracking
-  this.touchStartX = 0;
-  this.touchStartY = 0;
+  this.touchStartX = null;
+  this.touchStartY = null;
   this.minSwipeDistance = 50;
   this.isMoving = false;
+
+  // Dead zone dimensions
+  this.deadZoneWidth = 100;
+  this.deadZoneHeight = 100;
 
   // Get DOM elements
   this.modal = document.getElementById("story-modal");
@@ -714,7 +781,7 @@ function StoryViewer(projects, swiper) {
   this.playPauseIndicator = document.querySelector(".play-pause-indicator");
   this.menu = this.modal.querySelector(".story-menu");
 
-  // Initialize listeners
+  // Initialize
   this.initializeEventListeners();
   this.initializeMenu();
 }
@@ -733,7 +800,7 @@ StoryViewer.prototype.initializeEventListeners = function () {
   // Menu button
   this.modal.querySelector(".menu-btn").addEventListener("click", function (e) {
     e.stopPropagation();
-    self.toggleMenu();
+    self.toggleMenu(e);
   });
 
   // Video events
@@ -751,32 +818,36 @@ StoryViewer.prototype.initializeEventListeners = function () {
 
   // Touch/Mouse events
   this.modalContent.addEventListener("mousedown", function (e) {
-    if (!self.menuOpen) self.handleStart(e);
+    self.handleStart(e);
   });
 
   this.modalContent.addEventListener("mousemove", function (e) {
-    if (!self.menuOpen) self.handleMove(e);
+    self.handleMove(e);
   });
 
   this.modalContent.addEventListener("mouseup", function (e) {
-    if (!self.menuOpen) self.handleEnd(e);
+    self.handleEnd(e);
   });
 
   this.modalContent.addEventListener("touchstart", function (e) {
-    if (!self.menuOpen) self.handleStart(e);
+    self.handleStart(e);
   });
 
   this.modalContent.addEventListener("touchmove", function (e) {
-    if (!self.menuOpen) self.handleMove(e);
+    self.handleMove(e);
   });
 
   this.modalContent.addEventListener("touchend", function (e) {
-    if (!self.menuOpen) self.handleEnd(e);
+    self.handleEnd(e);
   });
 
   // Close menu when clicking outside
   this.modal.addEventListener("click", function (e) {
-    if (self.menuOpen && !self.menu.contains(e.target)) {
+    if (
+      self.menuOpen &&
+      !self.menu.contains(e.target) &&
+      !e.target.classList.contains("menu-btn")
+    ) {
       self.closeMenu();
     }
   });
@@ -799,95 +870,49 @@ StoryViewer.prototype.initializeMenu = function () {
 
   this.menu.addEventListener("click", function (e) {
     e.stopPropagation();
-    var action = e.target.dataset.action;
-    if (action) {
-      self.handleMenuAction(action);
+    var menuItem = e.target.closest(".story-menu-item");
+    if (menuItem) {
+      var action = menuItem.dataset.action;
+      if (action) {
+        self.handleMenuAction(action);
+      }
     }
   });
 };
 
-StoryViewer.prototype.handleMenuAction = function (action) {
-  var currentSlide = this.swiper.slides[this.currentIndex];
-  var currentProject = this.projects[this.currentIndex];
-  var projectTitle = currentSlide.querySelector(".card_title").textContent;
-
-  switch (action) {
-    case "view-project":
-      this.close();
-      setTimeout(() => {
-        // Use openProjectModal with the correct project title
-        openProjectModal(projectTitle.trim());
-      }, 300);
-      break;
-
-    case "github":
-      if (currentProject.githubUrl) {
-        window.open(currentProject.githubUrl, "_blank");
-      }
-      break;
-
-    case "live-demo":
-      if (currentProject.liveUrl) {
-        window.open(currentProject.liveUrl, "_blank");
-      }
-      break;
-  }
-
-  this.closeMenu();
-};
-StoryViewer.prototype.toggleMenu = function () {
-  if (this.menuOpen) {
-    this.closeMenu();
-  } else {
-    this.openMenu();
-  }
-};
-
-StoryViewer.prototype.openMenu = function () {
-  this.menu.classList.add("active");
-  this.menuOpen = true;
-};
-
-StoryViewer.prototype.closeMenu = function () {
-  this.menu.classList.remove("active");
-  this.menuOpen = false;
-};
-
-StoryViewer.prototype.startProgressAnimation = function () {
-  var self = this;
-
-  function animate(timestamp) {
-    if (!self.lastTimestamp) self.lastTimestamp = timestamp;
-
-    if (self.isPlaying && !self.video.paused && self.video.duration) {
-      var progress = (self.video.currentTime / self.video.duration) * 100;
-      self.progressBarFill.style.width = progress + "%";
-    }
-
-    self.lastTimestamp = timestamp;
-    self.animationFrameId = requestAnimationFrame(animate);
-  }
-
-  if (this.animationFrameId) {
-    cancelAnimationFrame(this.animationFrameId);
-  }
-
-  this.animationFrameId = requestAnimationFrame(animate);
-};
-
 StoryViewer.prototype.handleStart = function (e) {
-  this.touchStartX = e.type.includes("mouse")
-    ? e.clientX
-    : e.touches[0].clientX;
-  this.touchStartY = e.type.includes("mouse")
-    ? e.clientY
-    : e.touches[0].clientY;
+  // Get coordinates
+  var x = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
+  var y = e.type.includes("mouse") ? e.clientY : e.touches[0].clientY;
+
+  // Get modal position
+  var rect = this.modalContent.getBoundingClientRect();
+
+  // Check if in dead zone
+  var isInDeadZone =
+    x - rect.left < this.deadZoneWidth && y - rect.top < this.deadZoneHeight;
+
+  // If in dead zone, don't process the interaction
+  if (isInDeadZone) {
+    return;
+  }
+
+  // Handle menu state
+  if (this.menuOpen) {
+    if (!this.menu.contains(e.target)) {
+      this.closeMenu();
+    }
+    return;
+  }
+
+  this.touchStartX = x;
+  this.touchStartY = y;
   this.isMoving = false;
   this.video.style.pointerEvents = "none";
 };
 
 StoryViewer.prototype.handleMove = function (e) {
-  if (!this.touchStartX) return;
+  if (this.touchStartX === null || this.menuOpen) return;
 
   var currentX = e.type.includes("mouse") ? e.clientX : e.touches[0].clientX;
   var currentY = e.type.includes("mouse") ? e.clientY : e.touches[0].clientY;
@@ -905,7 +930,7 @@ StoryViewer.prototype.handleMove = function (e) {
 };
 
 StoryViewer.prototype.handleEnd = function (e) {
-  if (!this.touchStartX) return;
+  if (this.touchStartX === null || this.menuOpen) return;
 
   var endX = e.type.includes("mouse") ? e.clientX : e.changedTouches[0].clientX;
   var deltaX = endX - this.touchStartX;
@@ -953,6 +978,73 @@ StoryViewer.prototype.handleEnd = function (e) {
   this.touchStartX = null;
   this.touchStartY = null;
   this.isMoving = false;
+};
+
+StoryViewer.prototype.handleMenuAction = function (action) {
+  var currentProject = this.projects[this.currentIndex];
+
+  switch (action) {
+    case "view-project":
+      this.close();
+      setTimeout(function () {
+        openProjectModal(currentProject.modalId);
+      }, 300);
+      break;
+
+    case "github":
+      if (currentProject.githubUrl) {
+        window.open(currentProject.githubUrl, "_blank");
+      }
+      break;
+
+    case "live-demo":
+      if (currentProject.liveUrl) {
+        window.open(currentProject.liveUrl, "_blank");
+      }
+      break;
+  }
+
+  this.closeMenu();
+};
+
+StoryViewer.prototype.toggleMenu = function () {
+  if (this.menuOpen) {
+    this.closeMenu();
+  } else {
+    this.openMenu();
+  }
+};
+
+StoryViewer.prototype.openMenu = function () {
+  this.menu.classList.add("active");
+  this.menuOpen = true;
+};
+
+StoryViewer.prototype.closeMenu = function () {
+  this.menu.classList.remove("active");
+  this.menuOpen = false;
+};
+
+StoryViewer.prototype.startProgressAnimation = function () {
+  var self = this;
+
+  function animate(timestamp) {
+    if (!self.lastTimestamp) self.lastTimestamp = timestamp;
+
+    if (self.isPlaying && !self.video.paused && self.video.duration) {
+      var progress = (self.video.currentTime / self.video.duration) * 100;
+      self.progressBarFill.style.width = progress + "%";
+    }
+
+    self.lastTimestamp = timestamp;
+    self.animationFrameId = requestAnimationFrame(animate);
+  }
+
+  if (this.animationFrameId) {
+    cancelAnimationFrame(this.animationFrameId);
+  }
+
+  this.animationFrameId = requestAnimationFrame(animate);
 };
 
 StoryViewer.prototype.togglePlayPause = function () {
@@ -1007,7 +1099,7 @@ StoryViewer.prototype.loadVideo = function () {
   }, 300);
 
   this.lastIndex = this.currentIndex;
-  this.closeMenu(); // Close menu when changing videos
+  this.closeMenu();
 };
 
 StoryViewer.prototype.open = function (startIndex) {
@@ -1030,32 +1122,37 @@ StoryViewer.prototype.close = function () {
   this.closeMenu();
 };
 
+// Project data
+const projectsData = [
+  {
+    videoUrl: "/assets/videos/savannah-preview.mp4",
+    detailUrl: "#savannah-bites",
+    githubUrl: "https://github.com/RuiSeca/savannah-bites",
+    liveUrl: "https://savannah-bites.onrender.com/",
+    modalId: "savannah-bites",
+  },
+  {
+    videoUrl: "/assets/videos/csrf-preview.mp4",
+    detailUrl: "#csrf-attack",
+    githubUrl: "https://github.com/RuiSeca/CSRF-attack",
+    liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
+    modalId: "CSRF Attack Demonstrator",
+  },
+  {
+    videoUrl: "/assets/videos/weather-preview.mp4",
+    detailUrl: "#weather-cast",
+    githubUrl: "https://github.com/RuiSeca/weatherApp",
+    liveUrl: "https://weather-cast-show.netlify.app/",
+    modalId: "weather-cast",
+  },
+];
+
 // Initialize when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-  var projects = [
-    {
-      videoUrl: "/assets/videos/savannah-preview.mp4",
-      detailUrl: "#savannah-bites",
-      githubUrl: "https://github.com/RuiSeca/savannah-bites",
-      liveUrl: "https://savannah-bites.onrender.com/",
-    },
-    {
-      videoUrl: "/assets/videos/csrf-preview.mp4",
-      detailUrl: "#csrf-attack",
-      githubUrl: "https://github.com/RuiSeca/CSRF-attack",
-      liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
-    },
-    {
-      videoUrl: "/assets/videos/weather-preview.mp4",
-      detailUrl: "#weather-cast",
-      githubUrl: "https://github.com/RuiSeca/weatherApp",
-      liveUrl: "https://weather-cast-show.netlify.app/",
-    },
-  ];
+  // Create StoryViewer instance with swiper and projects
+  const storyViewer = new StoryViewer(projectsData, swiper);
 
-  var swiper = document.querySelector(".mySwiper").swiper;
-  var storyViewer = new StoryViewer(projects, swiper);
-
+  // Add click listeners to images
   document.querySelectorAll(".card__image img").forEach(function (img, index) {
     img.addEventListener("click", function () {
       storyViewer.open(index);
