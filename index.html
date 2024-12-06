@@ -605,6 +605,34 @@
         </div>
       </section>
 
+      <!-- Story Modal -->
+      <div id="story-modal" class="story-modal hidden" role="dialog" aria-label="Story Viewer">
+        <div class="story-modal-content">
+          <div id="progress-container" class="story-progress-container" aria-label="Progress">
+            <div class="story-progress-bar">
+              <div class="progress-bar-fill"></div>
+            </div>
+          </div>
+      
+          <div class="story-menu" role="menu" aria-label="Story Options">
+            <div class="story-menu-item" data-action="view-project" role="menuitem">View Project</div>
+            <div class="story-menu-separator" role="separator"></div>
+            <div class="story-menu-item" data-action="github" role="menuitem">View on GitHub</div>
+            <div class="story-menu-item" data-action="live-demo" role="menuitem">Live Demo</div>
+          </div>
+      
+          <video id="modal-video" class="modal-video" playsinline muted aria-label="Story Video"></video>
+      
+          <button class="close-btn" aria-label="Close Story">×</button>
+          <button class="menu-btn" aria-label="Open Menu">⋮</button>
+      
+          <div class="play-pause-indicator hidden" aria-hidden="true">
+            <div class="pause-icon"></div>
+          </div>
+        </div>
+      </div>
+      <!--==================== PORTFOLIO ====================-->
+
       <section class="career section" id="career">
         <div class="piano__container container grid">
             <h2 class="section__subtitle-piano">Career Progression</h2>
