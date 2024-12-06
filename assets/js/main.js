@@ -807,17 +807,16 @@ StoryViewer.prototype.initializeMenu = function () {
 };
 
 StoryViewer.prototype.handleMenuAction = function (action) {
+  var currentSlide = this.swiper.slides[this.currentIndex];
   var currentProject = this.projects[this.currentIndex];
+  var projectTitle = currentSlide.querySelector(".card_title").textContent;
 
   switch (action) {
     case "view-project":
-      // Close the story modal first
       this.close();
-      // Small timeout to ensure smooth transition
       setTimeout(() => {
-        var currentSlide = this.swiper.slides[this.currentIndex];
-        var projectButton = currentSlide.querySelector(".card__btn");
-        if (projectButton) projectButton.click();
+        // Use openProjectModal with the correct project title
+        openProjectModal(projectTitle.trim());
       }, 300);
       break;
 
@@ -836,7 +835,6 @@ StoryViewer.prototype.handleMenuAction = function (action) {
 
   this.closeMenu();
 };
-
 StoryViewer.prototype.toggleMenu = function () {
   if (this.menuOpen) {
     this.closeMenu();
