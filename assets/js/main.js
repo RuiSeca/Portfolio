@@ -891,6 +891,8 @@ StoryViewer.prototype.handleStart = function (e) {
   // Check if in dead zone
   var isInDeadZone =
     x - rect.left < this.deadZoneWidth && y - rect.top < this.deadZoneHeight;
+  var isInDeadZone =
+    x - rect.right < this.deadZoneWidth && y - rect.top < this.deadZoneHeight;
 
   // If in dead zone, don't process the interaction
   if (isInDeadZone) {
