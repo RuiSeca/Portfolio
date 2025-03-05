@@ -2654,13 +2654,24 @@ body.modal-open {
   width: 280px;
   padding: 1rem;
   border-radius: 0.5rem;
-  background: #f4e4d4;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(92, 73, 52, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(139, 115, 85, 0.3);
+  box-shadow: 0 0 30px rgba(139, 115, 85, 0.2),
+    inset 0 0 30px rgba(139, 115, 85, 0.1);
+  transform-style: preserve-3d;
   z-index: 10;
   overflow: hidden;
 }
+
+/*
+OLD STYLE
+background: #f4e4d4;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+*/
 
 /* Shine effect */
 .journey-card::before {
