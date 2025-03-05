@@ -416,6 +416,64 @@ async function handleDownload() {
 
 // Project Modal functionality
 const projectData = {
+  solarvita: {
+    title: "SolarVita",
+    description: `
+    <p><strong class="title-text">SolarVita</strong> is a comprehensive mobile application that combines fitness tracking with eco-consciousness, providing users with a sustainable approach to health and wellness.</p>
+
+    <p><strong class="title-text">Key Features:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Exercise Database Integration: Powered by ExerciseDB API with real-time data fetching</li>
+      <li class="description-text">Multi-language Support: Localization in 10 different languages for global accessibility</li>
+      <li class="description-text">Theme Management: Dynamic dark and light mode to enhance user experience</li>
+      <li class="description-text">Workout Tracking: Personalized exercise logging and progress monitoring</li>
+      <li class="description-text">Eco-friendly Tips: Integration of sustainability features throughout the fitness journey</li>
+      <li class="description-text">AI Assistant: Smart guidance for workouts, image calories analyzer and eco-conscious lifestyle choices</li>
+      <li class="description-text">Meal Planning: Nutritional guidance with environmental impact metrics</li>
+    </ul>
+
+    <p><strong class="title-text">Key Technical Achievements:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Created robust state management system using Provider for consistent data flow</li>
+      <li class="description-text">Implemented efficient API caching to minimize network requests</li>
+      <li class="description-text">Developed responsive UI with smooth navigation and transitions</li>
+      <li class="description-text">Built exercise data visualization using custom charts and analytics</li>
+      <li class="description-text">Created secure external API integrations with proper error handling</li>
+      <li class="description-text">Optimized app performance for Android</li>
+      <li class="description-text">Implemented comprehensive logging for efficient debugging</li>
+    </ul>
+
+    <p><strong class="title-text">This project significantly enhanced my expertise in:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Flutter & Dart development</li>
+      <li class="description-text">Provider pattern for state management</li>
+      <li class="description-text">API integration and error handling</li>
+      <li class="description-text">Multi-language support implementation</li>
+      <li class="description-text">Theme management across applications</li>
+      <li class="description-text">Local data persistence techniques</li>
+      <li class="description-text">Asynchronous programming patterns</li>
+      <li class="description-text">Cross-platform mobile development</li>
+    </ul>
+
+    <p><strong class="title-text">The result is a feature-rich, eco-conscious fitness application that helps users maintain their health while promoting sustainable lifestyle choices.</strong></p>
+  `,
+    videoUrl: "/assets/videos/solarvita-preview.mp4", // Replace with your actual video path
+    liveUrl:
+      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", // If you have a demo or app download link
+    githubUrl: "https://github.com/RuiSeca/SolarVita", // Replace with your actual GitHub repo
+    technologies: [
+      "Flutter",
+      "Dart",
+      "Provider",
+      "RESTful APIs",
+      "Shared Preferences",
+      "i18n Localization",
+      "ExerciseDB API",
+      "TheMealDB API",
+      "Google Vision API",
+      "Fast-track API",
+    ],
+  },
   "savannah-bites": {
     title: "Savannah Bites",
     description: `
@@ -1126,6 +1184,14 @@ StoryViewer.prototype.close = function () {
 
 // Project data
 const projectsData = [
+  {
+    videoUrl: "/assets/videos/solarvita-preview.mp4",
+    detailUrl: "#solarvita",
+    githubUrl: "https://github.com/RuiSeca/SolarVita",
+    liveUrl:
+      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0",
+    modalId: "solarvita",
+  },
   {
     videoUrl: "/assets/videos/savannah-preview.mp4",
     detailUrl: "#savannah-bites",
