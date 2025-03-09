@@ -1293,20 +1293,47 @@ const projectsData = [
   },
 ];
 
-// Initialize when DOM is loaded
-document.addEventListener("DOMContentLoaded", function () {
-  // Create StoryViewer instance with swiper and projects
-  const storyViewer = new StoryViewer(projectsData, swiper);
-
-  // Add click listeners to images
-  document.querySelectorAll(".card__image img").forEach(function (img, index) {
-    img.addEventListener("click", function () {
-      storyViewer.open(index);
-    });
-  });
-});
-/*=============== Project Piano  ===============*/
+/*=============== Project Piano & Hologram Integration ===============*/
+/*=============== Project Piano & Hologram Integration ===============*/
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize global variables and preload audio
+  window.mainAudio = new Audio("/assets/audio/wonder.mp3");
+  window.mainAudio.volume = 0.5;
+  window.isPlaying = false;
+
+  // Preload audio to ensure it's ready to play immediately
+  setTimeout(() => {
+    // Force audio to be ready for immediate playback
+    if (window.mainAudio) {
+      // Create a short silent audio buffer
+      const silentAudio = new Audio(
+        "data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
+      );
+      silentAudio
+        .play()
+        .then(() => {
+          // Now preload the actual audio file
+          window.mainAudio.load();
+          console.log("Audio preloaded and ready for playback");
+        })
+        .catch((err) => {
+          console.log("Silent audio failed, trying alternative approach", err);
+          // Alternative approach
+          window.mainAudio.load();
+        });
+
+      // Ensure audio context is created and ready
+      if (
+        typeof AudioContext !== "undefined" ||
+        typeof webkitAudioContext !== "undefined"
+      ) {
+        const AudioContextClass =
+          window.AudioContext || window.webkitAudioContext;
+        window.preInitializedAudioContext = new AudioContextClass();
+      }
+    }
+  }, 500);
+
   const careerStages = [
     {
       note: "C",
@@ -1407,13 +1434,12 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       note: "C2",
       year: "2024",
-      title: "New Chapeter - Guilford",
+      title: "New Chapter - Guilford",
       description:
         "Milestone Started MSc of Cyber Security at Surrey University",
       color: "bg-orange-700",
       type: "white",
     },
-
     {
       note: "D2",
       year: "2024",
@@ -1424,70 +1450,56 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
+  // Piano state variables
   let cardFadeTimeout = null;
-  let isPlaying = false;
   let isMuted = false;
-  const mainAudio = new Audio("/assets/audio/wonder.mp3");
-  mainAudio.volume = 0.5;
 
   // Create main container
   const container = document.createElement("div");
   container.className = "max-w-6xl mx-auto p-8 relative";
-  document.getElementById("piano-container").appendChild(container);
+  const pianoContainer = document.getElementById("piano-container");
+
+  if (pianoContainer) {
+    pianoContainer.appendChild(container);
+  } else {
+    console.error("Piano container not found!");
+    return;
+  }
 
   // Create piano container
-  const pianoContainer = document.createElement("div");
-  pianoContainer.className = "piano-container";
-  container.appendChild(pianoContainer);
-
-  const statusDot = document.createElement("div");
-  statusDot.className = "status-dot";
-  statusDot.style.cssText = `
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ff3b30;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 0 5px rgba(255, 59, 48, 0.5);
-  z-index: 20;
-`;
-
-  // Update the blinking animation
-  const blinkingAnimation = document.createElement("style");
-  blinkingAnimation.textContent = `
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-  .status-dot {
-    animation: blink 2s infinite;
-  }
-  .status-dot.playing {
-    background-color: #ffffff !important;
-    box-shadow: 0 0 5px rgba(50, 205, 50, 0.5);
-    animation: blink 1s infinite;
-  }
-`;
-  document.head.appendChild(blinkingAnimation);
-  pianoContainer.appendChild(statusDot);
+  const pianoCabinetContainer = document.createElement("div");
+  pianoCabinetContainer.className = "piano-container";
+  container.appendChild(pianoCabinetContainer);
 
   // Create keys container
   const keysContainer = document.createElement("div");
   keysContainer.className = "keys-container";
-  pianoContainer.appendChild(keysContainer);
+  pianoCabinetContainer.appendChild(keysContainer);
 
-  // Create sound control button
+  // Create sound control element
   const soundControl = document.createElement("button");
   soundControl.className = "sound-control";
-  soundControl.innerHTML = `
-  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  soundControl.innerHTML = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-  </svg>
-`;
-  pianoContainer.appendChild(soundControl);
+  </svg>`;
+  pianoCabinetContainer.appendChild(soundControl);
+
+  // Create status dot (red dot)
+  const statusDot = document.createElement("div");
+  statusDot.className = "status-dot";
+  statusDot.style.position = "absolute";
+  statusDot.style.top = "15px";
+  statusDot.style.left = "15px";
+  statusDot.style.width = "10px";
+  statusDot.style.height = "10px";
+  statusDot.style.borderRadius = "50%";
+  statusDot.style.background = "#ff3b30";
+  statusDot.style.opacity = "0.5";
+  statusDot.style.transition = "all 0.3s ease";
+  pianoCabinetContainer.appendChild(statusDot);
+
+  /*=================== PIANO FUNCTIONS ===================*/
+
   // Card fade timer function
   const startCardFadeTimer = () => {
     if (cardFadeTimeout) {
@@ -1543,10 +1555,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const baseVelocity = isCard ? (isMobile ? 1.5 : 2) : isMobile ? 0.75 : 1;
 
     // Get correct container based on element type
-    const container = isCard
+    const targetContainer = isCard
       ? document.querySelector(".journey-container")
       : document.querySelector(".piano-container");
-    const containerRect = container.getBoundingClientRect();
+
+    if (!targetContainer) {
+      console.error("Container not found for magic trail");
+      return;
+    }
+
+    const containerRect = targetContainer.getBoundingClientRect();
 
     // Scale factor for piano based on screen size
     const pianoScale = isSmallMobile ? 0.6 : isMobile ? 0.8 : 1;
@@ -1642,7 +1660,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => particle.remove(), lifetime);
     }
 
-    container.appendChild(trail);
+    targetContainer.appendChild(trail);
     setTimeout(() => trail.remove(), isMobile ? 1500 : 2000);
   };
 
@@ -1675,56 +1693,137 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     key.addEventListener("click", () => {
-      // Existing key click logic
+      // Clear active state from all keys
       document.querySelectorAll(".piano-key").forEach((k) => {
         k.classList.remove("active");
-        k.querySelector(".glow-effect")?.remove();
+        if (k.querySelector(".glow-effect")) {
+          k.querySelector(".glow-effect").remove();
+        }
       });
 
+      // Add active class to current key
       key.classList.add("active");
       const glowEffect = document.createElement("div");
       glowEffect.className = "glow-effect";
       key.appendChild(glowEffect);
 
-      // Play sound and create effects
-      if (!isMuted && !isPlaying) {
-        mainAudio.currentTime = 0;
-        mainAudio.play();
-        isPlaying = true;
-        soundControl.classList.add("playing");
-        statusDot.classList.add("playing"); // Add this line
+      // Play sound if not muted
+      if (!isMuted) {
+        if (window.mainAudio) {
+          // IMPORTANT: Fix for first click not playing
+          if (window.mainAudio.paused) {
+            // Force audio context to resume if it's suspended
+            if (
+              window.preInitializedAudioContext &&
+              window.preInitializedAudioContext.state === "suspended"
+            ) {
+              window.preInitializedAudioContext.resume();
+            }
+
+            console.log("Starting audio from piano key click");
+            window.mainAudio.currentTime = 0;
+
+            // Play with better error handling
+            const playPromise = window.mainAudio.play();
+
+            if (playPromise !== undefined) {
+              playPromise
+                .then(() => {
+                  // Playback started successfully
+                  window.isPlaying = true;
+                  soundControl.classList.add("playing");
+                  statusDot.classList.add("playing");
+                  statusDot.style.opacity = "1";
+
+                  // Update hologram play button state
+                  const playBtn = document.querySelector(".play-btn");
+                  if (playBtn) {
+                    playBtn.classList.add("playing");
+
+                    // Toggle Remix icons visibility
+                    const playIcon = playBtn.querySelector(".ri-play-fill");
+                    const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+                    if (playIcon && pauseIcon) {
+                      playIcon.style.display = "none";
+                      pauseIcon.style.display = "block";
+                    }
+                  }
+
+                  // Start visualizer
+                  if (window.visualizerActive !== undefined) {
+                    window.visualizerActive = true;
+                    if (
+                      window.hologramFunctions &&
+                      window.hologramFunctions.drawVisualizer
+                    ) {
+                      window.hologramFunctions.drawVisualizer();
+                    }
+                  }
+
+                  // Pulse hologram
+                  if (
+                    window.hologramFunctions &&
+                    window.hologramFunctions.pulseHologram
+                  ) {
+                    window.hologramFunctions.pulseHologram();
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error starting playback:", error);
+                  // Try an alternate approach if the first one failed
+                  setTimeout(() => {
+                    window.mainAudio
+                      .play()
+                      .catch((e) => console.error("Retry failed:", e));
+                  }, 100);
+                });
+            }
+          } else {
+            // Audio is already playing, just trigger visual effects
+            window.isPlaying = true;
+            soundControl.classList.add("playing");
+            statusDot.classList.add("playing");
+            statusDot.style.opacity = "1";
+
+            // Pulse hologram without restarting audio
+            if (
+              window.hologramFunctions &&
+              window.hologramFunctions.pulseHologram
+            ) {
+              window.hologramFunctions.pulseHologram();
+            }
+          }
+        }
       }
 
+      // Create visual effects
       const keyRect = key.getBoundingClientRect();
       createEnhancedMagicTrail(
         keyRect.left + keyRect.width / 2,
         keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9)
       );
 
-      // Add smooth scroll when any key is played
-      const pianoContainer = document.querySelector(".piano-container");
-      const journeyContainer = document.querySelector(".journey-container");
-
-      // Calculate the ideal scroll position
-      const pianoRect = pianoContainer.getBoundingClientRect();
-      const journeyRect = journeyContainer.getBoundingClientRect();
+      // Smooth scroll to show both piano and cards
+      const pianoCabinetContainer = document.querySelector(".piano-container");
       const viewportHeight = window.innerHeight;
-
-      // Calculate position that shows both piano and cards
+      const pianoRect = pianoCabinetContainer.getBoundingClientRect();
       const targetPosition =
-        window.scrollY + pianoRect.top - viewportHeight * 0.2; // 20% from top
-
-      // Smooth scroll to position
+        window.scrollY + pianoRect.top - viewportHeight * 0.2;
       window.scrollTo({
         top: targetPosition,
         behavior: "smooth",
       });
 
+      // Update journey card
       updateJourneyCard(stage);
 
+      // Remove active class after animation completes
       setTimeout(() => {
         key.classList.remove("active");
-        glowEffect.remove();
+        if (key.querySelector(".glow-effect")) {
+          key.querySelector(".glow-effect").remove();
+        }
       }, 300);
     });
 
@@ -1757,17 +1856,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     soundControl.innerHTML = isMuted
       ? `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <path d="M23 3l-12 12M11 5L6 9H2v6h4l5 4M14 9.5c.5.7.8 1.6.8 2.5s-.3 1.8-.8 2.5M17 7c1.2 1.3 2 3.1 2 5s-.8 3.7-2 5"/>
-         </svg>`
+          <path d="M23 3l-12 12M11 5L6 9H2v6h4l5 4M14 9.5c.5.7.8 1.6.8 2.5s-.3 1.8-.8 2.5M17 7c1.2 1.3 2 3.1 2 5s-.8 3.7-2 5"/>
+        </svg>`
       : `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-           <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-         </svg>`;
+          <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+        </svg>`;
 
-    if (isMuted && isPlaying) {
-      mainAudio.pause();
-      isPlaying = false;
+    if (isMuted && window.mainAudio && !window.mainAudio.paused) {
+      window.mainAudio.pause();
+      window.isPlaying = false;
       soundControl.classList.remove("playing");
       statusDot.classList.remove("playing");
+      statusDot.style.opacity = "0.5";
+
+      // Update hologram if available
+      if (window.visualizerActive !== undefined) {
+        window.visualizerActive = false;
+      }
+      const playBtn = document.querySelector(".play-btn");
+      if (playBtn) {
+        playBtn.classList.remove("playing");
+
+        // Toggle Remix icons
+        const playIcon = playBtn.querySelector(".ri-play-fill");
+        const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+        if (playIcon && pauseIcon) {
+          playIcon.style.display = "block";
+          pauseIcon.style.display = "none";
+        }
+      }
     }
   });
 
@@ -1854,9 +1972,779 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Add audio ended event listener
-  mainAudio.addEventListener("ended", () => {
-    isPlaying = false;
+  window.mainAudio.addEventListener("ended", () => {
+    window.isPlaying = false;
     soundControl.classList.remove("playing");
-    statusDot.classList.remove("playing"); // Add this line
+    statusDot.classList.remove("playing");
+    statusDot.style.opacity = "0.5";
+
+    // Update hologram if available
+    if (window.visualizerActive !== undefined) {
+      window.visualizerActive = false;
+    }
+    const playBtn = document.querySelector(".play-btn");
+    if (playBtn) {
+      playBtn.classList.remove("playing");
+
+      // Toggle Remix icons
+      const playIcon = playBtn.querySelector(".ri-play-fill");
+      const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+      if (playIcon && pauseIcon) {
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+      }
+    }
   });
+
+  // Add global listener for the hologram play button
+  document.addEventListener("click", function (e) {
+    if (
+      e.target.closest(".play-btn") ||
+      e.target.closest(".prev-btn") ||
+      e.target.closest(".next-btn")
+    ) {
+      console.log(
+        "Hologram control clicked:",
+        e.target.closest("button").className
+      );
+
+      // Synchronize piano state with hologram state after a short delay
+      setTimeout(() => {
+        const isAudioPlaying = window.mainAudio && !window.mainAudio.paused;
+        window.isPlaying = isAudioPlaying;
+
+        // Update hologram UI
+        const playBtn = document.querySelector(".play-btn");
+        if (playBtn) {
+          if (isAudioPlaying) {
+            playBtn.classList.add("playing");
+
+            // Toggle Remix icons
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "none";
+              pauseIcon.style.display = "block";
+            }
+          } else {
+            playBtn.classList.remove("playing");
+
+            // Toggle Remix icons
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "block";
+              pauseIcon.style.display = "none";
+            }
+          }
+        }
+
+        // Update piano UI
+        if (isAudioPlaying) {
+          soundControl.classList.add("playing");
+          statusDot.classList.add("playing");
+          statusDot.style.opacity = "1";
+        } else {
+          soundControl.classList.remove("playing");
+          statusDot.classList.remove("playing");
+          statusDot.style.opacity = "0.5";
+        }
+
+        // Update visualizer state
+        window.visualizerActive = isAudioPlaying;
+        if (
+          isAudioPlaying &&
+          window.hologramFunctions &&
+          window.hologramFunctions.drawVisualizer
+        ) {
+          window.hologramFunctions.drawVisualizer();
+        }
+      }, 100);
+    }
+  });
+
+  /*=============== PIANO HOLOGRAM FEATURE ===============*/
+  // Initialize the hologram after the piano is loaded
+  console.log("DOM loaded, scheduling hologram initialization");
+  setTimeout(() => {
+    console.log("Initializing hologram after delay");
+    initializeHologram();
+
+    // Ensure hologram is visible
+    const hologramContainer = document.querySelector(".hologram-container");
+    if (hologramContainer) {
+      hologramContainer.classList.add("hologram-active");
+      console.log("Hologram container activated");
+    } else {
+      console.warn("Hologram container not found after initialization");
+    }
+  }, 1200);
+
+  // Global variables for the hologram
+  let audioContext = null;
+  let audioSource = null;
+  let analyzer = null;
+  window.visualizerActive = false;
+  let hologramActive = true;
+  let currentSongIndex = 0;
+
+  // Song library - add more songs as needed
+  const songLibrary = [
+    {
+      title: "Wonder",
+      artist: "Tony Ann",
+      file: "/assets/audio/wonder.mp3", // Current default song
+      color: "#d97706", // Amber-600 color to match journey cards
+      visualizer: "bars", // wave, bars, circle
+    },
+    {
+      title: "Divenire",
+      artist: "Ludovico Einaudi",
+      file: "/assets/audio/divenire.mp3",
+      color: "#b45309", // Amber-800 color
+      visualizer: "bars",
+    },
+  ];
+
+  function initializeHologram() {
+    console.log("Initializing hologram...");
+
+    // Wait to make sure window.mainAudio is available
+    if (!window.mainAudio) {
+      console.log("Waiting for mainAudio to be ready...");
+      setTimeout(initializeHologram, 500);
+      return;
+    }
+
+    // Find the existing hologram UI
+    createHologramUI();
+
+    // Make the hologram visible and active
+    const hologramContainer = document.querySelector(".hologram-container");
+    if (hologramContainer) {
+      hologramContainer.classList.add("hologram-active");
+    }
+
+    // Update initial song info
+    updateSongInfo();
+
+    // Initialize Web Audio API
+    setupAudio();
+
+    // Add event listeners
+    setupEventListeners();
+
+    // Make functions available to piano
+    window.hologramFunctions = {
+      togglePlay,
+      playNextSong,
+      playPreviousSong,
+      pulseHologram,
+      drawVisualizer,
+      toggleHologram,
+    };
+
+    // Check if music is already playing from piano keys and update UI
+    if (window.mainAudio && !window.mainAudio.paused) {
+      const playBtn = document.querySelector(".play-btn");
+      if (playBtn) {
+        playBtn.classList.add("playing");
+
+        // Toggle Remix icons
+        const playIcon = playBtn.querySelector(".ri-play-fill");
+        const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+        if (playIcon && pauseIcon) {
+          playIcon.style.display = "none";
+          pauseIcon.style.display = "block";
+        }
+      }
+      window.visualizerActive = true;
+      drawVisualizer();
+    }
+  }
+
+  function createHologramUI() {
+    // Find existing hologram components in the HTML
+    const hologramContainer = document.querySelector(".hologram-container");
+
+    // If the hologram already exists in the HTML, just use it
+    if (hologramContainer) {
+      console.log("Using existing hologram from HTML");
+
+      // Update song info
+      const songTitle = hologramContainer.querySelector(".song-title");
+      const songArtist = hologramContainer.querySelector(".song-artist");
+
+      if (songTitle && songArtist) {
+        songTitle.textContent = songLibrary[currentSongIndex].title;
+        songArtist.textContent = songLibrary[currentSongIndex].artist;
+      }
+
+      // Ensure we have a canvas for the visualizer
+      let canvas = hologramContainer.querySelector("#visualizer-canvas");
+      if (!canvas) {
+        canvas = document.createElement("canvas");
+        canvas.id = "visualizer-canvas";
+        const hologramContent =
+          hologramContainer.querySelector(".hologram-content");
+        if (hologramContent) {
+          hologramContent.prepend(canvas);
+        }
+      }
+
+      // Add hand indicator if it doesn't exist
+      if (
+        !hologramContainer.querySelector(".hand-indicator") &&
+        !localStorage.getItem("hologramHandShown")
+      ) {
+        const handIndicator = document.createElement("div");
+        handIndicator.className = "hand-indicator";
+        handIndicator.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+            <line x1="16" y1="8" x2="2" y2="22"></line>
+            <line x1="17.5" y1="15" x2="9" y2="15"></line>
+          </svg>
+          <div class="pulse-ring"></div>
+        `;
+
+        const hologramProjection = hologramContainer.querySelector(
+          ".hologram-projection"
+        );
+        if (hologramProjection) {
+          hologramProjection.appendChild(handIndicator);
+        }
+
+        // Set up event listener to remove hand indicator after first interaction
+        const playBtn = hologramContainer.querySelector(".play-btn");
+        const prevBtn = hologramContainer.querySelector(".prev-btn");
+        const nextBtn = hologramContainer.querySelector(".next-btn");
+
+        const removeHandIndicator = () => {
+          handIndicator.classList.add("fadeout");
+          setTimeout(() => {
+            if (handIndicator.parentNode) {
+              handIndicator.parentNode.removeChild(handIndicator);
+            }
+          }, 1000);
+
+          // Clean up event listeners
+          if (playBtn)
+            playBtn.removeEventListener("click", removeHandIndicator);
+          if (prevBtn)
+            prevBtn.removeEventListener("click", removeHandIndicator);
+          if (nextBtn)
+            nextBtn.removeEventListener("click", removeHandIndicator);
+
+          // Store in localStorage that user has seen the indicator
+          localStorage.setItem("hologramHandShown", "true");
+        };
+
+        // Add event listeners to the buttons
+        if (playBtn) playBtn.addEventListener("click", removeHandIndicator);
+        if (prevBtn) prevBtn.addEventListener("click", removeHandIndicator);
+        if (nextBtn) nextBtn.addEventListener("click", removeHandIndicator);
+      }
+
+      return;
+    }
+
+    // If we get here, the hologram doesn't exist in the HTML, so we'll print a message
+    console.warn(
+      "Hologram container not found in HTML. Add it to your HTML for proper functionality."
+    );
+  }
+
+  function setupAudio() {
+    try {
+      // Initialize Audio Context
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+      // Connect to analyzer
+      try {
+        // Create analyzer for visualization
+        analyzer = audioContext.createAnalyser();
+        analyzer.fftSize = 256;
+
+        // We use the analyzer for visualization only
+        const tempSource = audioContext.createMediaElementSource(
+          window.mainAudio
+        );
+        tempSource.connect(analyzer);
+        tempSource.connect(audioContext.destination);
+
+        // Store the source for later reference
+        audioSource = tempSource;
+      } catch (err) {
+        console.log("Could not connect analyzer:", err);
+        // Fallback: just create analyzer without connecting
+        analyzer = audioContext.createAnalyser();
+        analyzer.fftSize = 256;
+      }
+    } catch (error) {
+      console.error("Audio setup failed:", error);
+    }
+  }
+
+  function setupEventListeners() {
+    const playBtn = document.querySelector(".play-btn");
+    const prevBtn = document.querySelector(".prev-btn");
+    const nextBtn = document.querySelector(".next-btn");
+    const hologramProjection = document.querySelector(".hologram-projection");
+
+    if (playBtn) {
+      // Remove existing event listeners to prevent duplicates
+      playBtn.removeEventListener("click", togglePlay);
+      // Add new event listener
+      playBtn.addEventListener("click", togglePlay);
+      console.log("Play button event listener attached");
+    } else {
+      console.warn("Play button not found in the DOM");
+    }
+
+    if (prevBtn) {
+      prevBtn.removeEventListener("click", playPreviousSong);
+      prevBtn.addEventListener("click", playPreviousSong);
+      console.log("Previous button event listener attached");
+    } else {
+      console.warn("Previous button not found in the DOM");
+    }
+
+    if (nextBtn) {
+      nextBtn.removeEventListener("click", playNextSong);
+      nextBtn.addEventListener("click", playNextSong);
+      console.log("Next button event listener attached");
+    } else {
+      console.warn("Next button not found in the DOM");
+    }
+
+    if (hologramProjection) {
+      hologramProjection.addEventListener("click", function (e) {
+        // Only trigger pulse effect if user clicks outside buttons
+        if (!e.target.closest(".hologram-btn")) {
+          pulseHologram();
+        }
+      });
+    }
+
+    // Add window resize handler for canvas
+    window.addEventListener("resize", resizeCanvas);
+
+    // Initial canvas setup
+    resizeCanvas();
+
+    // Find play/pause icons and ensure they're properly configured
+    const playIcon = playBtn?.querySelector(".ri-play-fill");
+    const pauseIcon = playBtn?.querySelector(".ri-pause-fill");
+
+    if (playIcon && pauseIcon) {
+      // Make sure the correct icon is showing based on play state
+      if (window.mainAudio && !window.mainAudio.paused) {
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+        playBtn.classList.add("playing");
+      } else {
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+        playBtn.classList.remove("playing");
+      }
+    }
+  }
+
+  function togglePlay() {
+    const playBtn = document.querySelector(".play-btn");
+    const soundControl = document.querySelector(".sound-control");
+    const isMuted = soundControl && soundControl.classList.contains("muted");
+    const statusDot = document.querySelector(".status-dot");
+
+    if (!window.mainAudio) {
+      console.error("Audio element not found");
+      return;
+    }
+
+    if (!audioContext) {
+      setupAudio();
+    }
+
+    // Resume AudioContext if suspended
+    if (audioContext && audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+
+    if (window.mainAudio.paused) {
+      // Don't play if muted
+      if (isMuted) {
+        alert("Please unmute the piano to play audio");
+        return;
+      }
+
+      // Resume from current position, don't reset to beginning
+      window.mainAudio
+        .play()
+        .then(() => {
+          console.log("Audio playback started");
+
+          // Update play button appearance
+          if (playBtn) {
+            playBtn.classList.add("playing");
+
+            // Manually toggle icon visibility for Remix icons
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "none";
+              pauseIcon.style.display = "block";
+            }
+          }
+
+          window.visualizerActive = true;
+          drawVisualizer();
+          activateHologram();
+
+          // Update piano status indicators and global state
+          if (soundControl) soundControl.classList.add("playing");
+          if (statusDot) {
+            statusDot.classList.add("playing");
+            statusDot.style.opacity = "1";
+          }
+
+          // Update global state for piano component
+          window.isPlaying = true;
+        })
+        .catch((error) => {
+          console.error("Playback failed:", error);
+        });
+    } else {
+      window.mainAudio.pause();
+      console.log("Audio playback paused");
+
+      // Update play button appearance
+      if (playBtn) {
+        playBtn.classList.remove("playing");
+
+        // Manually toggle icon visibility for Remix icons
+        const playIcon = playBtn.querySelector(".ri-play-fill");
+        const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+        if (playIcon && pauseIcon) {
+          playIcon.style.display = "block";
+          pauseIcon.style.display = "none";
+        }
+      }
+
+      window.visualizerActive = false;
+
+      // Update piano status indicators and global state
+      if (soundControl) soundControl.classList.remove("playing");
+      if (statusDot) {
+        statusDot.classList.remove("playing");
+        statusDot.style.opacity = "0.5";
+      }
+
+      // Update global state for piano component
+      window.isPlaying = false;
+    }
+  }
+
+  function playPreviousSong() {
+    currentSongIndex =
+      (currentSongIndex - 1 + songLibrary.length) % songLibrary.length;
+    changeSong();
+  }
+
+  function playNextSong() {
+    currentSongIndex = (currentSongIndex + 1) % songLibrary.length;
+    changeSong();
+  }
+
+  function changeSong() {
+    if (!window.mainAudio) return;
+
+    const wasPlaying = !window.mainAudio.paused;
+
+    // Save current position percentage for smooth transition
+    const positionPercent =
+      window.mainAudio.currentTime / window.mainAudio.duration;
+
+    // Update audio source
+    window.mainAudio.src = songLibrary[currentSongIndex].file;
+
+    // Update UI
+    updateSongInfo();
+    pulseHologram();
+
+    // If it was playing, continue playing the new song
+    if (wasPlaying) {
+      window.mainAudio
+        .play()
+        .then(() => {
+          // Try to maintain relative position in the new song
+          if (!isNaN(positionPercent) && isFinite(positionPercent)) {
+            window.mainAudio.currentTime =
+              positionPercent * window.mainAudio.duration;
+          }
+
+          // Update visualizer for new song style
+          if (window.visualizerActive) {
+            drawVisualizer();
+          }
+        })
+        .catch((error) => {
+          console.error("Song change failed:", error);
+        });
+    }
+  }
+
+  function updateSongInfo() {
+    const songTitle = document.querySelector(".song-title");
+    const songArtist = document.querySelector(".song-artist");
+
+    if (songTitle && songArtist) {
+      // Add changing class for animation
+      const songInfo = document.querySelector(".song-info");
+      if (songInfo) songInfo.classList.add("changing");
+
+      setTimeout(() => {
+        songTitle.textContent = songLibrary[currentSongIndex].title;
+        songArtist.textContent = songLibrary[currentSongIndex].artist;
+        if (songInfo) songInfo.classList.remove("changing");
+      }, 250);
+    }
+  }
+
+  function toggleHologram() {
+    hologramActive = !hologramActive;
+    const hologramContainer = document.querySelector(".hologram-container");
+
+    if (hologramContainer) {
+      hologramContainer.classList.toggle("hologram-active", hologramActive);
+
+      // Add pulse effect instead of position change
+      if (hologramActive) {
+        pulseHologram();
+      } else {
+        // Just animate opacity without changing position
+        hologramContainer.style.opacity = "0.7";
+        setTimeout(() => {
+          if (hologramContainer) {
+            hologramContainer.style.opacity = "";
+          }
+        }, 300);
+      }
+    }
+  }
+
+  function activateHologram() {
+    hologramActive = true;
+    const hologramContainer = document.querySelector(".hologram-container");
+
+    if (hologramContainer) {
+      hologramContainer.classList.add("hologram-active");
+    }
+  }
+
+  function pulseHologram() {
+    const hologramProjection = document.querySelector(".hologram-projection");
+
+    if (hologramProjection) {
+      hologramProjection.style.boxShadow = `0 0 60px ${songLibrary[currentSongIndex].color}`;
+
+      setTimeout(() => {
+        hologramProjection.style.boxShadow = "";
+      }, 300);
+    }
+  }
+
+  function resizeCanvas() {
+    const canvas = document.getElementById("visualizer-canvas");
+    if (canvas) {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+  }
+
+  function drawVisualizer() {
+    if (!window.visualizerActive) {
+      console.log("Visualizer not active, skipping draw");
+      return;
+    }
+
+    if (!analyzer) {
+      console.warn("Audio analyzer not available");
+      return;
+    }
+
+    const canvas = document.getElementById("visualizer-canvas");
+    if (!canvas) {
+      console.warn("Visualizer canvas not found");
+      return;
+    }
+
+    console.log("Starting visualizer on canvas:", canvas.id);
+
+    // Make sure canvas dimensions are set correctly
+    resizeCanvas();
+
+    const ctx = canvas.getContext("2d");
+    const bufferLength = analyzer.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
+
+    function animate() {
+      if (!window.visualizerActive) {
+        console.log("Visualizer stopped");
+        return; // Stop animation when not active
+      }
+
+      requestAnimationFrame(animate);
+
+      try {
+        analyzer.getByteFrequencyData(dataArray);
+
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+        // Choose visualization based on current song
+        const visType = songLibrary[currentSongIndex].visualizer;
+        const color = songLibrary[currentSongIndex].color;
+
+        if (visType === "bars") {
+          drawBars(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color);
+        } else if (visType === "circle") {
+          drawCircle(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color);
+        } else {
+          // Default to wave
+          drawWave(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color);
+        }
+      } catch (error) {
+        console.error("Error in visualizer animation:", error);
+      }
+    }
+
+    // Start the animation
+    animate();
+    console.log("Visualizer animation started");
+  }
+
+  function drawWave(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color) {
+    const sliceWidth = WIDTH / bufferLength;
+    let x = 0;
+
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0, HEIGHT / 2);
+
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0;
+      const y = (v * HEIGHT) / 2;
+
+      ctx.lineTo(x, y);
+      x += sliceWidth;
+    }
+
+    ctx.lineTo(WIDTH, HEIGHT / 2);
+    ctx.stroke();
+
+    // Mirror the wave
+    ctx.beginPath();
+    ctx.moveTo(0, HEIGHT / 2);
+    x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArray[i] / 128.0;
+      const y = HEIGHT - (v * HEIGHT) / 2;
+
+      ctx.lineTo(x, y);
+      x += sliceWidth;
+    }
+
+    ctx.lineTo(WIDTH, HEIGHT / 2);
+    ctx.stroke();
+  }
+
+  function drawBars(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color) {
+    const barWidth = (WIDTH / bufferLength) * 2.5;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = (dataArray[i] / 255) * HEIGHT;
+
+      // Create gradient for each bar
+      const gradient = ctx.createLinearGradient(
+        0,
+        HEIGHT,
+        0,
+        HEIGHT - barHeight
+      );
+      gradient.addColorStop(0, "rgba(0, 0, 0, 0.1)");
+      gradient.addColorStop(1, color);
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+
+      x += barWidth + 1;
+      if (x > WIDTH) break;
+    }
+  }
+
+  function drawCircle(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color) {
+    const centerX = WIDTH / 2;
+    const centerY = HEIGHT / 2;
+    const radius = Math.min(WIDTH, HEIGHT) / 4;
+
+    // Draw base circle
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = `${color}40`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Draw frequency paths
+    const step = (Math.PI * 2) / (bufferLength / 4);
+    let angle = 0;
+
+    for (let i = 0; i < bufferLength; i += 4) {
+      const value = dataArray[i] / 255;
+      const outerRadius = radius + value * radius;
+
+      const x = centerX + Math.cos(angle) * outerRadius;
+      const y = centerY + Math.sin(angle) * outerRadius;
+
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(x, y);
+
+      const alpha = 0.3 + value * 0.7;
+      ctx.strokeStyle = `${color}${Math.floor(alpha * 255)
+        .toString(16)
+        .padStart(2, "0")}`;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      angle += step;
+    }
+  }
+
+  // Make functions available globally for external access
+  window.hologramFunctions = {
+    togglePlay,
+    playNextSong,
+    playPreviousSong,
+    pulseHologram,
+    drawVisualizer,
+    toggleHologram,
+  };
+
+  // Auto-start visualizer if audio is already playing
+  if (window.mainAudio && !window.mainAudio.paused) {
+    window.visualizerActive = true;
+    setTimeout(drawVisualizer, 100);
+  }
 });

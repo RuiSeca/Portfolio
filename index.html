@@ -637,13 +637,46 @@
       </div>
       <!--==================== PORTFOLIO ====================-->
 
-      <section class="career section" id="career">
-        <div class="piano__container container grid">
-            <h2 class="section__subtitle-piano">Career Progression</h2>
-            <h3 class="section__title-keys">My <span class="vintage-text">Journey</span></h3>
-            <div id="piano-container" class="career__container">
-                <!-- Dynamic content will be added here -->
+      <!-- Complete integrated career section with hologram piano -->
+    
+        <div class="container">
+          <!-- Headings -->
+          <h2 class="section__subtitle-piano">Career Progression</h2>
+          <h3 class="section__title-keys">My <span class="vintage-text">Journey</span></h3>
+          
+          <!-- Hologram component - now in its own wrapper -->
+          <div class="hologram-wrapper">
+            <div class="hologram-container hologram-active">
+              <div class="hologram-projection">
+                <div class="hologram-content">
+                  <canvas id="visualizer-canvas"></canvas>
+                  <div class="song-info">
+                    <h3 class="song-title">Peaceful Wonder</h3>
+                    <p class="song-artist">Piano Dreams</p>
+                  </div>
+                </div>
+                <div class="hologram-controls">
+                  <button class="hologram-btn prev-btn">
+                    <i class="ri-skip-back-fill"></i>
+                  </button>
+                  <button class="hologram-btn play-btn">
+                    <i class="ri-play-fill"></i>
+                    <i class="ri-pause-fill"></i>
+                  </button>
+                  <button class="hologram-btn next-btn">
+                    <i class="ri-skip-forward-fill"></i>
+                  </button>
+                </div>
+                <div class="hologram-glow"></div>
+              </div>
+              <div class="hologram-base"></div>
             </div>
+          </div>
+          
+          <!-- Piano container -->
+          <div id="piano-container" class="career__container">
+            <!-- The dynamic piano content will be added here by the JS -->
+          </div>
         </div>
       </section>
 
