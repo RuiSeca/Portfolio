@@ -97,6 +97,33 @@ a {
   border: none;
 }
 
+/* Reset cursor to default for most elements */
+.section,
+.project__container,
+.container,
+.swiper,
+.swiper-wrapper,
+.swiper-slide,
+.card__content,
+.section__title,
+.card_title,
+.card__text,
+.card__btn {
+  cursor: default !important;
+}
+
+/* Only make the card image clickable */
+.card .card__image {
+  cursor: pointer !important;
+}
+
+/* Make buttons have pointer cursor */
+button,
+.card__btn,
+a[href] {
+  cursor: pointer !important;
+}
+
 h1,
 h2,
 h3,
@@ -1979,6 +2006,96 @@ body.modal-open {
   backface-visibility: hidden;
 }
 
+/* Add these styles to your styles.css file */
+
+/* Simple image hover and click effects */
+.card__image {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.card__image:hover {
+  filter: brightness(1.1);
+}
+
+.card__image:active {
+  transform: scale(0.98);
+}
+
+/* Viewed image styling */
+.story-viewed-overlay {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.card__image:hover .story-viewed-overlay {
+  opacity: 0.2; /* More transparent on hover to see the image better */
+}
+
+/* Ensure the story modal appears above everything else */
+.story-modal {
+  z-index: 1100 !important; /* Higher than other modals */
+}
+
+/* Improve video appearance */
+.modal-video {
+  background-color: black;
+  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 8px;
+}
+
+/* Ensure the progress bar is visible */
+.story-progress-bar {
+  height: 3px !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.progress-bar-fill {
+  background: white !important;
+  height: 100% !important;
+}
+
+/* White mode compatibility */
+.white-mode .story-modal {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.white-mode .story-viewed-overlay {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .play-pause-indicator {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .story-modal-content {
+    width: 100% !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  .story-progress-container {
+    top: 10px !important;
+  }
+
+  .close-btn,
+  .menu-btn {
+    width: 40px !important;
+    height: 40px !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
 /* Control Buttons */
 .close-btn,
 .menu-btn {

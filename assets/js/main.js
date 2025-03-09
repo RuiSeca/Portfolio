@@ -1254,6 +1254,165 @@ StoryViewer.prototype.close = function () {
   this.closeMenu();
 };
 
+// Add this code to the end of your main.js file
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize the story viewer with project data and swiper instance
+  const storyViewer = new StoryViewer(projectsData, swiper);
+  window.storyViewer = storyViewer; // Make it globally accessible
+
+  // Initialize viewed stories tracking
+  const viewedStories = JSON.parse(
+    localStorage.getItem("viewedStories") || "{}"
+  );
+
+  // Function to mark a story as viewed
+  const markStoryAsViewed = (index) => {
+    const projectId = projectsData[index]?.modalId;
+    if (projectId) {
+      viewedStories[projectId] = true;
+      localStorage.setItem("viewedStories", JSON.stringify(viewedStories));
+
+      // Update all cards that might show this project
+      updateViewedStateForAllCards();
+    }
+  };
+
+  // Function to update the viewed state for all cards
+  const updateViewedStateForAllCards = () => {
+    const projectCards = document.querySelectorAll(".card");
+    projectCards.forEach((card, index) => {
+      const projectId = projectsData[index]?.modalId;
+      const cardImage = card.querySelector(".card__image");
+
+      if (cardImage && projectId && viewedStories[projectId]) {
+        // Add viewed styling - just a subtle gray overlay
+        cardImage.style.position = "relative";
+
+        // Check if overlay already exists
+        let overlay = cardImage.querySelector(".story-viewed-overlay");
+        if (!overlay) {
+          overlay = document.createElement("div");
+          overlay.className = "story-viewed-overlay";
+          overlay.style.position = "absolute";
+          overlay.style.top = "0";
+          overlay.style.left = "0";
+          overlay.style.width = "100%";
+          overlay.style.height = "100%";
+          overlay.style.background = "rgba(0, 0, 0, 0.2)"; // Very subtle gray
+          overlay.style.pointerEvents = "none";
+          overlay.style.zIndex = "2";
+          cardImage.appendChild(overlay);
+        }
+      }
+    });
+  };
+
+  // Enhance StoryViewer with onStoryView callback
+  StoryViewer.prototype.onStoryView = function (index) {
+    // This will be overridden to track viewed stories
+  };
+
+  // Modify loadVideo to call onStoryView
+  const originalLoadVideo = StoryViewer.prototype.loadVideo;
+  StoryViewer.prototype.loadVideo = function () {
+    // Call the original function
+    originalLoadVideo.apply(this, arguments);
+
+    // Call the onStoryView callback with the current index
+    if (typeof this.onStoryView === "function") {
+      this.onStoryView(this.currentIndex);
+    }
+  };
+
+  // Listen for story close event to mark stories as viewed
+  storyViewer.onStoryView = (index) => {
+    markStoryAsViewed(index);
+  };
+
+  // Add click handlers to each project card
+  const projectCards = document.querySelectorAll(".card");
+  projectCards.forEach((card, index) => {
+    // Find the card image container
+    const cardImage = card.querySelector(".card__image");
+    if (cardImage) {
+      // Make the image container relative positioning
+      cardImage.style.position = "relative";
+
+      // Make the whole image clickable to open the story viewer
+      cardImage.style.cursor = "pointer";
+      cardImage.addEventListener("click", function (e) {
+        storyViewer.open(index);
+      });
+    }
+  });
+
+  // Add keyboard shortcuts for story navigation
+  document.addEventListener("keydown", function (e) {
+    if (document.getElementById("story-modal").classList.contains("hidden")) {
+      return; // Don't process keystrokes when modal is hidden
+    }
+
+    switch (e.key) {
+      case "Escape":
+        storyViewer.close();
+        break;
+      case "ArrowLeft":
+        if (storyViewer.currentIndex > 0) {
+          storyViewer.currentIndex--;
+          storyViewer.swiper.slideTo(storyViewer.currentIndex, 300, true);
+          storyViewer.loadVideo();
+        }
+        break;
+      case "ArrowRight":
+        if (storyViewer.currentIndex < storyViewer.projects.length - 1) {
+          storyViewer.currentIndex++;
+          storyViewer.swiper.slideTo(storyViewer.currentIndex, 300, true);
+          storyViewer.loadVideo();
+        } else {
+          storyViewer.close();
+        }
+        break;
+      case " ": // Space bar
+        storyViewer.togglePlayPause();
+        break;
+    }
+  });
+
+  console.log("Story viewer initialized with", projectsData.length, "projects");
+
+  // Update viewed states on load
+  setTimeout(() => {
+    const viewedStories = JSON.parse(
+      localStorage.getItem("viewedStories") || "{}"
+    );
+    if (Object.keys(viewedStories).length > 0) {
+      updateViewedStateForAllCards();
+    }
+  }, 500);
+});
+
+// Add a CSS style for mobile responsiveness
+const styleElement = document.createElement("style");
+styleElement.textContent = `
+  .card__image {
+    transition: transform 0.2s ease;
+  }
+  
+  .card__image:hover {
+    transform: scale(1.02);
+  }
+  
+  .card__image:active {
+    transform: scale(0.98);
+  }
+  
+  .story-viewed-overlay {
+    transition: opacity 0.3s ease;
+  }
+`;
+document.head.appendChild(styleElement);
+
 // Project data
 const projectsData = [
   {
@@ -1293,7 +1452,6 @@ const projectsData = [
   },
 ];
 
-/*=============== Project Piano & Hologram Integration ===============*/
 /*=============== Project Piano & Hologram Integration ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize global variables and preload audio
