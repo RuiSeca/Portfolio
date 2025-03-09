@@ -1868,9 +1868,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Play sound if not muted
       if (!isMuted) {
         if (window.mainAudio) {
-          // IMPORTANT: Fix for first click not playing
-          if (window.mainAudio.paused) {
-            // Force audio context to resume if it's suspended
+          // IMPORTANT: This logic needs to be more robust
+          const isCurrentlyPlaying = !window.mainAudio.paused;
+
+          if (!isCurrentlyPlaying) {
+            // Force audio context to resume if suspended
             if (
               window.preInitializedAudioContext &&
               window.preInitializedAudioContext.state === "suspended"
@@ -1881,76 +1883,156 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Starting audio from piano key click");
             window.mainAudio.currentTime = 0;
 
-            // Play with better error handling
-            const playPromise = window.mainAudio.play();
-
-            if (playPromise !== undefined) {
-              playPromise
-                .then(() => {
-                  // Playback started successfully
-                  window.isPlaying = true;
-                  soundControl.classList.add("playing");
-                  statusDot.classList.add("playing");
-                  statusDot.style.opacity = "1";
-
-                  // Update hologram play button state
-                  const playBtn = document.querySelector(".play-btn");
-                  if (playBtn) {
-                    playBtn.classList.add("playing");
-
-                    // Toggle Remix icons visibility
-                    const playIcon = playBtn.querySelector(".ri-play-fill");
-                    const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-
-                    if (playIcon && pauseIcon) {
-                      playIcon.style.display = "none";
-                      pauseIcon.style.display = "block";
-                    }
-                  }
-
-                  // Start visualizer
-                  if (window.visualizerActive !== undefined) {
-                    window.visualizerActive = true;
-                    if (
-                      window.hologramFunctions &&
-                      window.hologramFunctions.drawVisualizer
-                    ) {
-                      window.hologramFunctions.drawVisualizer();
-                    }
-                  }
-
-                  // Pulse hologram
-                  if (
-                    window.hologramFunctions &&
-                    window.hologramFunctions.pulseHologram
-                  ) {
-                    window.hologramFunctions.pulseHologram();
-                  }
-                })
-                .catch((error) => {
-                  console.error("Error starting playback:", error);
-                  // Try an alternate approach if the first one failed
-                  setTimeout(() => {
-                    window.mainAudio
-                      .play()
-                      .catch((e) => console.error("Retry failed:", e));
-                  }, 100);
-                });
-            }
-          } else {
-            // Audio is already playing, just trigger visual effects
+            // Set our global playing flag BEFORE attempting to play
+            // This helps work around browser audio timing issues
             window.isPlaying = true;
+
+            // Update hologram UI immediately, don't wait for promise
+            const playBtn = document.querySelector(".play-btn");
+            if (playBtn) {
+              playBtn.classList.add("playing");
+
+              // Toggle Remix icons visibility immediately
+              const playIcon = playBtn.querySelector(".ri-play-fill");
+              const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+              if (playIcon && pauseIcon) {
+                playIcon.style.display = "none";
+                pauseIcon.style.display = "block";
+              }
+            }
+
+            // Update piano UI immediately
             soundControl.classList.add("playing");
             statusDot.classList.add("playing");
             statusDot.style.opacity = "1";
 
-            // Pulse hologram without restarting audio
+            // Start visualizer immediately
+            window.visualizerActive = true;
+            if (
+              window.hologramFunctions &&
+              window.hologramFunctions.drawVisualizer
+            ) {
+              window.hologramFunctions.drawVisualizer();
+            }
+
+            // Now attempt to play the audio with better error handling
+            const playPromise = window.mainAudio.play();
+
+            if (playPromise !== undefined) {
+              playPromise.catch((error) => {
+                console.error("Play failed:", error);
+
+                // Retry once before giving up
+                setTimeout(() => {
+                  window.mainAudio.play().catch((e) => {
+                    console.error("Retry failed too:", e);
+
+                    // Now we can reset the UI since both attempts failed
+                    window.isPlaying = false;
+
+                    // Reset hologram UI
+                    if (playBtn) {
+                      playBtn.classList.remove("playing");
+                      if (playIcon && pauseIcon) {
+                        playIcon.style.display = "block";
+                        pauseIcon.style.display = "none";
+                      }
+                    }
+
+                    // Reset piano UI
+                    soundControl.classList.remove("playing");
+                    statusDot.classList.remove("playing");
+                    statusDot.style.opacity = "0.5";
+
+                    // Stop visualizer
+                    window.visualizerActive = false;
+                  });
+                }, 100);
+              });
+            }
+          } else {
+            // Audio already playing - just ensure UI is consistent
+            console.log("Audio already playing, ensuring UI is consistent");
+            window.isPlaying = true;
+
+            // Update hologram state
+            const playBtn = document.querySelector(".play-btn");
+            if (playBtn) {
+              playBtn.classList.add("playing");
+
+              // Toggle Remix icons visibility
+              const playIcon = playBtn.querySelector(".ri-play-fill");
+              const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+              if (playIcon && pauseIcon) {
+                playIcon.style.display = "none";
+                pauseIcon.style.display = "block";
+              }
+            }
+
+            // Ensure visualizer is running
+            window.visualizerActive = true;
+            if (
+              window.hologramFunctions &&
+              window.hologramFunctions.drawVisualizer
+            ) {
+              window.hologramFunctions.drawVisualizer();
+            }
+
+            // Pulse the hologram to provide visual feedback even if already playing
             if (
               window.hologramFunctions &&
               window.hologramFunctions.pulseHologram
             ) {
               window.hologramFunctions.pulseHologram();
             }
+
+            // Ensure piano UI shows playing state
+            soundControl.classList.add("playing");
+            statusDot.classList.add("playing");
+            statusDot.style.opacity = "1";
+          }
+        }
+      }
+
+      // Helper function to update hologram UI consistently
+      function updateHologramUI(isPlaying) {
+        const playBtn = document.querySelector(".play-btn");
+        if (playBtn) {
+          if (isPlaying) {
+            playBtn.classList.add("playing");
+
+            // Update icon visibility
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "none";
+              pauseIcon.style.display = "block";
+            }
+
+            // Ensure visualizer is running
+            window.visualizerActive = true;
+            if (
+              window.hologramFunctions &&
+              window.hologramFunctions.drawVisualizer
+            ) {
+              window.hologramFunctions.drawVisualizer();
+            }
+          } else {
+            playBtn.classList.remove("playing");
+
+            // Update icon visibility
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "block";
+              pauseIcon.style.display = "none";
+            }
+
+            // Stop visualizer
+            window.visualizerActive = false;
           }
         }
       }
@@ -2513,6 +2595,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 1. First, modify the togglePlay function in the hologram code:
   function togglePlay() {
     const playBtn = document.querySelector(".play-btn");
     const soundControl = document.querySelector(".sound-control");
@@ -2524,88 +2607,95 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (!audioContext) {
-      setupAudio();
-    }
-
-    // Resume AudioContext if suspended
+    // Force audio context to resume if suspended
     if (audioContext && audioContext.state === "suspended") {
       audioContext.resume();
     }
 
-    if (window.mainAudio.paused) {
-      // Don't play if muted
+    // THIS IS CRUCIAL: Sometimes window.mainAudio.paused can be misleading
+    // due to promise-based play operations still resolving
+    // So check BOTH the paused property AND our global state variable
+    const isAudioActuallyPlaying = !window.mainAudio.paused || window.isPlaying;
+
+    console.log("Toggle play - Current state:", {
+      audioPaused: window.mainAudio.paused,
+      windowIsPlaying: window.isPlaying,
+      isAudioActuallyPlaying,
+    });
+
+    if (!isAudioActuallyPlaying) {
+      // Audio is NOT playing, so let's play it
       if (isMuted) {
         alert("Please unmute the piano to play audio");
         return;
       }
 
-      // Resume from current position, don't reset to beginning
+      // Play with better error handling
       window.mainAudio
         .play()
         .then(() => {
-          console.log("Audio playback started");
+          console.log("Audio playback started from hologram");
+          window.isPlaying = true;
 
-          // Update play button appearance
+          // Update UI elements
           if (playBtn) {
             playBtn.classList.add("playing");
-
-            // Manually toggle icon visibility for Remix icons
             const playIcon = playBtn.querySelector(".ri-play-fill");
             const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-
             if (playIcon && pauseIcon) {
               playIcon.style.display = "none";
               pauseIcon.style.display = "block";
             }
           }
 
-          window.visualizerActive = true;
-          drawVisualizer();
-          activateHologram();
-
-          // Update piano status indicators and global state
+          // Update piano UI
           if (soundControl) soundControl.classList.add("playing");
           if (statusDot) {
             statusDot.classList.add("playing");
             statusDot.style.opacity = "1";
           }
 
-          // Update global state for piano component
-          window.isPlaying = true;
+          // Start visualizer
+          window.visualizerActive = true;
+          drawVisualizer();
         })
         .catch((error) => {
-          console.error("Playback failed:", error);
+          console.error("Play failed:", error);
+          // Reset state on failure
+          window.isPlaying = false;
+
+          // Try again once more
+          setTimeout(() => {
+            window.mainAudio
+              .play()
+              .catch((e) => console.error("Retry failed:", e));
+          }, 100);
         });
     } else {
+      // Audio IS playing, so let's pause it
       window.mainAudio.pause();
-      console.log("Audio playback paused");
+      window.isPlaying = false;
+      console.log("Audio playback paused from hologram");
 
-      // Update play button appearance
+      // Update UI elements
       if (playBtn) {
         playBtn.classList.remove("playing");
-
-        // Manually toggle icon visibility for Remix icons
         const playIcon = playBtn.querySelector(".ri-play-fill");
         const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-
         if (playIcon && pauseIcon) {
           playIcon.style.display = "block";
           pauseIcon.style.display = "none";
         }
       }
 
-      window.visualizerActive = false;
-
-      // Update piano status indicators and global state
+      // Update piano UI
       if (soundControl) soundControl.classList.remove("playing");
       if (statusDot) {
         statusDot.classList.remove("playing");
         statusDot.style.opacity = "0.5";
       }
 
-      // Update global state for piano component
-      window.isPlaying = false;
+      window.visualizerActive = false;
     }
   }
 
