@@ -568,7 +568,6 @@ const projectData = {
     <p><strong class="title-text">The result is a powerful automation tool that dramatically reduces the time and effort required to create and publish engaging YouTube Shorts content, empowering creators to maintain a consistent publishing schedule with high-quality short-form videos.</strong></p>
   `,
     videoUrl: "/assets/videos/youtube-preview.mp4",
-    liveUrl: "https://youtube-shorts-automation.example.com/",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
     technologies: [
       "Python",
@@ -1276,8 +1275,6 @@ const projectsData = [
     videoUrl: "/assets/videos/youtube-preview.mp4",
     detailUrl: "#youtube-shorts-automation",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
-    liveUrl:
-      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0",
     modalId: "youtube-shorts-automation",
   },
   {
