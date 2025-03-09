@@ -526,6 +526,63 @@ const projectData = {
       "RESTful API",
     ],
   },
+  "youtube-shorts-automation": {
+    title: "YouTube Shorts Automation System",
+    description: `
+    <p><strong class="title-text">YouTube Shorts Automation System</strong> is a comprehensive platform I developed to streamline the entire YouTube Shorts creation workflow, from content ideation to analytics tracking, enabling consistent content delivery with minimal manual effort.</p>
+
+    <p><strong class="title-text">Key Features:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Dynamic Content Generation: AI-powered content ideas optimized for short-form engagement</li>
+      <li class="description-text">Script Generation: Automatic creation of concise, attention-grabbing scripts</li>
+      <li class="description-text">Voice Synthesis: Integration with ElevenLabs API for natural-sounding narration</li>
+      <li class="description-text">Video Assembly: Automated compilation of vertical videos with stock footage</li>
+      <li class="description-text">YouTube Integration: Seamless uploads with proper metadata and thumbnails</li>
+      <li class="description-text">Analytics Dashboard: Performance tracking with YouTube Analytics API integration</li>
+    </ul>
+
+    <p><strong class="title-text">Key Technical Achievements:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">Built a responsive web interface with Flask for managing the automation workflow</li>
+      <li class="description-text">Integrated OpenAI API for content generation with fallback mechanisms</li>
+      <li class="description-text">Implemented YouTube API OAuth authentication for secure account access</li>
+      <li class="description-text">Created a modular video processing pipeline with FFmpeg for vertical format videos</li>
+      <li class="description-text">Developed a real-time job monitoring system with progress tracking</li>
+      <li class="description-text">Built a comprehensive analytics dashboard with dynamic data visualization</li>
+      <li class="description-text">Implemented error handling and recovery at each stage of the automation process</li>
+    </ul>
+
+    <p><strong class="title-text">This project significantly enhanced my expertise in:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text">AI integration and prompt engineering</li>
+      <li class="description-text">API design and third-party service integration</li>
+      <li class="description-text">OAuth authentication flows</li>
+      <li class="description-text">Media processing and FFmpeg utilization</li>
+      <li class="description-text">Asynchronous job processing</li>
+      <li class="description-text">Data visualization with Chart.js</li>
+      <li class="description-text">YouTube API ecosystem</li>
+      <li class="description-text">Python backend development with Flask</li>
+      <li class="description-text">Modern JavaScript for interactive dashboards</li>
+    </ul>
+
+    <p><strong class="title-text">The result is a powerful automation tool that dramatically reduces the time and effort required to create and publish engaging YouTube Shorts content, empowering creators to maintain a consistent publishing schedule with high-quality short-form videos.</strong></p>
+  `,
+    videoUrl: "/assets/videos/youtube-preview.mp4",
+    liveUrl: "https://youtube-shorts-automation.example.com/",
+    githubUrl: "https://github.com/RuiSeca/youtube-automation",
+    technologies: [
+      "Python",
+      "Flask",
+      "JavaScript",
+      "Chart.js",
+      "FFmpeg",
+      "OpenAI API",
+      "ElevenLabs API",
+      "YouTube API",
+      "OAuth 2.0",
+      "REST APIs",
+    ],
+  },
   "CSRF Attack Demonstrator": {
     title: "CSRF Attack Demonstrator",
     description: `
@@ -579,7 +636,7 @@ const projectData = {
     <p><strong class="title-text">The result is a comprehensive security demonstration platform that effectively illustrates CSRF vulnerabilities and protection mechanisms through hands-on experience.</strong><br/><br/></p>
     `,
     videoUrl: "/assets/videos/csrf-preview.mp4",
-    liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
+    liveUrl: "http://csrf.infinityfreeapp.com/public/index.php",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     technologies: [
       "PHP",
@@ -647,24 +704,6 @@ const projectData = {
       "Dynamic UI",
     ],
   },
-  "project-4": {
-    title: "Project 4",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Detailed description of project 4 goes here...",
-    videoUrl: "/assets/videos/project4-preview.mp4",
-    liveUrl: "https://example4.com",
-    githubUrl: "https://github.com/yourusername/project4",
-    technologies: ["Vue.js", "Firebase", "Sass"],
-  },
-  "project-5": {
-    title: "Project 5",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Detailed description of project 5 goes here...",
-    videoUrl: "/assets/videos/project5-preview.mp4",
-    liveUrl: "https://example5.com",
-    githubUrl: "https://github.com/yourusername/project5",
-    technologies: ["Angular", "TypeScript", "AWS"],
-  },
 };
 
 let scrollPosition = 0;
@@ -674,7 +713,12 @@ function openProjectModal(projectId) {
   const project = projectData[projectId];
   const isWhiteMode = document.body.classList.contains("white-mode");
 
-  if (!project) return;
+  console.log("Opening project:", projectId);
+
+  if (!project) {
+    console.error("Project not found:", projectId);
+    return;
+  }
 
   // Store current scroll position and lock body
   scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
@@ -793,13 +837,25 @@ function closeProjectModal() {
 }
 
 // Add event listener to the fixed action button
+// Add event listener to the fixed action button
 const fixedActionBtn = document.querySelector(".fixed-action-btn");
 if (fixedActionBtn) {
   fixedActionBtn.addEventListener("click", function (e) {
     e.preventDefault();
     const target = e.currentTarget.getAttribute("data-target");
+    const projectId = e.currentTarget.getAttribute("data-project-id");
+
     if (target === "#projectModal") {
-      openProjectModal("savannah-bites");
+      // Use the project ID from the button attribute, or fallback to current story project
+      if (projectId) {
+        openProjectModal(projectId);
+      } else if (window.currentStoryProject) {
+        // Use the current project from story viewer if available
+        openProjectModal(window.currentStoryProject);
+      } else {
+        // Fallback to default project if needed
+        openProjectModal("savannah-bites");
+      }
     } else {
       // Handle other fixed action button functionality
     }
@@ -1043,10 +1099,14 @@ StoryViewer.prototype.handleEnd = function (e) {
 StoryViewer.prototype.handleMenuAction = function (action) {
   var currentProject = this.projects[this.currentIndex];
 
+  // Set current project ID globally so it can be accessed by other functions
+  window.currentStoryProject = currentProject.modalId;
+
   switch (action) {
     case "view-project":
       this.close();
       setTimeout(function () {
+        // Directly pass the modalId to ensure correct project opens
         openProjectModal(currentProject.modalId);
       }, 300);
       break;
@@ -1066,7 +1126,6 @@ StoryViewer.prototype.handleMenuAction = function (action) {
 
   this.closeMenu();
 };
-
 StoryViewer.prototype.toggleMenu = function () {
   if (this.menuOpen) {
     this.closeMenu();
@@ -1146,6 +1205,20 @@ StoryViewer.prototype.loadVideo = function () {
 
   this.progressBarFill.style.transition = "width linear";
 
+  // Update the current project ID
+  var currentProject = this.projects[this.currentIndex];
+  window.currentStoryProject = currentProject.modalId;
+
+  // Update any UI elements that need to reflect the current project
+  var projectTitle = document.querySelector(".story-project-title");
+  if (projectTitle && currentProject) {
+    // Find the full project data from projectData
+    var fullProjectData = projectData[currentProject.modalId];
+    if (fullProjectData) {
+      projectTitle.textContent = fullProjectData.title;
+    }
+  }
+
   setTimeout(function () {
     self.modalContent.classList.remove("sliding-left", "sliding-right");
     self.video.src = self.projects[self.currentIndex].videoUrl;
@@ -1198,6 +1271,14 @@ const projectsData = [
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
     liveUrl: "https://savannah-bites.onrender.com/",
     modalId: "savannah-bites",
+  },
+  {
+    videoUrl: "/assets/videos/youtube-preview.mp4",
+    detailUrl: "#youtube-shorts-automation",
+    githubUrl: "https://github.com/RuiSeca/youtube-automation",
+    liveUrl:
+      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0",
+    modalId: "youtube-shorts-automation",
   },
   {
     videoUrl: "/assets/videos/csrf-preview.mp4",
