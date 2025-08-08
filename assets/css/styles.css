@@ -2262,6 +2262,14 @@ body.modal-open {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Header variant of the project badge (placed next to title) */
+.project-badge--header {
+  position: static;
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
 .project-modal__video video {
   position: absolute;
   top: 0;

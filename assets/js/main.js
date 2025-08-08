@@ -739,8 +739,15 @@ function openProjectModal(projectId) {
     } catch (_) {}
   }
 
-  // Update modal content
-  modal.querySelector(".project-modal__title").textContent = project.title;
+  // Update modal content (title + optional badge in header)
+  const titleEl = modal.querySelector(".project-modal__title");
+  if (titleEl) {
+    titleEl.innerHTML = `${project.title}${
+      project.badge
+        ? ` <span class="project-badge project-badge--header" aria-label="Project status">${project.badge}</span>`
+        : ""
+    }`;
+  }
 
   const modalBody = modal.querySelector(".project-modal__body");
 
@@ -757,7 +764,6 @@ function openProjectModal(projectId) {
       project.videoUrl
         ? `
         <div class="project-modal__video">
-          ${project.badge ? `<div class="project-badge" aria-label="Project status">${project.badge}</div>` : ""}
           <div class="loading-container">
             <div class="spinner">
               <div class="spinnerin"></div>
