@@ -3552,9 +3552,7 @@ html {
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-#scrollTopButton::after span {
-  padding-top: 5px;
-}
+
 
 .scroll-show {
   display: block; /* Make visible */
@@ -3580,6 +3578,15 @@ html {
   height: 100%;
   width: 100%;
   line-height: 1;
+}
+
+/* White mode styles for scroll button */
+.white-mode #scrollTopButton {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.white-mode #scrollTopButton::after {
+  color: #000;
 }
 
 /*===================Services =====================*/
