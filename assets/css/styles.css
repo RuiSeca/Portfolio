@@ -2023,8 +2023,8 @@ body.modal-open {
   align-items: center;
   justify-content: center;
   transition: opacity 0.3s ease;
-  backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 .play-pause-indicator.hidden {

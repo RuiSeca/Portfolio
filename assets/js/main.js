@@ -419,43 +419,38 @@ const projectData = {
   solarvita: {
     title: "SolarVita",
     description: `
-    <p><strong class="title-text">SolarVita</strong> is a comprehensive mobile application that combines fitness tracking with eco-consciousness, providing users with a sustainable approach to health and wellness.</p>
+    <p><strong class="title-text">SolarVita</strong> is a comprehensive Flutter + Firebase app that blends fitness tracking with sustainability.</p>
 
     <p><strong class="title-text">Key Features:</strong></p>
-    <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Exercise Database Integration: Powered by ExerciseDB API with real-time data fetching</li>
-      <li class="description-text">Multi-language Support: Localization in 10 different languages for global accessibility</li>
-      <li class="description-text">Theme Management: Dynamic dark and light mode to enhance user experience</li>
-      <li class="description-text">Workout Tracking: Personalized exercise logging and progress monitoring</li>
-      <li class="description-text">Eco-friendly Tips: Integration of sustainability features throughout the fitness journey</li>
-      <li class="description-text">AI Assistant: Smart guidance for workouts, image calories analyzer and eco-conscious lifestyle choices</li>
-      <li class="description-text">Meal Planning: Nutritional guidance with environmental impact metrics</li>
+    <ul>
+      <li class="description-text"><strong>AI coaching</strong> (Google Gemini 1.5) for workouts, meals, and eco tips</li>
+      <li class="description-text"><strong>Health + Sustainability</strong>: workouts, nutrition, CO₂ saved, and eco score</li>
+      <li class="description-text"><strong>Discovery & Tracking</strong>: ExerciseDB, Nutritionix, and Google Vision food recognition</li>
+      <li class="description-text"><strong>Community</strong>: supporters system, challenges, and tribes with real‑time chat</li>
+      <li class="description-text"><strong>Privacy‑first</strong> controls and <strong>11‑language</strong> localization</li>
     </ul>
 
-    <p><strong class="title-text">Key Technical Achievements:</strong></p>
-    <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Created robust state management system using Provider for consistent data flow</li>
-      <li class="description-text">Implemented efficient API caching to minimize network requests</li>
-      <li class="description-text">Developed responsive UI with smooth navigation and transitions</li>
-      <li class="description-text">Built exercise data visualization using custom charts and analytics</li>
-      <li class="description-text">Created secure external API integrations with proper error handling</li>
-      <li class="description-text">Optimized app performance for Android</li>
-      <li class="description-text">Implemented comprehensive logging for efficient debugging</li>
+    <p><strong class="title-text">Technical Highlights:</strong></p>
+    <ul>
+      <li class="description-text">Flutter 3.6+, Firebase (Auth, Firestore, Cloud Functions, Realtime Database)</li>
+      <li class="description-text">State management with Provider + Riverpod; theming (light/dark)</li>
+      <li class="description-text">Caching and offline storage (SharedPreferences); response caching for AI</li>
+      <li class="description-text">Charts/analytics for progress; performance optimizations</li>
+      <li class="description-text">Robust API integration, error handling, and structured logging</li>
     </ul>
+
+    <p><strong class="title-text">Result:</strong> a fast, privacy‑respecting fitness platform that motivates healthier habits while reducing environmental impact.</p>
 
     <p><strong class="title-text">This project significantly enhanced my expertise in:</strong></p>
-    <ul style="list-style-type: circle; padding-left: 20px;">
+    <ul>
       <li class="description-text">Flutter & Dart development</li>
-      <li class="description-text">Provider pattern for state management</li>
-      <li class="description-text">API integration and error handling</li>
-      <li class="description-text">Multi-language support implementation</li>
-      <li class="description-text">Theme management across applications</li>
-      <li class="description-text">Local data persistence techniques</li>
-      <li class="description-text">Asynchronous programming patterns</li>
-      <li class="description-text">Cross-platform mobile development</li>
+      <li class="description-text">Provider & Riverpod state management</li>
+      <li class="description-text">API design, integration, and error handling</li>
+      <li class="description-text">Internationalization (11 languages)</li>
+      <li class="description-text">Design systems: theming, accessibility, and UX</li>
+      <li class="description-text">Caching, offline storage, and async patterns</li>
+      <li class="description-text">Cross‑platform performance optimization</li>
     </ul>
-
-    <p><strong class="title-text">The result is a feature-rich, eco-conscious fitness application that helps users maintain their health while promoting sustainable lifestyle choices.</strong></p>
   `,
     videoUrl: "/assets/videos/solarvita-preview.mp4", // Replace with your actual video path
     liveUrl:

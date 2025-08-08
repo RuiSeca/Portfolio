@@ -64,12 +64,13 @@
             </li>
           </ul>
           <div class="nav__togg">
-            <span class="theme-label">Theme:</span>
+            <span id="theme-label" class="theme-label">Theme:</span>
             <label for="toggle-checkbox">
               <input
                 id="toggle-checkbox"
                 class="toggle-checkbox"
                 type="checkbox"
+                aria-labelledby="theme-label"
                 onclick="toggleMode()"
               />
               <div class="toggle-slot">
@@ -190,7 +191,7 @@
               </p>
 
               <label class="label" id="download-label">
-                <button class="installer-btn" onclick="handleDownload()">
+                <button class="installer-btn" aria-label="Download CV" onclick="handleDownload()">
                   <svg
                     class="icon"
                     aria-hidden="true"
@@ -218,6 +219,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="home__social-link"
+                aria-label="Instagram"
               >
                 <i class="ri-instagram-line"></i>
               </a>
@@ -227,6 +229,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="home__social-link"
+                aria-label="LinkedIn"
               >
                 <i class="ri-linkedin-box-fill"></i>
               </a>
@@ -236,6 +239,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="home__social-link"
+                aria-label="GitHub"
               >
                 <i class="ri-github-fill"></i>
               </a>
@@ -339,11 +343,7 @@
           </div>
         </div>
       </section>
-      <button
-        id="scrollTopButton"
-        style="display: none; position: fixed; bottom: 10px; right: 10px"
-        onclick="scrollToTop()"
-      ></button>
+      
       
       <!--==================== SKILLS ====================-->
       <section class="skills section">
@@ -625,7 +625,7 @@
             <div class="story-menu-item" data-action="live-demo" role="menuitem">Live Demo</div>
           </div>
       
-          <video id="modal-video" class="modal-video" playsinline muted aria-label="Story Video"></video>
+          <video id="modal-video" class="modal-video" muted aria-label="Story Video"></video>
       
           <button class="close-btn" aria-label="Close Story">×</button>
           <button class="menu-btn" aria-label="Open Menu">⋮</button>
@@ -657,14 +657,14 @@
                   </div>
                 </div>
                 <div class="hologram-controls">
-                  <button class="hologram-btn prev-btn">
+                  <button class="hologram-btn prev-btn" aria-label="Previous">
                     <i class="ri-skip-back-fill"></i>
                   </button>
-                  <button class="hologram-btn play-btn">
+                  <button class="hologram-btn play-btn" aria-label="Play/Pause">
                     <i class="ri-play-fill"></i>
                     <i class="ri-pause-fill"></i>
                   </button>
-                  <button class="hologram-btn next-btn">
+                  <button class="hologram-btn next-btn" aria-label="Next">
                     <i class="ri-skip-forward-fill"></i>
                   </button>
                 </div>
@@ -789,6 +789,7 @@
         id="scrollTopButton"
          class="scroll-top-button"
        onclick="scrollToTop()"
+       aria-label="Scroll to top"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 15l-6-6-6 6"/>
@@ -808,6 +809,7 @@
             target="_blank"
             rel="noopener noreferrer"
             class="footer__social-link"
+            aria-label="Instagram"
           >
             <i class="ri-instagram-line"></i>
           </a>
@@ -817,6 +819,7 @@
             target="_blank"
             rel="noopener noreferrer"
             class="footer__social-link"
+            aria-label="LinkedIn"
           >
             <i class="ri-linkedin-box-fill"></i>
           </a>
@@ -826,6 +829,7 @@
             target="_blank"
             rel="noopener noreferrer"
             class="footer__social-link"
+            aria-label="GitHub"
           >
             <i class="ri-github-fill"></i>
           </a>
