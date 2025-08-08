@@ -458,16 +458,20 @@ const projectData = {
       "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", 
     githubUrl: "https://github.com/RuiSeca/SolarVita", 
     technologies: [
-      "Flutter",
+      "Flutter 3.6+",
       "Dart",
+      "Firebase Auth",
+      "Cloud Firestore",
+      "Cloud Functions",
+      "Realtime Database",
       "Provider",
-      "RESTful APIs",
-      "Shared Preferences",
-      "i18n Localization",
+      "Riverpod",
+      "SharedPreferences",
+      "Google Gemini",
+      "Nutritionix API",
       "ExerciseDB API",
-      "TheMealDB API",
       "Google Vision API",
-      "Fast-track API",
+      "i18n (11 languages)",
     ],
   },
   "savannah-bites": {
@@ -730,7 +734,8 @@ function openProjectModal(projectId) {
       const idFromParam = urlObj.searchParams.get("id");
       const fileId = idFromParam || project.videoUrl.match(/\/d\/([^/]+)/)?.[1] || "";
       if (fileId) {
-        driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+        // Request autoplay & muted for better autoplay compatibility
+        driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview?autoplay=1&mute=1`;
       }
     } catch (e) {
       // Fallback: leave driveEmbedUrl as null
@@ -812,6 +817,16 @@ function openProjectModal(projectId) {
   // Handle video loading with spinner
   const video = modalBody.querySelector("video");
   if (video) {
+    // Attempt programmatic autoplay in addition to autoplay attribute
+    try {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // If blocked, keep controls visible; user can start playback
+        });
+      }
+    } catch (_) {}
+
     video.addEventListener("loadeddata", function () {
       requestAnimationFrame(() => {
         video.style.opacity = "1";
@@ -1264,13 +1279,49 @@ StoryViewer.prototype.loadVideo = function () {
 
   setTimeout(function () {
     self.modalContent.classList.remove("sliding-left", "sliding-right");
-    self.video.src = self.projects[self.currentIndex].videoUrl;
+    // Configure story video for autoplay, inline, no controls, highest available quality source
+    // Normalize Google Drive URLs for HTML5 <video> playback
+    let url = self.projects[self.currentIndex].videoUrl;
+    if (url && url.includes("drive.google.com")) {
+      try {
+        const previewMatch = url.match(/\/file\/d\/([^/]+)/);
+        const idFromPreview = previewMatch ? previewMatch[1] : null;
+        const idFromQuery = (() => {
+          try {
+            const u = new URL(url);
+            return u.searchParams.get("id");
+          } catch (_) {
+            return null;
+          }
+        })();
+        const fileId = idFromPreview || idFromQuery;
+        if (fileId) {
+          url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        }
+      } catch (_) {}
+    }
+    self.video.removeAttribute("controls");
+    self.video.setAttribute("autoplay", "");
+    self.video.setAttribute("muted", "");
+    self.video.muted = true;
+    self.video.setAttribute("playsinline", "");
+    self.video.setAttribute("webkit-playsinline", "");
+    self.video.setAttribute("preload", "auto");
+    self.video.setAttribute(
+      "controlsList",
+      "nodownload noplaybackrate noremoteplayback nofullscreen"
+    );
+    self.video.setAttribute("disablePictureInPicture", "");
+    self.video.src = url;
     self.lastTimestamp = null;
 
     if (self.isPlaying) {
-      self.video.play().catch(function (error) {
+      const playPromise = self.video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(function (error) {
         console.log("Video play failed:", error);
-      });
+        });
+      }
     }
   }, 300);
 
@@ -1460,7 +1511,7 @@ document.head.appendChild(styleElement);
 // Project data
 const projectsData = [
   {
-    videoUrl: "https://drive.google.com/uc?export=download&id=1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B",
+    videoUrl: "https://drive.google.com/file/d/1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B/preview",
     detailUrl: "#solarvita",
     githubUrl: "https://github.com/RuiSeca/SolarVita",
     liveUrl:
@@ -1468,27 +1519,27 @@ const projectsData = [
     modalId: "solarvita",
   },
   {
-    videoUrl: "https://drive.google.com/uc?export=download&id=1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA",
+    videoUrl: "https://drive.google.com/file/d/1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA/preview",
     detailUrl: "#savannah-bites",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
     liveUrl: "https://savannah-bites.onrender.com/",
     modalId: "savannah-bites",
   },
   {
-    videoUrl: "https://drive.google.com/uc?export=download&id=17Q3gGfb5s-9Zpori3g9oG_b07AkArErO",
+    videoUrl: "https://drive.google.com/file/d/17Q3gGfb5s-9Zpori3g9oG_b07AkArErO/preview",
     detailUrl: "#youtube-shorts-automation",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
     modalId: "youtube-shorts-automation",
   },
   {
-    videoUrl: "https://drive.google.com/uc?export=download&id=1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8",
+    videoUrl: "https://drive.google.com/file/d/1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8/preview",
     detailUrl: "#csrf-attack",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
     modalId: "CSRF Attack Demonstrator",
   },
   {
-    videoUrl: "https://drive.google.com/uc?export=download&id=1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP",
+    videoUrl: "https://drive.google.com/file/d/1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP/preview",
     detailUrl: "#weather-cast",
     githubUrl: "https://github.com/RuiSeca/weatherApp",
     liveUrl: "https://weather-cast-show.netlify.app/",
