@@ -453,7 +453,7 @@ const projectData = {
       <li class="description-text">Cross‑platform performance optimization</li>
     </ul>
   `,
-    videoUrl: "/assets/videos/solarvita-preview.mp4", // Replace with your actual video path
+    videoUrl: "https://drive.google.com/uc?export=download&id=1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B", // Hosted externally
     liveUrl:
       "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", // If you have a demo or app download link
     githubUrl: "https://github.com/RuiSeca/SolarVita", // Replace with your actual GitHub repo
@@ -508,7 +508,7 @@ const projectData = {
 
     <p><strong class="title-text">The result is a user-friendly, robust platform that ensures a seamless dining experience, from browsing the menu to completing the checkout process.</strong></p>
     `,
-    videoUrl: "/assets/videos/savannah-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA",
     liveUrl: "https://savannah-bites.onrender.com/",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
     technologies: [
@@ -563,7 +563,7 @@ const projectData = {
 
     <p><strong class="title-text">The result is a powerful automation tool that dramatically reduces the time and effort required to create and publish engaging YouTube Shorts content, empowering creators to maintain a consistent publishing schedule with high-quality short-form videos.</strong></p>
   `,
-    videoUrl: "/assets/videos/youtube-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=17Q3gGfb5s-9Zpori3g9oG_b07AkArErO",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
     technologies: [
       "Python",
@@ -630,7 +630,7 @@ const projectData = {
 
     <p><strong class="title-text">The result is a comprehensive security demonstration platform that effectively illustrates CSRF vulnerabilities and protection mechanisms through hands-on experience.</strong><br/><br/></p>
     `,
-    videoUrl: "/assets/videos/csrf-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8",
     liveUrl: "http://csrf.infinityfreeapp.com/public/index.php",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     technologies: [
@@ -686,7 +686,7 @@ const projectData = {
 
     <p><strong class="title-text">The result is a sleek, functional weather application that prioritizes user experience while delivering accurate, timely weather information.</strong><br/><br/></p>
   `,
-    videoUrl: "/assets/videos/weather-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP",
     liveUrl: "https://weather-cast-show.netlify.app/",
     githubUrl: "https://github.com/RuiSeca/weatherApp",
     technologies: [
@@ -1413,7 +1413,7 @@ document.head.appendChild(styleElement);
 // Project data
 const projectsData = [
   {
-    videoUrl: "/assets/videos/solarvita-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B",
     detailUrl: "#solarvita",
     githubUrl: "https://github.com/RuiSeca/SolarVita",
     liveUrl:
@@ -1421,27 +1421,27 @@ const projectsData = [
     modalId: "solarvita",
   },
   {
-    videoUrl: "/assets/videos/savannah-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA",
     detailUrl: "#savannah-bites",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
     liveUrl: "https://savannah-bites.onrender.com/",
     modalId: "savannah-bites",
   },
   {
-    videoUrl: "/assets/videos/youtube-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=17Q3gGfb5s-9Zpori3g9oG_b07AkArErO",
     detailUrl: "#youtube-shorts-automation",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
     modalId: "youtube-shorts-automation",
   },
   {
-    videoUrl: "/assets/videos/csrf-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8",
     detailUrl: "#csrf-attack",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
     modalId: "CSRF Attack Demonstrator",
   },
   {
-    videoUrl: "/assets/videos/weather-preview.mp4",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP",
     detailUrl: "#weather-cast",
     githubUrl: "https://github.com/RuiSeca/weatherApp",
     liveUrl: "https://weather-cast-show.netlify.app/",
