@@ -742,11 +742,12 @@ function openProjectModal(projectId) {
   // Update modal content (title + optional badge in header)
   const titleEl = modal.querySelector(".project-modal__title");
   if (titleEl) {
-    titleEl.innerHTML = `${project.title}${
-      project.badge
-        ? ` <span class="project-badge project-badge--header" aria-label="Project status">${project.badge}</span>`
-        : ""
-    }`;
+    const titleHtml = `<span class=\"project-modal__title-text\">${project.title}</span>`;
+    const badgeHtml = project.badge
+      ? ` <span class=\"project-badge project-badge--header\" aria-label=\"Project status\">${project.badge}</span>`
+      : "";
+    // Ensure badge sits immediately after the title text
+    titleEl.innerHTML = titleHtml + badgeHtml;
   }
 
   const modalBody = modal.querySelector(".project-modal__body");

@@ -1784,6 +1784,8 @@ body.modal-open {
   font-size: var(--h2-font-size);
   color: var(--title-color);
   margin: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
 .project-modal__close {
