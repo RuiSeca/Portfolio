@@ -725,21 +725,18 @@ function openProjectModal(projectId) {
   document.body.style.top = `-${scrollPosition}px`;
   document.body.classList.add("modal-open");
 
-  // Build Drive embed URL if needed
-  const isGoogleDrive = project.videoUrl && project.videoUrl.includes("drive.google.com");
-  let driveEmbedUrl = null;
-  if (isGoogleDrive) {
+  // Normalize Google Drive URL to direct download for HTML5 video
+  let videoSrc = project.videoUrl;
+  if (videoSrc && videoSrc.includes("drive.google.com")) {
     try {
-      const urlObj = new URL(project.videoUrl);
+      const urlObj = new URL(videoSrc);
       const idFromParam = urlObj.searchParams.get("id");
-      const fileId = idFromParam || project.videoUrl.match(/\/d\/([^/]+)/)?.[1] || "";
+      const idFromPreview = videoSrc.match(/\/file\/d\/([^/]+)/)?.[1] || null;
+      const fileId = idFromParam || idFromPreview;
       if (fileId) {
-        // Request autoplay & muted for better autoplay compatibility
-        driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview?autoplay=1&mute=1`;
+        videoSrc = `https://drive.google.com/uc?export=download&id=${fileId}`;
       }
-    } catch (e) {
-      // Fallback: leave driveEmbedUrl as null
-    }
+    } catch (_) {}
   }
 
   // Update modal content
@@ -772,12 +769,7 @@ function openProjectModal(projectId) {
             </p>
           </div>
 
-          ${
-            driveEmbedUrl
-              ? `<iframe class="project-iframe" src="${driveEmbedUrl}" title="${project.title} preview"
-                   allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>`
-              : `<video src="${project.videoUrl}" autoplay muted loop playsinline webkit-playsinline controls></video>`
-          }
+          <video src="${videoSrc}" autoplay muted loop playsinline webkit-playsinline></video>
         </div>
       `
         : ""
@@ -862,14 +854,7 @@ function openProjectModal(projectId) {
     });
   }
 
-  // Handle Google Drive iframe load
-  const iframe = modalBody.querySelector(".project-modal__video iframe");
-  if (iframe) {
-    iframe.addEventListener("load", function () {
-      const spinner = modalBody.querySelector(".spinner");
-      if (spinner) spinner.style.display = "none";
-    });
-  }
+  // No iframe used; rely on video events only
 
   // Show modal using CSS classes
   requestAnimationFrame(() => {
