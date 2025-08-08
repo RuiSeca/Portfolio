@@ -455,8 +455,8 @@ const projectData = {
   `,
     videoUrl: "https://drive.google.com/uc?export=download&id=1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B", // Hosted externally
     liveUrl:
-      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", // If you have a demo or app download link
-    githubUrl: "https://github.com/RuiSeca/SolarVita", // Replace with your actual GitHub repo
+      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", 
+    githubUrl: "https://github.com/RuiSeca/SolarVita", 
     technologies: [
       "Flutter",
       "Dart",
@@ -721,6 +721,22 @@ function openProjectModal(projectId) {
   document.body.style.top = `-${scrollPosition}px`;
   document.body.classList.add("modal-open");
 
+  // Build Drive embed URL if needed
+  const isGoogleDrive = project.videoUrl && project.videoUrl.includes("drive.google.com");
+  let driveEmbedUrl = null;
+  if (isGoogleDrive) {
+    try {
+      const urlObj = new URL(project.videoUrl);
+      const idFromParam = urlObj.searchParams.get("id");
+      const fileId = idFromParam || project.videoUrl.match(/\/d\/([^/]+)/)?.[1] || "";
+      if (fileId) {
+        driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      }
+    } catch (e) {
+      // Fallback: leave driveEmbedUrl as null
+    }
+  }
+
   // Update modal content
   modal.querySelector(".project-modal__title").textContent = project.title;
 
@@ -751,14 +767,12 @@ function openProjectModal(projectId) {
             </p>
           </div>
 
-          <video 
-            src="${project.videoUrl}" 
-            autoplay 
-            muted 
-            loop 
-            playsinline
-            webkit-playsinline
-          ></video>
+          ${
+            driveEmbedUrl
+              ? `<iframe class="project-iframe" src="${driveEmbedUrl}" title="${project.title} preview"
+                   allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>`
+              : `<video src="${project.videoUrl}" autoplay muted loop playsinline webkit-playsinline controls></video>`
+          }
         </div>
       `
         : ""
@@ -801,11 +815,44 @@ function openProjectModal(projectId) {
     video.addEventListener("loadeddata", function () {
       requestAnimationFrame(() => {
         video.style.opacity = "1";
-        const spinner = modalBody.querySelector(".loading-spinner");
+        const spinner = modalBody.querySelector(".spinner");
         if (spinner) {
           spinner.style.display = "none";
         }
       });
+    });
+
+    // Also hide loader when the video can play
+    video.addEventListener("canplay", function () {
+      const spinner = modalBody.querySelector(".spinner");
+      if (spinner) spinner.style.display = "none";
+    });
+
+    // Error fallback: hide spinner and show a link to open the video in a new tab
+    video.addEventListener("error", function () {
+      const spinner = modalBody.querySelector(".spinner");
+      if (spinner) spinner.style.display = "none";
+      const loadingMessage = modalBody.querySelector(".loading-message");
+      if (loadingMessage) loadingMessage.textContent = "Unable to load video. Open in a new tab:";
+      const container = modalBody.querySelector(".project-modal__video");
+      if (container && project.videoUrl) {
+        const fallback = document.createElement("a");
+        fallback.href = project.videoUrl;
+        fallback.target = "_blank";
+        fallback.rel = "noopener noreferrer";
+        fallback.className = "project-modal__button project-modal__button--outline";
+        fallback.textContent = "Open Video";
+        container.appendChild(fallback);
+      }
+    });
+  }
+
+  // Handle Google Drive iframe load
+  const iframe = modalBody.querySelector(".project-modal__video iframe");
+  if (iframe) {
+    iframe.addEventListener("load", function () {
+      const spinner = modalBody.querySelector(".spinner");
+      if (spinner) spinner.style.display = "none";
     });
   }
 
