@@ -453,7 +453,7 @@ const projectData = {
       <li class="description-text">Cross‑platform performance optimization</li>
     </ul>
   `,
-    videoUrl: "https://drive.google.com/uc?export=download&id=1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B", // Hosted externally
+    videoUrl: "https://drive.google.com/uc?export=download&id=1D-zD1BpM6kLWYHbhICQ3I3E3YwQAtiPp", // Hosted externally
     liveUrl:
       "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", 
     githubUrl: "https://github.com/RuiSeca/SolarVita", 
