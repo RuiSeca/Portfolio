@@ -725,16 +725,16 @@ function openProjectModal(projectId) {
   document.body.style.top = `-${scrollPosition}px`;
   document.body.classList.add("modal-open");
 
-  // Normalize Google Drive URL to direct download for HTML5 video
-  let videoSrc = project.videoUrl;
-  if (videoSrc && videoSrc.includes("drive.google.com")) {
+  // Build a Google Drive preview URL (no autoplay) when the source is Drive
+  let driveEmbedUrl = null;
+  if (project.videoUrl && project.videoUrl.includes("drive.google.com")) {
     try {
-      const urlObj = new URL(videoSrc);
+      const urlObj = new URL(project.videoUrl);
       const idFromParam = urlObj.searchParams.get("id");
-      const idFromPreview = videoSrc.match(/\/file\/d\/([^/]+)/)?.[1] || null;
+      const idFromPreview = project.videoUrl.match(/\/file\/d\/([^/]+)/)?.[1] || null;
       const fileId = idFromParam || idFromPreview;
       if (fileId) {
-        videoSrc = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
       }
     } catch (_) {}
   }
@@ -769,7 +769,11 @@ function openProjectModal(projectId) {
             </p>
           </div>
 
-          <video src="${videoSrc}" autoplay muted loop playsinline webkit-playsinline></video>
+          ${
+            driveEmbedUrl
+              ? `<iframe class="project-iframe" src="${driveEmbedUrl}" title="${project.title} preview" allow="encrypted-media" loading="lazy"></iframe>`
+              : `<video src="${project.videoUrl}" controls playsinline webkit-playsinline></video>`
+          }
         </div>
       `
         : ""
@@ -806,55 +810,29 @@ function openProjectModal(projectId) {
     </div>
   `;
 
-  // Handle video loading with spinner
+  // Hide loader on native video load
   const video = modalBody.querySelector("video");
   if (video) {
-    // Attempt programmatic autoplay in addition to autoplay attribute
-    try {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // If blocked, keep controls visible; user can start playback
-        });
-      }
-    } catch (_) {}
-
     video.addEventListener("loadeddata", function () {
       requestAnimationFrame(() => {
-        video.style.opacity = "1";
         const spinner = modalBody.querySelector(".spinner");
-        if (spinner) {
-          spinner.style.display = "none";
-        }
+        if (spinner) spinner.style.display = "none";
       });
     });
-
-    // Also hide loader when the video can play
-    video.addEventListener("canplay", function () {
-      const spinner = modalBody.querySelector(".spinner");
-      if (spinner) spinner.style.display = "none";
-    });
-
-    // Error fallback: hide spinner and show a link to open the video in a new tab
     video.addEventListener("error", function () {
       const spinner = modalBody.querySelector(".spinner");
       if (spinner) spinner.style.display = "none";
-      const loadingMessage = modalBody.querySelector(".loading-message");
-      if (loadingMessage) loadingMessage.textContent = "Unable to load video. Open in a new tab:";
-      const container = modalBody.querySelector(".project-modal__video");
-      if (container && project.videoUrl) {
-        const fallback = document.createElement("a");
-        fallback.href = project.videoUrl;
-        fallback.target = "_blank";
-        fallback.rel = "noopener noreferrer";
-        fallback.className = "project-modal__button project-modal__button--outline";
-        fallback.textContent = "Open Video";
-        container.appendChild(fallback);
-      }
     });
   }
 
-  // No iframe used; rely on video events only
+  // Hide loader when Drive iframe loads
+  const iframe = modalBody.querySelector(".project-iframe");
+  if (iframe) {
+    iframe.addEventListener("load", function () {
+      const spinner = modalBody.querySelector(".spinner");
+      if (spinner) spinner.style.display = "none";
+    });
+  }
 
   // Show modal using CSS classes
   requestAnimationFrame(() => {
