@@ -418,6 +418,7 @@ async function handleDownload() {
 const projectData = {
   solarvita: {
     title: "SolarVita",
+    badge: "Still in development",
     description: `
     <p><strong class="title-text">SolarVita</strong> is a comprehensive Flutter + Firebase app that blends fitness tracking with sustainability.</p>
 
@@ -738,6 +739,7 @@ function openProjectModal(projectId) {
       project.videoUrl
         ? `
         <div class="project-modal__video">
+          ${project.badge ? `<div class="project-badge" aria-label="Project status">${project.badge}</div>` : ""}
           <div class="loading-container">
             <div class="spinner">
               <div class="spinnerin"></div>
