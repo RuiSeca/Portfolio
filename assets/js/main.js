@@ -1242,9 +1242,9 @@ StoryViewer.prototype.loadVideo = function () {
 
   setTimeout(function () {
     self.modalContent.classList.remove("sliding-left", "sliding-right");
-    // Configure story video for autoplay, inline, no controls, highest available quality source
-    // Normalize Google Drive URLs for HTML5 <video> playback
+    // Revert to non-autoplay story, keep inline playback and show no controls overlay
     let url = self.projects[self.currentIndex].videoUrl;
+    // For Drive sources, prefer preview URL for reliability
     if (url && url.includes("drive.google.com")) {
       try {
         const previewMatch = url.match(/\/file\/d\/([^/]+)/);
@@ -1259,33 +1259,20 @@ StoryViewer.prototype.loadVideo = function () {
         })();
         const fileId = idFromPreview || idFromQuery;
         if (fileId) {
-          url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+          url = `https://drive.google.com/file/d/${fileId}/preview`;
         }
       } catch (_) {}
     }
     self.video.removeAttribute("controls");
-    self.video.setAttribute("autoplay", "");
-    self.video.setAttribute("muted", "");
+    self.video.removeAttribute("autoplay");
     self.video.muted = true;
     self.video.setAttribute("playsinline", "");
     self.video.setAttribute("webkit-playsinline", "");
-    self.video.setAttribute("preload", "auto");
-    self.video.setAttribute(
-      "controlsList",
-      "nodownload noplaybackrate noremoteplayback nofullscreen"
-    );
-    self.video.setAttribute("disablePictureInPicture", "");
+    self.video.setAttribute("preload", "metadata");
     self.video.src = url;
     self.lastTimestamp = null;
 
-    if (self.isPlaying) {
-      const playPromise = self.video.play();
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(function (error) {
-        console.log("Video play failed:", error);
-        });
-      }
-    }
+    // Do not force autoplay; respect user gesture
   }, 300);
 
   this.lastIndex = this.currentIndex;
