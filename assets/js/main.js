@@ -418,7 +418,7 @@ async function handleDownload() {
 const projectData = {
   solarvita: {
     title: "SolarVita",
-    badge: "Still in development",
+    badge: "Still in development - Last Update - 03/10/2025",
     description: `
     <p><strong class="title-text">SolarVita</strong> is a comprehensive Flutter + Firebase app that blends fitness tracking with sustainability.</p>
 
@@ -453,10 +453,11 @@ const projectData = {
       <li class="description-text">Cross‑platform performance optimization</li>
     </ul>
   `,
-    videoUrl: "https://drive.google.com/uc?export=download&id=1D-zD1BpM6kLWYHbhICQ3I3E3YwQAtiPp", // Hosted externally
+    videoUrl:
+      "https://drive.google.com/uc?export=download&id=1airIEh5Sh6EGtV8fu8v9IUbjxnNnlumj", // Hosted externally
     liveUrl:
-      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0", 
-    githubUrl: "https://github.com/RuiSeca/SolarVita", 
+      "https://appetize.io/app/b_rxogvdttof7mtfketikb3um234?device=pixel7&osVersion=13.0",
+    githubUrl: "https://github.com/RuiSeca/SolarVita",
     technologies: [
       "Flutter 3.6+",
       "Dart",
@@ -512,7 +513,8 @@ const projectData = {
 
     <p><strong class="title-text">The result is a user-friendly, robust platform that ensures a seamless dining experience, from browsing the menu to completing the checkout process.</strong></p>
     `,
-    videoUrl: "https://drive.google.com/uc?export=download&id=1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA",
+    videoUrl:
+      "https://drive.google.com/uc?export=download&id=1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA",
     liveUrl: "https://savannah-bites.onrender.com/",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
     technologies: [
@@ -567,7 +569,8 @@ const projectData = {
 
     <p><strong class="title-text">The result is a powerful automation tool that dramatically reduces the time and effort required to create and publish engaging YouTube Shorts content, empowering creators to maintain a consistent publishing schedule with high-quality short-form videos.</strong></p>
   `,
-    videoUrl: "https://drive.google.com/uc?export=download&id=17Q3gGfb5s-9Zpori3g9oG_b07AkArErO",
+    videoUrl:
+      "https://drive.google.com/uc?export=download&id=17Q3gGfb5s-9Zpori3g9oG_b07AkArErO",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
     technologies: [
       "Python",
@@ -634,7 +637,8 @@ const projectData = {
 
     <p><strong class="title-text">The result is a comprehensive security demonstration platform that effectively illustrates CSRF vulnerabilities and protection mechanisms through hands-on experience.</strong><br/><br/></p>
     `,
-    videoUrl: "https://drive.google.com/uc?export=download&id=1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8",
+    videoUrl:
+      "https://drive.google.com/uc?export=download&id=1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8",
     liveUrl: "http://csrf.infinityfreeapp.com/public/index.php",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     technologies: [
@@ -690,7 +694,8 @@ const projectData = {
 
     <p><strong class="title-text">The result is a sleek, functional weather application that prioritizes user experience while delivering accurate, timely weather information.</strong><br/><br/></p>
   `,
-    videoUrl: "https://drive.google.com/uc?export=download&id=1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP",
+    videoUrl:
+      "https://drive.google.com/uc?export=download&id=1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP",
     liveUrl: "https://weather-cast-show.netlify.app/",
     githubUrl: "https://github.com/RuiSeca/weatherApp",
     technologies: [
@@ -731,7 +736,8 @@ function openProjectModal(projectId) {
     try {
       const urlObj = new URL(project.videoUrl);
       const idFromParam = urlObj.searchParams.get("id");
-      const idFromPreview = project.videoUrl.match(/\/file\/d\/([^/]+)/)?.[1] || null;
+      const idFromPreview =
+        project.videoUrl.match(/\/file\/d\/([^/]+)/)?.[1] || null;
       const fileId = idFromParam || idFromPreview;
       if (fileId) {
         driveEmbedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
@@ -1468,7 +1474,8 @@ document.head.appendChild(styleElement);
 // Project data
 const projectsData = [
   {
-    videoUrl: "https://drive.google.com/file/d/1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/1DUXyvZCe8zWXwdp5XbIZT2Y6217N1F6B/preview",
     detailUrl: "#solarvita",
     githubUrl: "https://github.com/RuiSeca/SolarVita",
     liveUrl:
@@ -1476,27 +1483,31 @@ const projectsData = [
     modalId: "solarvita",
   },
   {
-    videoUrl: "https://drive.google.com/file/d/1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/1SKRz450XEn_5nyob9TL8j6XQ_miP8MPA/preview",
     detailUrl: "#savannah-bites",
     githubUrl: "https://github.com/RuiSeca/savannah-bites",
     liveUrl: "https://savannah-bites.onrender.com/",
     modalId: "savannah-bites",
   },
   {
-    videoUrl: "https://drive.google.com/file/d/17Q3gGfb5s-9Zpori3g9oG_b07AkArErO/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/17Q3gGfb5s-9Zpori3g9oG_b07AkArErO/preview",
     detailUrl: "#youtube-shorts-automation",
     githubUrl: "https://github.com/RuiSeca/youtube-automation",
     modalId: "youtube-shorts-automation",
   },
   {
-    videoUrl: "https://drive.google.com/file/d/1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8/preview",
     detailUrl: "#csrf-attack",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
     liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
     modalId: "CSRF Attack Demonstrator",
   },
   {
-    videoUrl: "https://drive.google.com/file/d/1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP/preview",
+    videoUrl:
+      "https://drive.google.com/file/d/1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP/preview",
     detailUrl: "#weather-cast",
     githubUrl: "https://github.com/RuiSeca/weatherApp",
     liveUrl: "https://weather-cast-show.netlify.app/",
