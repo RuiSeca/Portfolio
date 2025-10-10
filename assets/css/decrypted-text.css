@@ -1,0 +1,26 @@
+/* Decrypted Text Effect Styles */
+
+.encrypted {
+  opacity: 0.7;
+  color: var(--first-color);
+  transition: opacity 0.3s ease;
+}
+
+.revealed {
+  opacity: 1;
+  color: var(--title-color);
+  transition: opacity 0.3s ease;
+}
+
+/* Optional: Add glow effect to encrypted characters */
+.encrypted {
+  text-shadow: 0 0 8px rgba(var(--hue), 70%, 50%, 0.5);
+}
+
+/* Ensure smooth transitions */
+.home__subtitle span span,
+.home__title span span,
+#home__description span span {
+  display: inline-block;
+  transition: all 0.3s ease;
+}

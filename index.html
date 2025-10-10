@@ -23,10 +23,21 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com?plugins=corePlugins.preflight=false"></script>
+    <!-- Variable Font for Proximity Effect -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
+
+    <!-- Preconnect to CDNs for faster loading -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/logo-loop.css" />
+    <link rel="stylesheet" href="assets/css/card-swap.css" />
+    <link rel="stylesheet" href="assets/css/decrypted-text.css" />
+    <!-- Modern header must load LAST to override any conflicting styles -->
+    <link rel="stylesheet" href="assets/css/modern-header.css" />
 
     <title>Portfolio - Rui Miguel</title>
   </head>
@@ -63,39 +74,17 @@
               <a href="#contact" class="nav__link">Contact</a>
             </li>
           </ul>
-          <div class="nav__togg">
-            <span id="theme-label" class="theme-label">Theme:</span>
-            <label for="toggle-checkbox">
-              <input
-                id="toggle-checkbox"
-                class="toggle-checkbox"
-                type="checkbox"
-                aria-labelledby="theme-label"
-                onclick="toggleMode()"
-              />
-              <div class="toggle-slot">
-                <div class="moon-icon-wrapper">
-                  <div
-                    class="iconify moon-icon"
-                    data-icon="feather-moon"
-                    data-inline="false"
-                  ></div>
-                </div>
-                <div class="toggle-button"></div>
-                <div class="sun-icon-wrapper">
-                  <div
-                    class="iconify sun-icon"
-                    data-icon="feather-sun"
-                    data-inline="false"
-                  ></div>
-                </div>
-              </div>
-            </label>
-          </div>
+
+          <!-- Theme toggle inside mobile menu -->
+          <i class="ri-moon-line change-theme" id="theme-button-mobile"></i>
+
           <div class="nav__close" id="nav-close">
             <i class="ri-close-line"></i>
           </div>
         </div>
+
+        <!-- Simple theme toggle icon (desktop only) -->
+        <i class="ri-moon-line change-theme" id="theme-button"></i>
 
         <div class="nav__toggle" id="nav-toggle">
           <i class="ri-menu-line"></i>
@@ -106,6 +95,7 @@
     <main class="main">
       <!--==================== HOME ====================-->
       <section class="home section" id="home">
+        <div id="galaxy-background" class="galaxy-background"></div>
         <div class="home__container container grid">
           <div class="home__content">
             <div class="home__data">
@@ -345,121 +335,52 @@
       </section>
       
       
-      <!--==================== SKILLS ====================-->
-      <section class="skills section">
-        <div class="header__skills">
-          <h1>Key Skills</h1>
+      <!--==================== SKILLS - LOGO LOOP ====================-->
+      <section class="logo-loop-section section">
+        <div class="logo-loop-header">
+          <h1>Technologies & Skills</h1>
         </div>
 
-        <div class="skills__container">
-          <!-- Skill Box: HTML -->
-          <div class="skills__box">
-            <div class="skills__name">
-              <div class="img">
-                <img
-                  src="assets/img/html.png"
-                  class="skills__icon"
-                  alt="HTML Logo"
-                />
-              </div>
-              <h3>HTML</h3>
+        <div class="logo-loop-container">
+          <div class="logo-loop-track" id="logo-track">
+            <!-- Logos will be duplicated by JavaScript for infinite scroll -->
+            <div class="logo-item">
+              <img src="assets/img/html.png" alt="HTML" class="logo-icon" />
+              <span class="logo-name">HTML</span>
             </div>
-            <p>
-              HTML, the magic behind web pages, is like the code that brings my
-              online persona to life.
-            </p>
-          </div>
-
-          <!-- Skill Box: C# -->
-          <div class="skills__box">
-            <div class="skills__name">
-              <div class="img">
-                <img
-                  src="assets/img/c.png"
-                  class="skills__icon"
-                  alt="C# Logo"
-                />
-              </div>
-              <h3>C Sharp</h3>
+            <div class="logo-item">
+              <img src="assets/img/c.png" alt="C#" class="logo-icon" />
+              <span class="logo-name">C Sharp</span>
             </div>
-            <p>
-              Crafting in C#, just like I sculpt code, blending logic with
-              creativity to bring software to life.
-            </p>
-          </div>
-
-          <!-- Skill Box: Azure -->
-          <div class="skills__box">
-            <div class="skills__name">
-              <div class="img">
-                <img
-                  src="assets/img/azure.png"
-                  class="skills__icon"
-                  alt="Azure Logo"
-                />
-              </div>
-              <h3>Azure</h3>
+            <div class="logo-item">
+              <img src="assets/img/azure.png" alt="Azure" class="logo-icon" />
+              <span class="logo-name">Azure</span>
             </div>
-            <p>
-              Navigating Azure like a digital maestro, orchestrating cloud
-              resources to compose the symphony of my online world.
-            </p>
-          </div>
-
-          <!-- Skill Box: Java -->
-          <div class="skills__box">
-            <div class="skills__name">
-              <div class="img">
-                <img
-                  src="assets/img/java.png"
-                  class="skills__icon"
-                  alt="Java Logo"
-                />
-              </div>
-              <h3>Java Script</h3>
+            <div class="logo-item">
+              <img src="assets/img/java.png" alt="JavaScript" class="logo-icon" />
+              <span class="logo-name">JavaScript</span>
             </div>
-            <p>
-              In the realm of JavaScript, I wield the power of interactivity,
-              shaping dynamic online experiences that reflect my coding finesse.
-            </p>
-          </div>
-
-          <div class="skills__box">
-            <div class="skills__name">
-              <div class="img">
-                <img
-                  src="assets/img/net.png"
-                  class="skills__icon"
-                  alt="Net Logo"
-                />
-              </div>
-              <h3>.Net</h3>
+            <div class="logo-item">
+              <img src="assets/img/net.png" alt=".NET" class="logo-icon" />
+              <span class="logo-name">.NET</span>
             </div>
-            <p>
-              In the expansive world of .NET, I code my digital universe with
-              precision and versatility, sculpting applications that mirror the
-              intricacies of my tech-driven aspirations.
-            </p>
-          </div>
-
-          <div class="skills__box">
-            <div class="skills__name">
-              <div class="img">
-                <img
-                  src="assets/img/rest.png"
-                  class="skills__icon"
-                  alt="Rest Logo"
-                />
-              </div>
-              <h3>Rest</h3>
+            <div class="logo-item">
+              <img src="assets/img/rest.png" alt="REST API" class="logo-icon" />
+              <span class="logo-name">REST API</span>
             </div>
-            <p>
-              In the REST, I architect my digital interactions, weaving
-              simplicity and efficiency into the fabric of my online presence.
-            </p>
+            <div class="logo-item">
+              <img src="assets/img/flutter.png" alt="Flutter" class="logo-icon" />
+              <span class="logo-name">Flutter</span>
+            </div>
+            <div class="logo-item">
+              <img src="assets/img/aws.png" alt="AWS" class="logo-icon" />
+              <span class="logo-name">AWS</span>
+            </div>
+            <div class="logo-item">
+              <img src="assets/img/firebase.png" alt="Firebase" class="logo-icon" />
+              <span class="logo-name">Firebase</span>
+            </div>
           </div>
-
-          <!-- Navigation Button -->
         </div>
       </section>
 
@@ -639,7 +560,7 @@
       <!--==================== PORTFOLIO ====================-->
 
       <!-- Complete integrated career section with hologram piano -->
-    
+      <section class="career section" id="career">
         <div class="container">
           <!-- Headings -->
           <h2 class="section__subtitle-piano">Career Progression</h2>
@@ -682,45 +603,58 @@
       </section>
 
       <!--==================== SERVICES ====================-->
-      <section class="services section" id="services">
+      <section class="card-swap-section section" id="services">
         <h3 class="section__subtitle">Services</h3>
-
         <h2 class="section__title">What <span>I</span> Do</h2>
 
-        <div class="services__container container grid">
-          <article class="services__card">
-            <i class="ri-layout-3-line services__icon"></i>
-
-            <h2 class="services__title">Web Developer</h2>
-
-            <p class="services__description">
-              Reating the digital tapestry of the internet<br />
-              one line of code at a time. <br />
+        <div class="card-swap-content">
+          <!-- Left side: Text content -->
+          <div class="card-swap-text">
+            <h3>Full-Stack Development Services</h3>
+            <p>
+              Specializing in modern web development, Flutter mobile apps,
+              and secure database architecture. Ready to bring your vision to life.
             </p>
-          </article>
+            <div class="click-hint">
+              <i class="ri-arrow-right-line"></i>
+              <span>Click any card to explore</span>
+            </div>
+          </div>
 
-          <article class="services__card">
-            <i class="ri-smartphone-fill services__icon"></i>
+          <!-- Right side: Card stack -->
+          <div class="card-swap-wrapper">
+            <div class="card-swap-container">
+              <div class="swap-card">
+                <i class="ri-layout-3-line swap-card__icon"></i>
+                <h2 class="swap-card__title">Web Development</h2>
+                <p class="swap-card__description">
+                  Full-stack web applications with modern JavaScript frameworks,
+                  RESTful APIs, and responsive design. From landing pages to
+                  complex platforms—scalable and maintainable solutions.
+                </p>
+              </div>
 
-            <h2 class="services__title">Mobile Developer</h2>
+              <div class="swap-card">
+                <i class="ri-smartphone-fill swap-card__icon"></i>
+                <h2 class="swap-card__title">Mobile Development</h2>
+                <p class="swap-card__description">
+                  Cross-platform mobile apps with Flutter. Native performance,
+                  beautiful UI, and seamless iOS/Android deployment. Build once,
+                  run everywhere with consistent user experience.
+                </p>
+              </div>
 
-            <p class="services__description">
-              Crafting sleek and seamless experiences<br />
-              for your pocket-sized companions.<br />
-            </p>
-          </article>
-
-          <article class="services__card">
-            <i class="ri-database-2-fill services__icon"></i>
-
-            <h2 class="services__title">DataBase</h2>
-
-            <p class="services__description">
-              Architecting the data realms<br />
-              where information reigns supreme<br />
-              and the ensurence of an end to end point is secure.
-            </p>
-          </article>
+              <div class="swap-card">
+                <i class="ri-database-2-fill swap-card__icon"></i>
+                <h2 class="swap-card__title">Database Solutions</h2>
+                <p class="swap-card__description">
+                  Secure database architecture with MongoDB, SQL, Azure, AWS, and Firebase.
+                  Data modeling, optimization, and cloud integration. Ensuring
+                  your data is safe, fast, and scalable.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -862,10 +796,32 @@
     <!-- EmailJS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
+    <!-- GSAP Library for Card Swap Animation -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
+    <!-- OGL Library for Galaxy Background -->
+    <script type="importmap">
+    {
+      "imports": {
+        "ogl": "https://cdn.jsdelivr.net/npm/ogl@1.0.11/+esm"
+      }
+    }
+    </script>
+
+    <!-- Galaxy Background - deferred for performance -->
+    <script type="module" defer src="assets/js/init-galaxy.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="assets/js/main.js"></script>
+
+    <!-- Card Swap Animation -->
+    <script src="assets/js/card-swap.js"></script>
+
+    <!-- Decrypted Text Effect -->
+    <script src="assets/js/decrypted-text.js"></script>
+
+    <!-- Variable Font Proximity Effect -->
+    <script src="assets/js/variable-proximity.js"></script>
 
     <!-- Custom ChatBot -->
     <script src="https://cdn.lordicon.com/lordicon.js"></script>

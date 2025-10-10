@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        #info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        #galaxy-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        canvas {
+            display: block;
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>Galaxy Background Test</h1>
+        <p id="status">Loading...</p>
+        <p>Check browser console for errors</p>
+    </div>
+
+    <div id="galaxy-container"></div>
+
+    <!-- OGL Library -->
+    <script src="assets/js/ogl.umd.js"></script>
+
+    <!-- Galaxy Background Script -->
+    <script src="assets/js/galaxy.js"></script>
+
+    <!-- Initialize -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = document.getElementById('status');
+
+            // Check if OGL loaded
+            if (typeof OGL === 'undefined') {
+                status.textContent = '❌ OGL library not loaded!';
+                status.style.color = 'red';
+                console.error('OGL not loaded');
+                return;
+            }
+
+            status.textContent = '✓ OGL loaded. Initializing galaxy...';
+            console.log('OGL loaded:', OGL);
+
+            // Check if initGalaxy function exists
+            if (typeof initGalaxy !== 'function') {
+                status.textContent = '❌ initGalaxy function not found!';
+                status.style.color = 'red';
+                console.error('initGalaxy function not found');
+                return;
+            }
+
+            console.log('initGalaxy function found');
+
+            // Initialize galaxy
+            const result = initGalaxy('galaxy-container', {
+                focal: [0.5, 0.5],
+                rotation: [1.0, 0.0],
+                starSpeed: 0.5,
+                density: 1,
+                hueShift: 140,
+                disableAnimation: false,
+                speed: 1.0,
+                mouseInteraction: true,
+                glowIntensity: 0.3,
+                saturation: 0.0,
+                mouseRepulsion: true,
+                repulsionStrength: 2,
+                twinkleIntensity: 0.3,
+                rotationSpeed: 0.05,
+                autoCenterRepulsion: 0,
+                transparent: true
+            });
+
+            if (result) {
+                status.textContent = '✅ Galaxy initialized successfully!';
+                status.style.color = 'lime';
+            } else {
+                status.textContent = '❌ Galaxy initialization failed!';
+                status.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>

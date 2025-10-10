@@ -72,6 +72,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 input,
@@ -85,6 +86,8 @@ body {
 body {
   background-color: var(--body-color);
   color: var(--text-color);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 input,
@@ -132,6 +135,8 @@ svg {
 
 .section {
   padding-block: 5rem 2rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 .section__title,
@@ -234,14 +239,7 @@ svg {
   color: var(--first-color);
 }
 
-.white-mode .header {
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.white-mode .nav__link:hover {
-  color: var(--first-color);
-}
+/* Old header styles removed - using modern-header.css instead */
 
 .white-mode .home {
   background-color: var(--body-color);
@@ -260,16 +258,7 @@ svg {
   stroke: var(--first-color);
 }
 
-.white-mode .contact__input {
-  background-color: #f0f0f0; /* Light gray for input fields */
-  color: var(--text-color);
-  border: 1px solid #e0e0e0;
-}
-
-.white-mode .contact__input:focus {
-  border-color: var(--first-color);
-  box-shadow: 0 0 10px rgba(var(--hue), 70%, 45%, 0.2);
-}
+/* Contact input styles moved to main contact section */
 
 .white-mode .skills__box,
 .white-mode .card,
@@ -380,22 +369,7 @@ svg {
   z-index: 2;
 }
 
-.white-mode .card {
-  background: black;
-}
-
-.white-mode .card__text {
-  color: white;
-}
-
-.white-mode .card_title {
-  color: var(--first-color);
-}
-
-.white-mode .nav {
-  background: rgba(255, 255, 255, 0.1); /* Adjust alpha for transparency */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+/* White mode nav styles moved to modern-header.css */
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .white-mode .header__skills {
@@ -435,30 +409,12 @@ svg {
   }
 }
 
-.white-mode .contact__input {
-  margin-bottom: 1rem;
-  background-color: var(--container-color);
-  color: var(--text-color);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s ease;
-}
+/* Duplicate contact input style removed */
 
-@media screen and (max-width: 768px) {
-  .white-mode .nav__links {
-    background-color: #ffffff;
-  }
-}
+/* White mode mobile nav styles moved to modern-header.css */
 
 /*=============== HEADER & NAV ===============*/
-/* Default styles (Desktop) */
-
-.header {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
+/* Header styles moved to modern-header.css */
 
 .toggle-checkbox {
   position: absolute;
@@ -546,242 +502,7 @@ svg {
 }
 
 /*=============== NAV ===============*/
-
-.nav {
-  height: var(--header-height);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem;
-  background: var(--container-color);
-}
-
-.nav.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.nav__logo {
-  color: var(--title-color);
-  font-weight: var(--font-medium);
-}
-
-.nav__logo span {
-  color: var(--first-color);
-}
-
-/* Center the nav links */
-.nav__links {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.nav__list {
-  display: flex;
-  column-gap: 2rem;
-  list-style: none;
-}
-
-.nav__link {
-  color: var(--title-color);
-  font-weight: var(--font-medium);
-  transition: color 0.4s ease;
-}
-
-.nav__link:hover {
-  color: var(--first-color);
-}
-
-.nav__toggle,
-.nav__close {
-  display: none;
-}
-
-/* Theme toggle styles */
-.nav__togg {
-  display: absolute;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-/* Mobile styles */
-@media screen and (max-width: 768px) {
-  .nav {
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  .nav__links {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 75%;
-    height: 100%;
-    padding: 4.5rem 0 0 3rem;
-    backdrop-filter: blur(24px);
-    transition: right 0.4s cubic-bezier(0.75, 0, 0.25, 1);
-    background-color: rgba(30, 30, 30, 0.95);
-    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.7);
-    border-left: 2px solid var(--first-color);
-    transform: none;
-    left: auto;
-  }
-
-  .nav__list {
-    flex-direction: column;
-    row-gap: 3rem;
-  }
-
-  .nav__link {
-    color: var(--title-color);
-    font-size: 1.2rem;
-    padding: 10px 0;
-  }
-
-  .nav__link:hover {
-    color: var(--first-color);
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
-  }
-
-  .nav__toggle,
-  .nav__close {
-    display: flex;
-    font-size: 1.25rem;
-    color: var(--title-color);
-    cursor: pointer;
-  }
-
-  .nav__close {
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-size: 1.5rem;
-    transition: transform 0.4s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .nav__close:hover {
-    transform: rotate(90deg);
-  }
-
-  .nav__toggle {
-    margin-left: auto;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .nav__open {
-    right: 0;
-  }
-
-  .nav__togg {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background-color: var(--container-color);
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-  }
-
-  .theme-label {
-    font-size: 0.85rem;
-  }
-}
-
-/* Desktop styles */
-@media screen and (min-width: 768px) {
-  .nav {
-    max-width: var(--max-width);
-    margin: 0 auto;
-  }
-
-  .nav__links {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .nav__list {
-    margin-right: 0;
-  }
-
-  .nav__togg {
-    position: fixed;
-    right: 2rem;
-    top: calc(var(--header-height) / 45);
-    transform: translateY(-50%) scale(0.95);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-  }
-}
-/* Large screens */
-@media screen and (min-width: 769px) {
-  .nav__togg {
-    margin-left: 1.5rem;
-    background: transparent;
-    padding: 0;
-    box-shadow: none;
-  }
-
-  .theme-label {
-    font-size: 0.9rem;
-    margin-right: 0.5rem;
-    opacity: 0.9;
-  }
-
-  /* Simpler hover effect */
-  .nav__togg:hover {
-    opacity: 0.8;
-  }
-}
-
-/* Mobile screens */
-@media screen and (max-width: 480px) {
-  .nav__togg {
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .theme-label {
-    font-size: 0.8rem;
-  }
-
-  .nav {
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  /* When menu is open */
-  .show-menu .nav__togg {
-    position: static;
-    margin: 1rem 0;
-    justify-content: center;
-    box-shadow: none;
-    background-color: transparent;
-  }
-
-  .nav {
-    background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-}
-
-/* Very small screens */
-@media screen and (max-width: 350px) {
-  .nav__togg {
-    padding: 0.3rem 0.6rem;
-  }
-
-  .theme-label {
-    font-size: 0.75rem;
-  }
-}
+/* All nav and header styles are in modern-header.css */
 /*=============== HOME ===============*/
 .home {
   background-color: var(--container-color);
@@ -793,6 +514,26 @@ svg {
   height: 100vh; /* Full viewport height */
   padding: 0; /* Remove any default padding */
   margin: 0; /* Remove any default margin */
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Galaxy Background */
+.galaxy-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: all;
+}
+
+.galaxy-background canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
 /* Center the .container */
@@ -808,26 +549,27 @@ svg {
 }
 
 /* Center the .home__data and .home__social elements within the .home section */
-.home {
-  background-color: var(--container-color);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center; /* Center text content */
-  /* Adjust padding and row-gap as needed */
+.home__container {
+  position: relative;
+  z-index: 1;
   padding-top: 4.25rem;
-  row-gap: 2.25rem;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
 .home__content {
   display: grid;
   row-gap: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .home__subtitle,
 .home__education {
   font-size: var(--bigger-font-size);
+  font-family: 'Roboto Flex', sans-serif;
+  font-variation-settings: 'wght' 400;
 }
 
 .hidden {
@@ -854,6 +596,8 @@ span {
 .home__title {
   font-size: var(--biggest-font-size);
   font-weight: var(--font-semi-bold);
+  font-family: 'Roboto Flex', sans-serif;
+  font-variation-settings: 'wght' 400;
 }
 
 .home__description {
@@ -883,7 +627,9 @@ span {
   width: 265px;
   fill: var(--first-color);
   filter: drop-shadow(0 12px 12px hsla(var(--hue), 100%, 40%, 0.2));
-  margin-top: 1rem;
+  margin: 1rem auto 0;
+  display: block;
+  max-width: 100%;
 }
 
 .label {
@@ -1121,6 +867,10 @@ span {
 /* Default styles (for larger screens) */
 .about__container {
   row-gap: 2.5rem;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .about__data {
@@ -1137,13 +887,18 @@ span {
 }
 
 .about__image {
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .about__blob {
   width: 300px;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
 }
 
 .about__blob path {
@@ -1231,10 +986,18 @@ span {
 .contact__input {
   padding: 1rem 1.25rem;
   border-radius: 0.5rem;
-  background-color: var(--container-color);
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--title-color);
-  border: 2px solid transparent;
   transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.white-mode .contact__input {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
 }
 
 .contact__input:focus {
@@ -1290,9 +1053,9 @@ span {
   height: 60px;
   position: relative;
   z-index: 1;
-}
-.wrapper {
   visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 .circle {
   width: 20px;
@@ -1546,9 +1309,12 @@ span {
 .card {
   width: 16em;
   height: auto;
-  background: var(--container-color);
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1.5em;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   padding: 1.5rem 1em;
   display: flex;
   align-items: center;
@@ -1556,6 +1322,12 @@ span {
   margin: 0 1em;
   margin-top: 3em;
   margin-bottom: 5em;
+}
+
+.white-mode .card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .swiper-slide:not(.swiper-slide-active) {
@@ -1602,6 +1374,11 @@ span {
   padding: 3px;
   margin-bottom: 1.5em;
   cursor: pointer;
+  overflow: hidden;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card__image:hover {
@@ -1617,6 +1394,7 @@ span {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  display: block;
 }
 
 .card__content {
@@ -2461,7 +2239,7 @@ body.modal-open {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8rem;
+  margin: 0 auto 8rem auto;
   background: linear-gradient(to bottom, #766856, #5c4934);
   padding: 1.5rem;
   border-radius: 8px;
@@ -2471,7 +2249,6 @@ body.modal-open {
 
 #piano-container {
   width: 100%;
-  max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -2679,9 +2456,11 @@ body.modal-open {
 .journey-container {
   position: relative;
   width: 100%;
-  min-height: 3rem;
-  margin-top: 1rem; /* Reduced margin to bring cards closer to piano */
-  padding-top: 1rem;
+  min-height: 200px;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .journey-card {
@@ -2698,6 +2477,8 @@ body.modal-open {
   transform-style: preserve-3d;
   z-index: 10;
   overflow: hidden;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /*
@@ -2792,9 +2573,12 @@ html {
   }
 
   .piano-container {
-    transform: scale(0.7);
+    transform-origin: center center;
     margin-bottom: 3rem;
     width: 584px; /* Keep original width, let scale handle the resizing */
+    position: relative;
+    left: 50% !important;
+    transform: translateX(-50%) scale(0.7) !important;
   }
 
   .career.section {
@@ -2809,9 +2593,12 @@ html {
   }
 
   .piano-container {
-    transform: scale(1);
+    transform-origin: center center;
     margin-bottom: 3rem;
     width: fit-content;
+    position: relative;
+    left: 50% !important;
+    transform: translateX(-50%) scale(1) !important;
   }
 
   .keys-container {
@@ -2829,26 +2616,21 @@ html {
   }
 
   .journey-container {
-    margin-top: 1rem;
+    margin-top: 2rem;
     display: flex;
     justify-content: center;
-    min-height: 16rem;
+    align-items: flex-start;
+    min-height: 180px;
     width: 100%;
   }
 
   .journey-card {
     width: 90%;
     max-width: 320px;
-    position: absolute;
-    left: 50% !important;
-    transform: translateX(-50%);
-    opacity: 0;
+    position: relative;
+    left: auto !important;
+    transform: none;
     transition: all 0.4s ease-in-out;
-  }
-
-  .journey-card.active {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -2860,8 +2642,12 @@ html {
 
   .piano-container {
     transform: scale(0.5);
+    transform-origin: center center;
     margin-bottom: 2rem;
     width: 584px; /* Keep original width, let scale handle the resizing */
+    position: relative;
+    left: 50% !important;
+    transform: translateX(-50%) scale(0.5) !important;
   }
 
   .keys-container {
@@ -2952,7 +2738,10 @@ html {
 
   .piano-container {
     transform: scale(0.8);
+    transform-origin: center center;
     margin-bottom: 6rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .journey-card {
@@ -2968,7 +2757,10 @@ html {
 @media screen and (max-width: 480px) {
   .piano-container {
     transform: scale(0.6);
+    transform-origin: center center;
     margin-bottom: 4rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .journey-card {
@@ -3540,6 +3332,10 @@ html {
   transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
   border: 2px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
 #scrollTopButton:hover {
@@ -3555,7 +3351,7 @@ html {
 
 
 .scroll-show {
-  display: block; /* Make visible */
+  display: flex; /* Make visible with flex for centering */
   transform: scale(1); /* Zoom in */
   opacity: 1; /* Fully visible */
 }
@@ -3571,6 +3367,9 @@ html {
   height: 24px;
   color: #fff;
   transition: color 0.3s ease;
+  display: block;
+  margin: auto;
+  flex-shrink: 0;
 }
 
 /* White mode styles for scroll button */
@@ -3586,7 +3385,12 @@ html {
 .services__container {
   row-gap: 2rem;
   padding-block: 2.5rem;
-  grid-template-columns: repeat(3, 352px);
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  gap: 2rem;
 }
 
 .services__card {
@@ -3596,6 +3400,8 @@ html {
   border-radius: 1rem;
   border: 2px solid var(--container-color);
   transition: border 0.4s;
+  width: 100%;
+  max-width: 100%;
 }
 
 .services__icon {
@@ -3634,12 +3440,21 @@ html {
     /* Adjust the number of columns and gap for mobile */
     grid-template-columns: 1fr; /* Single column for mobile */
     padding-block: 1.5rem;
-    row-gap: 1.5rem;
+    gap: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .services__card {
     /* Update card styles for mobile */
     padding: 2rem 1rem;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1090px) {
+  .services__container {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 /*===================footer =====================*/

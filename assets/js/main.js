@@ -92,6 +92,7 @@ const sendEmail = async (e) => {
 
   // Show loading animation
   loaderWrapper.style.visibility = "visible";
+  loaderWrapper.style.opacity = "1";
 
   try {
     await emailjs.sendForm(
@@ -102,10 +103,13 @@ const sendEmail = async (e) => {
     );
 
     // Introduce a longer delay
-    await delay(6000);
+    await delay(2000);
 
     // Hide loading animation on success
-    loaderWrapper.style.visibility = "hidden";
+    loaderWrapper.style.opacity = "0";
+    setTimeout(() => {
+      loaderWrapper.style.visibility = "hidden";
+    }, 300);
 
     contactMessage.textContent = "Message Sent Successfully 🟢";
     setTimeout(() => {
@@ -114,7 +118,10 @@ const sendEmail = async (e) => {
     contactForm.reset();
   } catch (error) {
     // Hide loading animation on error
-    loaderWrapper.style.visibility = "hidden";
+    loaderWrapper.style.opacity = "0";
+    setTimeout(() => {
+      loaderWrapper.style.visibility = "hidden";
+    }, 300);
 
     // Show service error Message
     contactMessage.textContent = "Message not sent (error) 🔴";
@@ -203,6 +210,73 @@ sr.reveal(".piano__container", {
   origin: "right",
   distance: "100px",
   scale: 0.85,
+});
+
+// Logo loop / Technologies section
+sr.reveal(".logo-loop-section", {
+  origin: "bottom",
+  distance: "80px",
+  scale: 0.85,
+  duration: 2000,
+});
+
+// Career section (My Journey)
+sr.reveal(".career .section__subtitle-piano, .career .section__title-keys", {
+  origin: "top",
+  distance: "60px",
+  scale: 0.85,
+  interval: 100,
+});
+
+sr.reveal(".hologram-wrapper", {
+  origin: "left",
+  distance: "100px",
+  scale: 0.85,
+  duration: 2500,
+});
+
+// Card swap services section
+sr.reveal(".card-swap-section .section__subtitle, .card-swap-section .section__title", {
+  origin: "top",
+  distance: "60px",
+  scale: 0.85,
+  interval: 100,
+});
+
+sr.reveal(".card-swap-text", {
+  origin: "left",
+  distance: "100px",
+  scale: 0.85,
+  duration: 2500,
+});
+
+sr.reveal(".card-swap-wrapper", {
+  origin: "right",
+  distance: "100px",
+  scale: 0.85,
+  duration: 2500,
+});
+
+// Contact section
+sr.reveal(".contact .section__subtitle, .contact .section__title", {
+  origin: "top",
+  distance: "60px",
+  scale: 0.85,
+  interval: 100,
+});
+
+sr.reveal(".contact__form", {
+  origin: "left",
+  distance: "100px",
+  scale: 0.85,
+  duration: 2500,
+});
+
+sr.reveal(".contact .wrapper", {
+  origin: "right",
+  distance: "100px",
+  scale: 0.85,
+  duration: 2500,
 });
 
 /*=============== Typer ===============*/
@@ -369,22 +443,65 @@ function initializeTheme() {
 // Function to toggle between themes
 function toggleMode() {
   const body = document.body;
+  const themeButton = document.getElementById("theme-button");
+  const themeButtonMobile = document.getElementById("theme-button-mobile");
+
   body.classList.toggle("white-mode");
 
-  // Store the current preference
+  // Change icon based on current theme for both buttons
   if (body.classList.contains("white-mode")) {
     localStorage.setItem("theme", "white");
+    if (themeButton) {
+      themeButton.classList.remove("ri-moon-line");
+      themeButton.classList.add("ri-sun-line");
+    }
+    if (themeButtonMobile) {
+      themeButtonMobile.classList.remove("ri-moon-line");
+      themeButtonMobile.classList.add("ri-sun-line");
+    }
   } else {
     localStorage.setItem("theme", "dark");
+    if (themeButton) {
+      themeButton.classList.remove("ri-sun-line");
+      themeButton.classList.add("ri-moon-line");
+    }
+    if (themeButtonMobile) {
+      themeButtonMobile.classList.remove("ri-sun-line");
+      themeButtonMobile.classList.add("ri-moon-line");
+    }
   }
 }
 
 // Initialize theme when page loads
-document.addEventListener("DOMContentLoaded", initializeTheme);
+document.addEventListener("DOMContentLoaded", () => {
+  initializeTheme();
 
-const toggleButton = document.getElementById("white-mode-toggle");
-if (toggleButton) {
-  toggleButton.addEventListener("click", toggleMode);
+  // Update icon on initial load for both buttons
+  const body = document.body;
+  const themeButton = document.getElementById("theme-button");
+  const themeButtonMobile = document.getElementById("theme-button-mobile");
+
+  if (body.classList.contains("white-mode")) {
+    if (themeButton) {
+      themeButton.classList.remove("ri-moon-line");
+      themeButton.classList.add("ri-sun-line");
+    }
+    if (themeButtonMobile) {
+      themeButtonMobile.classList.remove("ri-moon-line");
+      themeButtonMobile.classList.add("ri-sun-line");
+    }
+  }
+});
+
+// Add click listeners to both theme buttons
+const themeButton = document.getElementById("theme-button");
+const themeButtonMobile = document.getElementById("theme-button-mobile");
+
+if (themeButton) {
+  themeButton.addEventListener("click", toggleMode);
+}
+if (themeButtonMobile) {
+  themeButtonMobile.addEventListener("click", toggleMode);
 }
 
 /*=============== DOWNLOAD  ===============*/
@@ -1677,7 +1794,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Create main container
   const container = document.createElement("div");
-  container.className = "max-w-6xl mx-auto p-8 relative";
+  container.style.width = "100%";
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.alignItems = "center";
+  container.style.position = "relative";
   const pianoContainer = document.getElementById("piano-container");
 
   if (pianoContainer) {
@@ -2229,31 +2350,29 @@ document.addEventListener("DOMContentLoaded", () => {
         card.style.opacity = "1";
       }, 50);
     } else {
-      // Desktop: Create all cards with position based on index
-      careerStages.forEach((stage, index) => {
-        const card = document.createElement("div");
-        card.className = `journey-card ${stage.color}`;
+      // Desktop: Show only the active card centered below piano
+      const card = document.createElement("div");
+      card.className = `journey-card ${activeStage.color}`;
 
-        const percentage = (index / (careerStages.length - 1)) * 100;
-        card.style.left = `${percentage}%`;
+      // Set initial state - centered by CSS
+      card.style.opacity = "0";
+      card.style.transform = "translateX(-50%) translateY(20px)";
 
-        // Set initial state
-        card.style.opacity = stage.note === activeStage.note ? "1" : "0";
-        card.style.transform =
-          stage.note === activeStage.note
-            ? "translateX(-50%) translateY(0)"
-            : "translateX(-50%) translateY(20px)";
+      card.innerHTML = `
+        <div class="text-gray-800 relative z-10">
+          <div class="font-bold font-serif">${activeStage.year}</div>
+          <div class="text-lg font-semibold font-serif">${activeStage.title}</div>
+          <div class="text-sm font-serif">${activeStage.description}</div>
+        </div>
+      `;
 
-        card.innerHTML = `
-          <div class="text-gray-800 relative z-10">
-            <div class="font-bold font-serif">${stage.year}</div>
-            <div class="text-lg font-semibold font-serif">${stage.title}</div>
-            <div class="text-sm font-serif">${stage.description}</div>
-          </div>
-        `;
+      journeyContainer.appendChild(card);
 
-        journeyContainer.appendChild(card);
-      });
+      // Trigger animation
+      setTimeout(() => {
+        card.style.opacity = "1";
+        card.style.transform = "translateX(-50%) translateY(0)";
+      }, 50);
     }
     startCardFadeTimer();
   };
@@ -3059,3 +3178,56 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(drawVisualizer, 100);
   }
 });
+
+
+/*=============== LOGO LOOP INFINITE SCROLL ===============*/
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.getElementById('logo-track');
+  if (track) {
+    const logos = track.innerHTML;
+    // Duplicate logos 3 times for seamless infinite scroll
+    track.innerHTML = logos + logos + logos;
+
+    // Calculate animation duration based on 100px/s speed
+    setTimeout(() => {
+      const trackWidth = track.scrollWidth / 3; // Width of one set of logos
+      const speed = 100; // pixels per second
+      const duration = trackWidth / speed; // seconds
+      track.style.animationDuration = `${duration}s`;
+    }, 100);
+  }
+});
+
+/*=============== MODERN HEADER SCROLL EFFECT ===============*/
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('header');
+  if (window.scrollY >= 50) {
+    header.classList.add('scrolled');
+  } else {
+    header.classList.remove('scrolled');
+  }
+});
+
+// Active link on scroll
+const sections = document.querySelectorAll('section[id]');
+
+function scrollActive() {
+  const scrollY = window.pageYOffset;
+
+  sections.forEach(current => {
+    const sectionHeight = current.offsetHeight;
+    const sectionTop = current.offsetTop - 100;
+    const sectionId = current.getAttribute('id');
+    const navLink = document.querySelector('.nav__link[href*=' + sectionId + ']');
+
+    if (navLink) {
+      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+        navLink.classList.add('active');
+      } else {
+        navLink.classList.remove('active');
+      }
+    }
+  });
+}
+
+window.addEventListener('scroll', scrollActive);
