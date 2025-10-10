@@ -565,6 +565,15 @@ svg {
   z-index: 1;
 }
 
+/* Zoom out hero section on larger screens */
+@media screen and (min-width: 1024px) {
+  .home__container {
+    transform: scale(0.93);
+    transform-origin: center top;
+    padding-top: 6rem;
+  }
+}
+
 .home__subtitle,
 .home__education {
   font-size: var(--bigger-font-size);
