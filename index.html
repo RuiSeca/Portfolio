@@ -33,6 +33,7 @@
 
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/piano-themes.css" />
     <link rel="stylesheet" href="assets/css/logo-loop.css" />
     <link rel="stylesheet" href="assets/css/card-swap.css" />
     <link rel="stylesheet" href="assets/css/decrypted-text.css" />
@@ -592,6 +593,21 @@
                 <div class="hologram-glow"></div>
               </div>
               <div class="hologram-base"></div>
+              <!-- Piano Theme Picker - Radial Collapsible (Outside projection for overflow) -->
+              <div class="piano-theme-picker">
+                <button class="theme-palette-toggle" aria-label="Toggle color palette">
+                  <i class="ri-palette-line"></i>
+                </button>
+                <button class="theme-color-btn active" data-theme="beige" aria-label="Vintage Beige theme"></button>
+                <button class="theme-color-btn" data-theme="red" aria-label="Red theme"></button>
+                <button class="theme-color-btn" data-theme="blue" aria-label="Blue theme"></button>
+                <button class="theme-color-btn" data-theme="purple" aria-label="Purple theme"></button>
+                <button class="theme-color-btn" data-theme="green" aria-label="Green theme"></button>
+                <button class="theme-color-btn" data-theme="pink" aria-label="Pink theme"></button>
+                <button class="theme-color-btn" data-theme="cyan" aria-label="Cyan theme"></button>
+                <button class="theme-color-btn" data-theme="black" aria-label="Black theme"></button>
+                <button class="theme-color-btn" data-theme="white" aria-label="White theme"></button>
+              </div>
             </div>
           </div>
           
@@ -810,6 +826,9 @@
 
     <!-- Galaxy Background - deferred for performance -->
     <script type="module" defer src="assets/js/init-galaxy.js"></script>
+
+    <!-- Piano Theme Switcher - load before main.js -->
+    <script src="assets/js/piano-theme-switcher.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="assets/js/main.js"></script>

@@ -1875,12 +1875,14 @@ document.addEventListener("DOMContentLoaded", () => {
     trail.style.height = "100%";
     trail.style.overflow = "hidden";
 
+    // Get current theme colors dynamically
+    const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
     const colors = [
-      "rgba(255, 215, 0, 0.8)", // Gold
-      "rgba(255, 223, 0, 0.8)", // Bright gold
-      "rgba(255, 198, 0, 0.8)", // Yellow gold
-      "rgba(255, 185, 15, 0.8)", // Golden yellow
-      "rgba(255, 236, 139, 0.8)", // Light gold
+      `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.9)`,
+      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(themeColors.g + 20, 255)}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
+      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(themeColors.g - 20, 0)}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
+      `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.75)`,
+      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(themeColors.g + 40, 255)}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
     ];
 
     // Screen size detection
@@ -2958,7 +2960,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const hologramProjection = document.querySelector(".hologram-projection");
 
     if (hologramProjection) {
-      hologramProjection.style.boxShadow = `0 0 60px ${songLibrary[currentSongIndex].color}`;
+      // Use dynamic theme color
+      const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+      hologramProjection.style.boxShadow = `0 0 60px rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.8)`;
 
       setTimeout(() => {
         hologramProjection.style.boxShadow = "";
@@ -3018,7 +3022,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Choose visualization based on current song
         const visType = songLibrary[currentSongIndex].visualizer;
-        const color = songLibrary[currentSongIndex].color;
+        // Use dynamic theme color instead of hardcoded song color
+        const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+        const color = `rgb(${themeColors.r}, ${themeColors.g}, ${themeColors.b})`;
 
         if (visType === "bars") {
           drawBars(dataArray, bufferLength, WIDTH, HEIGHT, ctx, color);
@@ -3171,8 +3177,98 @@ document.addEventListener('DOMContentLoaded', () => {
       const duration = trackWidth / speed; // seconds
       track.style.animationDuration = `${duration}s`;
     }, 100);
+
+    // Initialize spotlight effect
+    initLogoSpotlight();
   }
 });
+
+/*=============== LOGO SPOTLIGHT EFFECT ===============*/
+function initLogoSpotlight() {
+  const container = document.querySelector('.logo-loop-container');
+  const track = document.getElementById('logo-track');
+  if (!container || !track) return;
+
+  // Create spotlight overlay elements
+  const spotlightOverlay = document.createElement('div');
+  spotlightOverlay.className = 'logo-spotlight-overlay';
+  container.appendChild(spotlightOverlay);
+
+  const spotlightFade = document.createElement('div');
+  spotlightFade.className = 'logo-spotlight-fade';
+  container.appendChild(spotlightFade);
+
+  let highlightedLogo = null;
+  let pos = { x: 0, y: 0 };
+
+  // Update spotlight position smoothly
+  const moveTo = (x, y) => {
+    pos.x = x;
+    pos.y = y;
+    container.style.setProperty('--x', `${x}px`);
+    container.style.setProperty('--y', `${y}px`);
+  };
+
+  // Handle mouse move for spotlight
+  const handleMove = (e) => {
+    const rect = container.getBoundingClientRect();
+    moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    spotlightFade.style.opacity = '0';
+  };
+
+  // Handle mouse leave - fade back in
+  const handleLeave = () => {
+    spotlightFade.style.opacity = '1';
+  };
+
+  // Handle card hover for individual spotlight
+  const handleCardMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  };
+
+  // Handle click to highlight and pause
+  const handleClick = (e) => {
+    const logoItem = e.currentTarget;
+
+    // If clicking the same logo, unhighlight and resume animation
+    if (highlightedLogo === logoItem) {
+      logoItem.classList.remove('highlighted');
+      track.classList.remove('paused');
+      highlightedLogo = null;
+      return;
+    }
+
+    // Remove previous highlight
+    if (highlightedLogo) {
+      highlightedLogo.classList.remove('highlighted');
+    }
+
+    // Add highlight to clicked logo and pause animation
+    logoItem.classList.add('highlighted');
+    track.classList.add('paused');
+    highlightedLogo = logoItem;
+  };
+
+  // Add event listeners
+  container.addEventListener('pointermove', handleMove);
+  container.addEventListener('pointerleave', handleLeave);
+
+  // Add listeners to all logo items
+  const logoItems = container.querySelectorAll('.logo-item');
+  logoItems.forEach(item => {
+    item.addEventListener('mousemove', handleCardMove);
+    item.addEventListener('click', handleClick);
+  });
+
+  // Initialize position to center
+  const rect = container.getBoundingClientRect();
+  moveTo(rect.width / 2, rect.height / 2);
+}
 
 /*=============== MODERN HEADER SCROLL EFFECT ===============*/
 window.addEventListener('scroll', () => {

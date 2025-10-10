@@ -2249,11 +2249,16 @@ body.modal-open {
   justify-content: center;
   align-items: center;
   margin: 0 auto 2rem auto;
-  background: linear-gradient(to bottom, #766856, #5c4934);
+  /* Use material color for solid, physical appearance */
+  background: linear-gradient(to bottom,
+    rgba(var(--piano-material-rgb), 0.9),
+    rgba(var(--piano-material-rgb), 0.7));
+  border: 2px solid rgba(var(--piano-material-rgb), 1);
   padding: 1.5rem;
   border-radius: 8px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   overflow: visible; /* Ensure button is visible outside container */
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 #piano-container {
@@ -2273,11 +2278,13 @@ body.modal-open {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(213, 142, 11, 0.4), transparent 60%);
-  opacity: 0.5;
+  /* Subtle shimmer using material color - no glow, just texture */
+  background: radial-gradient(circle, rgba(var(--piano-material-rgb), 0.3), transparent 60%);
+  opacity: 0.4;
   pointer-events: none; /* Prevent interaction */
   transform: scale(1.2);
   animation: shine 6s infinite ease-in-out; /* Shimmer animation */
+  transition: background 0.3s ease;
 }
 
 @keyframes shine {
@@ -2872,11 +2879,11 @@ html {
   border-radius: 12px 12px 0 0; /* Slightly rounder corners */
   transform-style: preserve-3d;
   transform: rotateX(5deg);
-  box-shadow: 0 0 60px rgba(215, 119, 6, 0.6); /* Stronger glow */
+  box-shadow: 0 0 60px rgba(var(--piano-primary-rgb), 0.6); /* Stronger glow */
   overflow: hidden;
   pointer-events: auto;
   backdrop-filter: blur(5px);
-  border: 1px solid rgba(215, 119, 6, 0.2);
+  border: 1px solid rgba(var(--piano-primary-rgb), 0.2);
   animation: hologramFloat 3s ease-in-out infinite;
 }
 
@@ -2890,7 +2897,7 @@ html {
   justify-content: flex-start !important;
   padding-top: 25px !important;
   align-items: center;
-  color: rgba(215, 119, 6, 0.8);
+  color: rgba(var(--piano-primary-rgb), 0.8);
   text-align: center;
   padding: 10px;
   pointer-events: none;
@@ -2911,7 +2918,7 @@ html {
   margin-bottom: 30px !important;
   position: relative;
   z-index: 10;
-  text-shadow: 0 0 10px rgba(215, 119, 6, 0.8);
+  text-shadow: 0 0 10px rgba(var(--piano-primary-rgb), 0.8);
   transition: all 0.3s ease;
 }
 
@@ -2924,8 +2931,8 @@ html {
   font-size: 1.5rem !important;
   margin-bottom: 8px !important;
   font-weight: 600;
-  color: rgba(215, 119, 6, 0.9);
-  text-shadow: 0 0 15px rgba(215, 119, 6, 0.6);
+  color: rgba(var(--piano-primary-rgb), 0.9);
+  text-shadow: 0 0 15px rgba(var(--piano-primary-rgb), 0.6);
 }
 
 .song-artist {
@@ -2939,14 +2946,14 @@ html {
   height: 50px; /* Increased from 40px */
   background: linear-gradient(
     to bottom,
-    rgba(215, 119, 6, 0.5),
-    /* Made more visible */ rgba(215, 119, 6, 0.1)
+    rgba(var(--piano-primary-rgb), 0.5),
+    /* Made more visible */ rgba(var(--piano-primary-rgb), 0.1)
   );
   border-radius: 0 0 50% 50%;
   transform: perspective(500px) rotateX(40deg);
   transform-origin: center top;
   filter: blur(2px);
-  box-shadow: 0 15px 25px rgba(215, 119, 6, 0.4); /* Enhanced glow */
+  box-shadow: 0 15px 25px rgba(var(--piano-primary-rgb), 0.4); /* Enhanced glow */
 }
 
 /* Playback controls */
@@ -2964,8 +2971,8 @@ html {
 
 .hologram-btn {
   background: rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(215, 119, 6, 0.4); /* Thicker, more visible border */
-  color: rgba(215, 119, 6, 0.8);
+  border: 2px solid rgba(var(--piano-primary-rgb), 0.4); /* Thicker, more visible border */
+  color: rgba(var(--piano-primary-rgb), 0.8);
   width: 42px; /* Increased from 36px */
   height: 42px; /* Increased from 36px */
   border-radius: 50%;
@@ -2974,13 +2981,13 @@ html {
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(215, 119, 6, 0.4);
+  box-shadow: 0 0 15px rgba(var(--piano-primary-rgb), 0.4);
 }
 
 .hologram-btn:hover {
-  background: rgba(215, 119, 6, 0.2);
+  background: rgba(var(--piano-primary-rgb), 0.2);
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(215, 119, 6, 0.6);
+  box-shadow: 0 0 20px rgba(var(--piano-primary-rgb), 0.6);
 }
 
 .hologram-btn i {
@@ -3004,7 +3011,7 @@ html {
 .play-btn {
   width: 50px; /* Larger than other buttons */
   height: 50px;
-  background: rgba(215, 119, 6, 0.2); /* Slightly different background */
+  background: rgba(var(--piano-primary-rgb), 0.2); /* Slightly different background */
 }
 
 /* Hologram glow effect */
@@ -3016,7 +3023,7 @@ html {
   height: 100%;
   background: radial-gradient(
     circle,
-    rgba(215, 119, 6, 0.2) 0%,
+    rgba(var(--piano-primary-rgb), 0.2) 0%,
     transparent 70%
   );
   pointer-events: none;
@@ -3243,51 +3250,51 @@ html {
   background: rgba(0, 0, 0, 0.6) !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 0 60px rgba(215, 119, 6, 0.8) !important;
-  border: 2px solid rgba(215, 119, 6, 0.6) !important;
+  box-shadow: 0 0 60px rgba(var(--piano-primary-rgb), 0.8) !important;
+  border: 2px solid rgba(var(--piano-primary-rgb), 0.6) !important;
 }
 
 .white-mode .hologram-content {
-  color: rgba(215, 119, 6, 0.95) !important;
+  color: rgba(var(--piano-primary-rgb), 0.95) !important;
 }
 
 .white-mode .song-info {
-  text-shadow: 0 0 15px rgba(215, 119, 6, 0.8) !important;
+  text-shadow: 0 0 15px rgba(var(--piano-primary-rgb), 0.8) !important;
 }
 
 .white-mode .song-title {
-  color: rgba(215, 119, 6, 1) !important;
+  color: rgba(var(--piano-primary-rgb), 1) !important;
 }
 
 .white-mode .song-artist {
-  color: rgba(215, 119, 6, 0.9) !important;
+  color: rgba(var(--piano-primary-rgb), 0.9) !important;
 }
 
 .white-mode .hologram-base {
   background: linear-gradient(
     to bottom,
-    rgba(215, 119, 6, 0.6),
-    rgba(215, 119, 6, 0.2)
+    rgba(var(--piano-primary-rgb), 0.6),
+    rgba(var(--piano-primary-rgb), 0.2)
   ) !important;
-  box-shadow: 0 15px 30px rgba(215, 119, 6, 0.6) !important;
+  box-shadow: 0 15px 30px rgba(var(--piano-primary-rgb), 0.6) !important;
 }
 
 .white-mode .hologram-btn {
   background: rgba(0, 0, 0, 0.4) !important;
-  border: 2px solid rgba(215, 119, 6, 0.6) !important;
-  color: rgba(215, 119, 6, 1) !important;
-  box-shadow: 0 0 15px rgba(215, 119, 6, 0.5) !important;
+  border: 2px solid rgba(var(--piano-primary-rgb), 0.6) !important;
+  color: rgba(var(--piano-primary-rgb), 1) !important;
+  box-shadow: 0 0 15px rgba(var(--piano-primary-rgb), 0.5) !important;
 }
 
 .white-mode .hologram-btn:hover {
-  background: rgba(215, 119, 6, 0.3) !important;
-  box-shadow: 0 0 25px rgba(215, 119, 6, 0.8) !important;
+  background: rgba(var(--piano-primary-rgb), 0.3) !important;
+  box-shadow: 0 0 25px rgba(var(--piano-primary-rgb), 0.8) !important;
 }
 
 .white-mode .hologram-glow {
   background: radial-gradient(
     circle,
-    rgba(215, 119, 6, 0.3) 0%,
+    rgba(var(--piano-primary-rgb), 0.3) 0%,
     transparent 70%
   ) !important;
 }
@@ -3297,31 +3304,31 @@ html {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(215, 119, 6, 0.3) 20%,
-    rgba(215, 119, 6, 0.9) 50%,
-    rgba(215, 119, 6, 0.3) 80%,
+    rgba(var(--piano-primary-rgb), 0.3) 20%,
+    rgba(var(--piano-primary-rgb), 0.9) 50%,
+    rgba(var(--piano-primary-rgb), 0.3) 80%,
     transparent 100%
   ) !important;
-  box-shadow: 0 0 6px rgba(215, 119, 6, 1) !important;
+  box-shadow: 0 0 6px rgba(var(--piano-primary-rgb), 1) !important;
 }
 
 .white-mode .hologram-base::before,
 .white-mode .hologram-base::after {
-  background: rgba(215, 119, 6, 0.9) !important;
-  box-shadow: 0 0 10px rgba(215, 119, 6, 1) !important;
+  background: rgba(var(--piano-primary-rgb), 0.9) !important;
+  box-shadow: 0 0 10px rgba(var(--piano-primary-rgb), 1) !important;
 }
 
 .white-mode .hologram-active .hologram-projection {
-  box-shadow: 0 0 60px rgba(215, 119, 6, 1),
-    0 0 30px rgba(215, 119, 6, 0.5) inset !important;
-  border: 2px solid rgba(215, 119, 6, 0.8) !important;
+  box-shadow: 0 0 60px rgba(var(--piano-primary-rgb), 1),
+    0 0 30px rgba(var(--piano-primary-rgb), 0.5) inset !important;
+  border: 2px solid rgba(var(--piano-primary-rgb), 0.8) !important;
 }
 
 .white-mode .hologram-active .hologram-base {
   background: linear-gradient(
     to bottom,
-    rgba(215, 119, 6, 0.7),
-    rgba(215, 119, 6, 0.3)
+    rgba(var(--piano-primary-rgb), 0.7),
+    rgba(var(--piano-primary-rgb), 0.3)
   ) !important;
 }
 

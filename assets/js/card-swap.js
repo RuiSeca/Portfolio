@@ -120,6 +120,28 @@ class CardSwap {
       'return'
     );
 
+    // Trigger speed light effect when card is almost done moving to back
+    tl.call(() => {
+      // Add star border class to trigger animation
+      elFront.classList.add('star-border-active');
+
+      // Reset animation by forcing reflow
+      const borderBottom = elFront.querySelector('.border-gradient-bottom');
+      const borderTop = elFront.querySelector('.border-gradient-top');
+      if (borderBottom && borderTop) {
+        borderBottom.style.animation = 'none';
+        borderTop.style.animation = 'none';
+        void borderBottom.offsetHeight; // Trigger reflow
+        borderBottom.style.animation = '';
+        borderTop.style.animation = '';
+      }
+
+      // Remove class after animation completes (1.2s)
+      setTimeout(() => {
+        elFront.classList.remove('star-border-active');
+      }, 1200);
+    }, undefined, `return+=${this.animConfig.durReturn * 0.8}`);
+
     // Update order
     tl.call(() => {
       this.order = [...rest, front];
@@ -131,6 +153,15 @@ class CardSwap {
     const total = this.cards.length;
     this.cards.forEach((card, i) => {
       this.placeNow(card, this.makeSlot(i, this.config.cardDistance, this.config.verticalDistance, total), this.config.skewAmount);
+
+      // Add star border gradient elements
+      const borderBottom = document.createElement('div');
+      borderBottom.className = 'border-gradient-bottom';
+      card.appendChild(borderBottom);
+
+      const borderTop = document.createElement('div');
+      borderTop.className = 'border-gradient-top';
+      card.appendChild(borderTop);
 
       // Add spotlight mouse tracking to each card
       card.addEventListener('mousemove', (e) => {

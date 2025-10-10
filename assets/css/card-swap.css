@@ -96,7 +96,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  overflow: hidden;
+  overflow: visible;
   --mouse-x: 50%;
   --mouse-y: 50%;
   --spotlight-color: rgba(255, 255, 255, 0.08);
@@ -261,5 +261,79 @@
 
   .card-swap-wrapper {
     height: 450px;
+  }
+}
+
+/* Star Border Effect - Speed Light Streaks */
+.swap-card .border-gradient-bottom,
+.swap-card .border-gradient-top {
+  position: absolute;
+  width: 80px;
+  height: 2px;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ef4444 20%,
+    #ff6b6b 50%,
+    #ef4444 80%,
+    transparent
+  );
+  box-shadow: 0 0 15px #ef4444, 0 0 30px rgba(239, 68, 68, 0.5);
+  animation-play-state: paused;
+  animation-fill-mode: forwards;
+}
+
+.swap-card .border-gradient-bottom {
+  bottom: -1px;
+  left: 0;
+  animation: speed-light-bottom 1.2s ease-out;
+}
+
+.swap-card .border-gradient-top {
+  top: -1px;
+  right: 0;
+  animation: speed-light-top 1.2s ease-out;
+}
+
+/* Activate speed lights when card goes to back */
+.swap-card.star-border-active .border-gradient-bottom,
+.swap-card.star-border-active .border-gradient-top {
+  animation-play-state: running;
+}
+
+@keyframes speed-light-bottom {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 80px);
+    opacity: 0;
+  }
+}
+
+@keyframes speed-light-top {
+  0% {
+    right: 0;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    right: calc(100% - 80px);
+    opacity: 0;
   }
 }

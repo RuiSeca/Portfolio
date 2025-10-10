@@ -22,6 +22,9 @@
   width: 100%;
   overflow: hidden;
   padding: 2rem 0;
+  --x: 50%;
+  --y: 50%;
+  --r: 300px;
 }
 
 /* Gradient masks on edges */
@@ -53,7 +56,7 @@
   will-change: transform;
 }
 
-.logo-loop-track:hover {
+.logo-loop-track.paused {
   animation-play-state: paused;
 }
 
@@ -72,6 +75,9 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
   min-width: 140px;
+  position: relative;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
 }
 
 .white-mode .logo-item {
@@ -109,6 +115,117 @@
 
 .logo-item:hover .logo-name {
   color: var(--title-color);
+}
+
+/* Spotlight effect on individual logo items */
+.logo-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    rgba(255, 255, 255, 0.2),
+    transparent 60%
+  );
+  border-radius: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.logo-item:hover::before {
+  opacity: 1;
+}
+
+/* Highlighted (clicked) state */
+.logo-item.highlighted {
+  transform: translateY(-10px) scale(1.15);
+  box-shadow: 0 15px 40px rgba(var(--first-color), 0.5);
+  border-color: var(--first-color);
+  z-index: 10;
+  position: relative;
+}
+
+.logo-item.highlighted .logo-icon {
+  filter: grayscale(0%) drop-shadow(0 0 20px rgba(var(--first-color), 0.6)) !important;
+  opacity: 1 !important;
+  transform: scale(1.2);
+}
+
+.logo-item.highlighted .logo-name {
+  color: var(--first-color);
+  font-weight: 700;
+}
+
+/* Make highlighted logo exempt from spotlight darkening */
+.logo-item.highlighted::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: transparent;
+  z-index: 5;
+  border-radius: 1rem;
+  pointer-events: none;
+}
+
+/* Global spotlight overlay */
+.logo-spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  backdrop-filter: grayscale(1) brightness(0.85);
+  -webkit-backdrop-filter: grayscale(1) brightness(0.85);
+  background: transparent;
+  mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    transparent 0%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.35) 60%,
+    rgba(0, 0, 0, 0.6) 80%,
+    rgb(0, 0, 0) 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    transparent 0%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.35) 60%,
+    rgba(0, 0, 0, 0.6) 80%,
+    rgb(0, 0, 0) 100%
+  );
+}
+
+.logo-spotlight-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  backdrop-filter: grayscale(1) brightness(0.85);
+  -webkit-backdrop-filter: grayscale(1) brightness(0.85);
+  background: transparent;
+  mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    rgb(0, 0, 0) 0%,
+    rgb(0, 0, 0) 20%,
+    rgba(0, 0, 0, 0.85) 40%,
+    rgba(0, 0, 0, 0.65) 60%,
+    rgba(0, 0, 0, 0.4) 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    rgb(0, 0, 0) 0%,
+    rgb(0, 0, 0) 20%,
+    rgba(0, 0, 0, 0.85) 40%,
+    rgba(0, 0, 0, 0.65) 60%,
+    rgba(0, 0, 0, 0.4) 80%,
+    transparent 100%
+  );
+  opacity: 1;
+  transition: opacity 0.25s ease;
 }
 
 @keyframes scroll {

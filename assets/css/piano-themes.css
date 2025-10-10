@@ -1,0 +1,422 @@
+/* Piano & Hologram Theme System */
+
+/* Default Theme Variables (Beige/Orange) */
+:root {
+  --piano-primary-r: 215;
+  --piano-primary-g: 119;
+  --piano-primary-b: 6;
+  --piano-primary: rgb(215, 119, 6);
+  --piano-primary-rgb: 215, 119, 6;
+  /* Vintage beige piano frame color */
+  --piano-material-rgb: 118, 104, 86;
+}
+
+/* Theme: Default (uses root variables with vintage beige frame) */
+body:not([data-piano-theme]) {
+  --piano-primary-r: 215;
+  --piano-primary-g: 119;
+  --piano-primary-b: 6;
+  --piano-primary: rgb(215, 119, 6);
+  --piano-primary-rgb: 215, 119, 6;
+  /* Vintage beige piano frame color */
+  --piano-material-rgb: 118, 104, 86;
+}
+
+/* Theme: Red */
+[data-piano-theme="red"] {
+  --piano-primary-r: 239;
+  --piano-primary-g: 68;
+  --piano-primary-b: 68;
+  --piano-primary: rgb(239, 68, 68);
+  --piano-primary-rgb: 239, 68, 68;
+  /* Dark crimson/burgundy for piano material */
+  --piano-material-rgb: 139, 0, 0;
+}
+
+/* Theme: Blue */
+[data-piano-theme="blue"] {
+  --piano-primary-r: 59;
+  --piano-primary-g: 130;
+  --piano-primary-b: 246;
+  --piano-primary: rgb(59, 130, 246);
+  --piano-primary-rgb: 59, 130, 246;
+  /* Deep navy/midnight blue for piano material */
+  --piano-material-rgb: 25, 55, 109;
+}
+
+/* Theme: Purple */
+[data-piano-theme="purple"] {
+  --piano-primary-r: 168;
+  --piano-primary-g: 85;
+  --piano-primary-b: 247;
+  --piano-primary: rgb(168, 85, 247);
+  --piano-primary-rgb: 168, 85, 247;
+  /* Deep plum/violet for piano material */
+  --piano-material-rgb: 75, 0, 130;
+}
+
+/* Theme: Green */
+[data-piano-theme="green"] {
+  --piano-primary-r: 34;
+  --piano-primary-g: 197;
+  --piano-primary-b: 94;
+  --piano-primary: rgb(34, 197, 94);
+  --piano-primary-rgb: 34, 197, 94;
+  /* Forest green/dark emerald for piano material */
+  --piano-material-rgb: 34, 139, 34;
+}
+
+/* Theme: Pink */
+[data-piano-theme="pink"] {
+  --piano-primary-r: 236;
+  --piano-primary-g: 72;
+  --piano-primary-b: 153;
+  --piano-primary: rgb(236, 72, 153);
+  --piano-primary-rgb: 236, 72, 153;
+  /* Deep rose/mauve for piano material */
+  --piano-material-rgb: 139, 26, 80;
+}
+
+/* Theme: Cyan */
+[data-piano-theme="cyan"] {
+  --piano-primary-r: 6;
+  --piano-primary-g: 182;
+  --piano-primary-b: 212;
+  --piano-primary: rgb(6, 182, 212);
+  --piano-primary-rgb: 6, 182, 212;
+  /* Deep teal for piano material */
+  --piano-material-rgb: 0, 128, 128;
+}
+
+/* Theme: Black */
+[data-piano-theme="black"] {
+  --piano-primary-r: 30;
+  --piano-primary-g: 30;
+  --piano-primary-b: 30;
+  --piano-primary: rgb(30, 30, 30);
+  --piano-primary-rgb: 30, 30, 30;
+  /* Pure black for piano material */
+  --piano-material-rgb: 0, 0, 0;
+}
+
+/* Theme: White */
+[data-piano-theme="white"] {
+  --piano-primary-r: 240;
+  --piano-primary-g: 240;
+  --piano-primary-b: 240;
+  --piano-primary: rgb(240, 240, 240);
+  --piano-primary-rgb: 240, 240, 240;
+  /* Cream/ivory for piano material */
+  --piano-material-rgb: 245, 245, 220;
+}
+
+/* Theme: Beige (Original vintage piano color - same as Journey cards) */
+[data-piano-theme="beige"] {
+  --piano-primary-r: 217;
+  --piano-primary-g: 119;
+  --piano-primary-b: 6;
+  --piano-primary: rgb(217, 119, 6);
+  --piano-primary-rgb: 217, 119, 6;
+  /* Original piano frame color from gradient: #766856 = rgb(118, 104, 86) */
+  --piano-material-rgb: 118, 104, 86;
+}
+
+/* Theme Picker Styles - Radial Collapsible */
+.piano-theme-picker {
+  position: absolute;
+  bottom: 60px; /* Position above hologram base */
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  z-index: 30;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.hologram-active .piano-theme-picker {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+  animation: paletteFloat 3s ease-in-out infinite;
+}
+
+/* Allow overflow for color expansion */
+.hologram-container {
+  overflow: visible !important;
+}
+
+/* Palette Toggle Button */
+.theme-palette-toggle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 32;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.theme-palette-toggle:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.theme-palette-toggle i {
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.3s ease;
+}
+
+.theme-palette-toggle.active i {
+  transform: rotate(180deg);
+}
+
+/* Current theme color ring indicator */
+.theme-palette-toggle::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--piano-primary-rgb), 0.8);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.theme-palette-toggle:hover::before {
+  inset: -6px;
+  border-width: 3px;
+  box-shadow: 0 0 15px rgba(var(--piano-primary-rgb), 0.6);
+}
+
+/* Color Buttons - Radial Layout */
+.theme-color-btn {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  bottom: 0;
+  right: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  z-index: 31;
+
+  /* Initial state - collapsed at center */
+  opacity: 0;
+  transform: translate(0, 0) scale(0);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+/* Expanded state */
+.piano-theme-picker.expanded .theme-color-btn {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Individual positions in 180° semi-circle arc (upward) */
+/* Calculated positions: radius = 75px, 9 buttons (0° to 180° in 22.5° increments) */
+.piano-theme-picker.expanded .theme-color-btn:nth-child(2) { transform: translate(-75px, 0px) scale(1); transition-delay: 0ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(3) { transform: translate(-69px, -29px) scale(1); transition-delay: 30ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(4) { transform: translate(-59px, -53px) scale(1); transition-delay: 60ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(5) { transform: translate(-43px, -68px) scale(1); transition-delay: 90ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(6) { transform: translate(0px, -75px) scale(1); transition-delay: 120ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(7) { transform: translate(43px, -68px) scale(1); transition-delay: 150ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(8) { transform: translate(59px, -53px) scale(1); transition-delay: 180ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(9) { transform: translate(69px, -29px) scale(1); transition-delay: 210ms; }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(10) { transform: translate(75px, 0px) scale(1); transition-delay: 240ms; }
+
+.theme-color-btn:hover {
+  transform-origin: center;
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  z-index: 33;
+}
+
+.piano-theme-picker.expanded .theme-color-btn:nth-child(2):hover { transform: translate(-75px, 0px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(3):hover { transform: translate(-69px, -29px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(4):hover { transform: translate(-59px, -53px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(5):hover { transform: translate(-43px, -68px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(6):hover { transform: translate(0px, -75px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(7):hover { transform: translate(43px, -68px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(8):hover { transform: translate(59px, -53px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(9):hover { transform: translate(69px, -29px) scale(1.2); }
+.piano-theme-picker.expanded .theme-color-btn:nth-child(10):hover { transform: translate(75px, 0px) scale(1.2); }
+
+.theme-color-btn.active {
+  border-color: rgba(255, 255, 255, 1);
+  border-width: 3px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.theme-color-btn.active::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+}
+
+/* Individual theme colors */
+.theme-color-btn[data-theme="red"] {
+  background: linear-gradient(135deg, rgb(239, 68, 68), rgb(248, 113, 113));
+}
+
+.theme-color-btn[data-theme="blue"] {
+  background: linear-gradient(135deg, rgb(59, 130, 246), rgb(96, 165, 250));
+}
+
+.theme-color-btn[data-theme="purple"] {
+  background: linear-gradient(135deg, rgb(168, 85, 247), rgb(192, 132, 252));
+}
+
+.theme-color-btn[data-theme="green"] {
+  background: linear-gradient(135deg, rgb(34, 197, 94), rgb(74, 222, 128));
+}
+
+.theme-color-btn[data-theme="pink"] {
+  background: linear-gradient(135deg, rgb(236, 72, 153), rgb(244, 114, 182));
+}
+
+.theme-color-btn[data-theme="cyan"] {
+  background: linear-gradient(135deg, rgb(6, 182, 212), rgb(34, 211, 238));
+}
+
+.theme-color-btn[data-theme="black"] {
+  background: linear-gradient(135deg, rgb(30, 30, 30), rgb(60, 60, 60));
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.theme-color-btn[data-theme="white"] {
+  background: linear-gradient(135deg, rgb(240, 240, 240), rgb(255, 255, 255));
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.theme-color-btn[data-theme="beige"] {
+  background: linear-gradient(135deg, rgb(217, 119, 6), rgb(118, 104, 86));
+}
+
+/* Responsive - smaller on mobile */
+@media (max-width: 768px) {
+  .piano-theme-picker {
+    bottom: 75px;
+    right: 12px;
+  }
+
+  .theme-palette-toggle {
+    width: 38px;
+    height: 38px;
+  }
+
+  .theme-palette-toggle i {
+    font-size: 1.2rem;
+  }
+
+  .theme-color-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Smaller radius for mobile - 9 buttons */
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(2) { transform: translate(-60px, 0px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(3) { transform: translate(-55px, -23px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(4) { transform: translate(-47px, -42px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(5) { transform: translate(-34px, -54px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(6) { transform: translate(0px, -60px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(7) { transform: translate(34px, -54px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(8) { transform: translate(47px, -42px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(9) { transform: translate(55px, -23px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(10) { transform: translate(60px, 0px) scale(1); }
+
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(2):hover { transform: translate(-60px, 0px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(3):hover { transform: translate(-55px, -23px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(4):hover { transform: translate(-47px, -42px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(5):hover { transform: translate(-34px, -54px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(6):hover { transform: translate(0px, -60px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(7):hover { transform: translate(34px, -54px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(8):hover { transform: translate(47px, -42px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(9):hover { transform: translate(55px, -23px) scale(1.15); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(10):hover { transform: translate(60px, 0px) scale(1.15); }
+
+  .theme-color-btn.active::after {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .piano-theme-picker {
+    bottom: 65px;
+    right: 10px;
+  }
+
+  .theme-palette-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .theme-palette-toggle i {
+    font-size: 1.1rem;
+  }
+
+  .theme-color-btn {
+    width: 24px;
+    height: 24px;
+    border-width: 1.5px;
+  }
+
+  .theme-color-btn.active {
+    border-width: 2px;
+  }
+
+  .theme-color-btn.active::after {
+    font-size: 12px;
+  }
+
+  /* Even smaller radius for small mobile - 9 buttons */
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(2) { transform: translate(-50px, 0px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(3) { transform: translate(-46px, -19px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(4) { transform: translate(-39px, -35px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(5) { transform: translate(-29px, -45px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(6) { transform: translate(0px, -50px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(7) { transform: translate(29px, -45px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(8) { transform: translate(39px, -35px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(9) { transform: translate(46px, -19px) scale(1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(10) { transform: translate(50px, 0px) scale(1); }
+
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(2):hover { transform: translate(-50px, 0px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(3):hover { transform: translate(-46px, -19px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(4):hover { transform: translate(-39px, -35px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(5):hover { transform: translate(-29px, -45px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(6):hover { transform: translate(0px, -50px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(7):hover { transform: translate(29px, -45px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(8):hover { transform: translate(39px, -35px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(9):hover { transform: translate(46px, -19px) scale(1.1); }
+  .piano-theme-picker.expanded .theme-color-btn:nth-child(10):hover { transform: translate(50px, 0px) scale(1.1); }
+}
+
+/* Palette Float Animation - matches hologram movement */
+@keyframes paletteFloat {
+  0%,
+  100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1) translateY(-5px);
+  }
+}
