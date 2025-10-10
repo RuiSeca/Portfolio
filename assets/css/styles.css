@@ -552,7 +552,7 @@ svg {
 .home__container {
   position: relative;
   z-index: 1;
-  padding-top: 4.25rem;
+  padding-top: 7rem;
   width: 100%;
   max-width: 1120px;
   margin: 0 auto;
@@ -570,7 +570,7 @@ svg {
   .home__container {
     transform: scale(0.93);
     transform-origin: center top;
-    padding-top: 6rem;
+    padding-top: 8rem !important;
   }
 }
 
