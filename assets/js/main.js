@@ -2880,28 +2880,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const wasPlaying = !window.mainAudio.paused;
 
-    // Save current position percentage for smooth transition
-    const positionPercent =
-      window.mainAudio.currentTime / window.mainAudio.duration;
-
     // Update audio source
     window.mainAudio.src = songLibrary[currentSongIndex].file;
+
+    // Reset to beginning of new song
+    window.mainAudio.currentTime = 0;
 
     // Update UI
     updateSongInfo();
     pulseHologram();
 
-    // If it was playing, continue playing the new song
+    // If it was playing, continue playing the new song from the beginning
     if (wasPlaying) {
       window.mainAudio
         .play()
         .then(() => {
-          // Try to maintain relative position in the new song
-          if (!isNaN(positionPercent) && isFinite(positionPercent)) {
-            window.mainAudio.currentTime =
-              positionPercent * window.mainAudio.duration;
-          }
-
           // Update visualizer for new song style
           if (window.visualizerActive) {
             drawVisualizer();

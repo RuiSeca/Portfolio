@@ -3240,46 +3240,56 @@ html {
 
 /* White mode styles */
 .white-mode .hologram-projection {
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 40px rgba(var(--hue), 70%, 45%, 0.6);
-  border: 1px solid rgba(var(--hue), 70%, 45%, 0.2);
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 60px rgba(215, 119, 6, 0.8) !important;
+  border: 2px solid rgba(215, 119, 6, 0.6) !important;
 }
 
 .white-mode .hologram-content {
-  color: rgba(var(--hue), 70%, 45%, 0.9);
+  color: rgba(215, 119, 6, 0.95) !important;
 }
 
 .white-mode .song-info {
-  text-shadow: 0 0 10px rgba(var(--hue), 70%, 45%, 0.6);
+  text-shadow: 0 0 15px rgba(215, 119, 6, 0.8) !important;
+}
+
+.white-mode .song-title {
+  color: rgba(215, 119, 6, 1) !important;
+}
+
+.white-mode .song-artist {
+  color: rgba(215, 119, 6, 0.9) !important;
 }
 
 .white-mode .hologram-base {
   background: linear-gradient(
     to bottom,
-    rgba(var(--hue), 70%, 45%, 0.4),
-    rgba(var(--hue), 70%, 45%, 0.1)
-  );
-  box-shadow: 0 10px 20px rgba(var(--hue), 70%, 45%, 0.3);
+    rgba(215, 119, 6, 0.6),
+    rgba(215, 119, 6, 0.2)
+  ) !important;
+  box-shadow: 0 15px 30px rgba(215, 119, 6, 0.6) !important;
 }
 
 .white-mode .hologram-btn {
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(var(--hue), 70%, 45%, 0.3);
-  color: rgba(var(--hue), 70%, 45%, 0.9);
-  box-shadow: 0 0 15px rgba(var(--hue), 70%, 45%, 0.4);
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 2px solid rgba(215, 119, 6, 0.6) !important;
+  color: rgba(215, 119, 6, 1) !important;
+  box-shadow: 0 0 15px rgba(215, 119, 6, 0.5) !important;
 }
 
 .white-mode .hologram-btn:hover {
-  background: rgba(var(--hue), 70%, 45%, 0.2);
-  box-shadow: 0 0 20px rgba(var(--hue), 70%, 45%, 0.6);
+  background: rgba(215, 119, 6, 0.3) !important;
+  box-shadow: 0 0 25px rgba(215, 119, 6, 0.8) !important;
 }
 
 .white-mode .hologram-glow {
   background: radial-gradient(
     circle,
-    rgba(var(--hue), 70%, 45%, 0.2) 0%,
+    rgba(215, 119, 6, 0.3) 0%,
     transparent 70%
-  );
+  ) !important;
 }
 
 .white-mode .hologram-projection::before,
@@ -3287,32 +3297,32 @@ html {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(var(--hue), 70%, 45%, 0.2) 20%,
-    rgba(var(--hue), 70%, 45%, 0.8) 50%,
-    rgba(var(--hue), 70%, 45%, 0.2) 80%,
+    rgba(215, 119, 6, 0.3) 20%,
+    rgba(215, 119, 6, 0.9) 50%,
+    rgba(215, 119, 6, 0.3) 80%,
     transparent 100%
-  );
-  box-shadow: 0 0 4px rgba(var(--hue), 70%, 45%, 0.8);
+  ) !important;
+  box-shadow: 0 0 6px rgba(215, 119, 6, 1) !important;
 }
 
 .white-mode .hologram-base::before,
 .white-mode .hologram-base::after {
-  background: rgba(var(--hue), 70%, 45%, 0.8);
-  box-shadow: 0 0 8px rgba(var(--hue), 70%, 45%, 1);
+  background: rgba(215, 119, 6, 0.9) !important;
+  box-shadow: 0 0 10px rgba(215, 119, 6, 1) !important;
 }
 
 .white-mode .hologram-active .hologram-projection {
-  box-shadow: 0 0 40px rgba(var(--hue), 70%, 45%, 0.8),
-    0 0 20px rgba(255, 255, 255, 0.4) inset;
-  border: 1px solid rgba(var(--hue), 70%, 45%, 0.6);
+  box-shadow: 0 0 60px rgba(215, 119, 6, 1),
+    0 0 30px rgba(215, 119, 6, 0.5) inset !important;
+  border: 2px solid rgba(215, 119, 6, 0.8) !important;
 }
 
 .white-mode .hologram-active .hologram-base {
   background: linear-gradient(
     to bottom,
-    rgba(var(--hue), 70%, 45%, 0.6),
-    rgba(var(--hue), 70%, 45%, 0.2)
-  );
+    rgba(215, 119, 6, 0.7),
+    rgba(215, 119, 6, 0.3)
+  ) !important;
 }
 
 /* Fix for piano container spacing */
