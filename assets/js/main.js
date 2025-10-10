@@ -32,6 +32,12 @@ window.addEventListener("scroll", () => {
   if (navMenu.classList.contains("nav__open")) {
     navMenu.classList.remove("nav__open"); // Close the menu when scrolling
   }
+
+  // Show header when user scrolls (after piano key interaction)
+  const header = document.getElementById("header");
+  if (header && header.style.transform === "translateY(-100%)") {
+    header.style.transform = "translateY(0)";
+  }
 });
 
 /*=============== CARD SWIPER ===============*/
@@ -2035,6 +2041,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     key.addEventListener("click", () => {
+      // Hide header when piano key is pressed
+      const header = document.getElementById("header");
+      if (header) {
+        header.style.transform = "translateY(-100%)";
+        header.style.transition = "transform 0.3s ease";
+      }
+
       // Clear active state from all keys
       document.querySelectorAll(".piano-key").forEach((k) => {
         k.classList.remove("active");
@@ -2822,6 +2835,12 @@ document.addEventListener("DOMContentLoaded", () => {
       window.mainAudio.pause();
       window.isPlaying = false;
       console.log("Audio playback paused from hologram");
+
+      // Show header when music is paused
+      const header = document.getElementById("header");
+      if (header) {
+        header.style.transform = "translateY(0)";
+      }
 
       // Update UI elements
       if (playBtn) {
