@@ -2056,19 +2056,11 @@ document.addEventListener("DOMContentLoaded", () => {
           const isCurrentlyPlaying = !window.mainAudio.paused;
 
           if (!isCurrentlyPlaying) {
-            // Initialize audio on first interaction (piano key click)
-            // This handles browser autoplay policy
-            if (window.mainAudio.readyState === 0) {
-              console.log("Loading audio on first piano key click");
-              window.mainAudio.load();
-            }
-
-            // Force audio context to resume if suspended
-            if (
-              window.preInitializedAudioContext &&
-              window.preInitializedAudioContext.state === "suspended"
-            ) {
-              window.preInitializedAudioContext.resume();
+            // Force audio context to resume if suspended - use same context as play button
+            const audioCtx = window.getAudioContext ? window.getAudioContext() : null;
+            if (audioCtx && audioCtx.state === "suspended") {
+              console.log("Resuming audio context from piano key");
+              audioCtx.resume();
             }
 
             console.log("Starting audio from piano key click");
@@ -2092,7 +2084,7 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             }
 
-            // Update piano UI immediately
+            // Update piano UI immediately - WHITE dot when playing
             soundControl.classList.add("playing");
             statusDot.classList.add("playing");
             statusDot.style.opacity = "1";
@@ -2124,13 +2116,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Reset hologram UI
                     if (playBtn) {
                       playBtn.classList.remove("playing");
+                      const playIcon = playBtn.querySelector(".ri-play-fill");
+                      const pauseIcon = playBtn.querySelector(".ri-pause-fill");
                       if (playIcon && pauseIcon) {
                         playIcon.style.display = "block";
                         pauseIcon.style.display = "none";
                       }
                     }
 
-                    // Reset piano UI
+                    // Reset piano UI - RED dot when not playing
                     soundControl.classList.remove("playing");
                     statusDot.classList.remove("playing");
                     statusDot.style.opacity = "0.5";
@@ -2141,6 +2135,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 100);
               });
             }
+
           } else {
             // Audio already playing - just ensure UI is consistent
             console.log("Audio already playing, ensuring UI is consistent");
@@ -2186,50 +2181,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Helper function to update hologram UI consistently
-      function updateHologramUI(isPlaying) {
-        const playBtn = document.querySelector(".play-btn");
-        if (playBtn) {
-          if (isPlaying) {
-            playBtn.classList.add("playing");
-
-            // Update icon visibility
-            const playIcon = playBtn.querySelector(".ri-play-fill");
-            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-
-            if (playIcon && pauseIcon) {
-              playIcon.style.display = "none";
-              pauseIcon.style.display = "block";
-            }
-
-            // Ensure visualizer is running
-            window.visualizerActive = true;
-            if (
-              window.hologramFunctions &&
-              window.hologramFunctions.drawVisualizer
-            ) {
-              window.hologramFunctions.drawVisualizer();
-            }
-          } else {
-            playBtn.classList.remove("playing");
-
-            // Update icon visibility
-            const playIcon = playBtn.querySelector(".ri-play-fill");
-            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-
-            if (playIcon && pauseIcon) {
-              playIcon.style.display = "block";
-              pauseIcon.style.display = "none";
-            }
-
-            // Stop visualizer
-            window.visualizerActive = false;
-          }
-        }
-      }
-
       // Create visual effects
       const keyRect = key.getBoundingClientRect();
+      const isBlack = stage.type === "black";
       createEnhancedMagicTrail(
         keyRect.left + keyRect.width / 2,
         keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9)
@@ -2516,6 +2470,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let audioContext = null;
   let audioSource = null;
   let analyzer = null;
+
+  // Make audioContext globally accessible for piano keys
+  window.getAudioContext = () => audioContext;
   window.visualizerActive = false;
   let hologramActive = true;
   let currentSongIndex = 0;

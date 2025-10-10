@@ -2461,6 +2461,17 @@ body.modal-open {
   animation: soundPulse 2s infinite ease-in-out;
 }
 
+/* Status Dot - RED when not playing, WHITE when playing */
+.status-dot {
+  background: #ff3b30 !important;
+  transition: all 0.3s ease;
+}
+
+.status-dot.playing {
+  background: #ffffff !important;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
 /* Journey Cards */
 .journey-container {
   position: relative;
