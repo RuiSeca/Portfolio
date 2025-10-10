@@ -2056,6 +2056,13 @@ document.addEventListener("DOMContentLoaded", () => {
           const isCurrentlyPlaying = !window.mainAudio.paused;
 
           if (!isCurrentlyPlaying) {
+            // Initialize audio on first interaction (piano key click)
+            // This handles browser autoplay policy
+            if (window.mainAudio.readyState === 0) {
+              console.log("Loading audio on first piano key click");
+              window.mainAudio.load();
+            }
+
             // Force audio context to resume if suspended
             if (
               window.preInitializedAudioContext &&
