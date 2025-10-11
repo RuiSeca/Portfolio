@@ -1542,6 +1542,46 @@ span {
   }
 }
 
+/* Tablet styles - zoom out cards for better overview */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .swiper {
+    padding: 40px 3%;
+  }
+
+  .swiper-wrapper {
+    height: 24em;
+  }
+
+  .card {
+    width: 13em;
+    padding: 1.2rem 0.8em;
+    margin: 0 0.8em;
+    margin-top: 2.5em;
+    margin-bottom: 4em;
+    transform: scale(0.85);
+  }
+
+  .card__image {
+    width: 8.5em;
+    height: 8.5em;
+    margin-bottom: 1.2em;
+  }
+
+  .card_title {
+    font-size: 1.1rem;
+  }
+
+  .card__text {
+    font-size: 0.9rem;
+    max-width: 160px;
+  }
+
+  .card__btn {
+    font-size: 0.85rem;
+    padding: 0.65em 1.8em;
+  }
+}
+
 /* Modal styles */
 .project-modal {
   position: fixed;
