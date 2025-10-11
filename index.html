@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="assets/css/logo-loop.css" />
     <link rel="stylesheet" href="assets/css/card-swap.css" />
     <link rel="stylesheet" href="assets/css/decrypted-text.css" />
+    <link rel="stylesheet" href="assets/css/journey-cards.css" />
     <!-- Modern header must load LAST to override any conflicting styles -->
     <link rel="stylesheet" href="assets/css/modern-header.css" />
 
@@ -100,7 +101,7 @@
         <div class="home__container container grid">
           <div class="home__content">
             <div class="home__data">
-              <h3 class="home__subtitle">Hello, <span>I’m</span></h3>
+              <h3 class="home__subtitle">Who <span>I Am</span></h3>
               <div class="home__image">
                 <svg
                   class="home__blob"
@@ -241,96 +242,88 @@
 
       <!--==================== ABOUT ====================-->
       <section class="about section" id="about">
-        <div class="about__container container grid">
-          <div class="about__data">
-            <h2 class="section__title">My Profile</h2>
+        <div class="journey__container container">
+          <h2 class="section__title">My Journey</h2>
+          <p class="section__subtitle journey__subtitle">From code to cosmos — a path shaped by creativity, curiosity, and security.</p>
 
-            <p class="about__description">
-              At Anglia Ruskin University, I pursued a comprehensive Computer
-              Science degree, diving deep into both theoretical foundations and
-              practical applications. From advanced algorithms and data
-              structures to hands-on software development projects, ARU provided
-              a holistic education that combined cutting-edge research with
-              real-world challenges. Collaborating with a diverse group of peers
-              and under the guidance of experienced professors, I undertook
-              numerous projects that honed my coding, problem-solving, and
-              teamwork skills, preparing me for the dynamic tech landscape. I
-              have become a skilled Back-End developer who can craft efficient,
-              scalable, and maintainable server-side solutions. Lastly my
-              understanding of modern architectures and technologies, ensures
-              optimal performance and seamless integration with front-end
-              systems.
-            </p>
+          <!-- Journey Cards Swiper -->
+          <div class="journey-swiper-wrapper">
+            <div class="swiper journeySwiper">
+              <div class="swiper-wrapper">
+
+                <!-- Card 1 - Foundation -->
+                <div class="swiper-slide">
+                  <div class="journey-card">
+                    <div class="journey-card__icon">
+                      <i class="ri-graduation-cap-line"></i>
+                    </div>
+                    <h3 class="journey-card__title">Foundation</h3>
+                    <p class="journey-card__description">
+                      Built a foundation in Computer Science at Anglia Ruskin University, exploring algorithms, data structures, and full-stack development.
+                      <br><br>
+                      Discovered that clean logic can be as elegant as music.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Card 2 - Exploration -->
+                <div class="swiper-slide">
+                  <div class="journey-card">
+                    <div class="journey-card__icon">
+                      <i class="ri-lightbulb-line"></i>
+                    </div>
+                    <h3 class="journey-card__title">Exploration</h3>
+                    <p class="journey-card__description">
+                      Through collaborative projects, I learned to merge creativity with engineering, designing efficient, expressive systems.
+                      <br><br>
+                      Every challenge felt like composing a new melody in code.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Card 3 - Specialization -->
+                <div class="swiper-slide">
+                  <div class="journey-card">
+                    <div class="journey-card__icon">
+                      <i class="ri-shield-keyhole-line"></i>
+                    </div>
+                    <h3 class="journey-card__title">Specialization</h3>
+                    <p class="journey-card__description">
+                      Completing an MSc in Cyber Security at University of Surrey refined my focus on secure software architecture and cloud innovation — building technology that protects as much as it performs.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Card 4 - Vision -->
+                <div class="swiper-slide">
+                  <div class="journey-card">
+                    <div class="journey-card__icon">
+                      <i class="ri-rocket-2-line"></i>
+                    </div>
+                    <h3 class="journey-card__title">Vision</h3>
+                    <p class="journey-card__description">
+                      Now based in London, I continue building secure, full-stack applications using React, Node.js, Flutter, and AWS, always looking for ways to merge technical depth with creative problem-solving.
+                      <br><br>
+                      My love for piano and astronomy inspires balance between precision and imagination in everything I build.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+              <!-- Swiper Pagination -->
+              <div class="swiper-pagination journey-pagination"></div>
+            </div>
           </div>
 
-          <div class="about__image">
-            <svg
-              class="about__blob"
-              viewBox="0 0 550 592"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <mask id="maskBorder" mask-type="alpha">
-                <path
-                  d="M263 48.1782C270.426 43.891 279.574 43.891 287 48.1782L501.157 
-                   171.822C508.583 176.109 513.157 184.032 513.157 192.606V439.894C513.157 
-                   448.468 508.583 456.391 501.157 460.678L287 584.322C279.574 588.609 
-                   270.426 588.609 263 584.322L48.843 460.678C41.4174 456.391 36.843 448.468 36.843 
-                   439.894V192.606C36.843 184.032 41.4174 176.109 48.843 171.822L263 48.1782Z"
-                  fill="black"
-                />
-              </mask>
-              <g mask="url(#maskBorder)">
-                <rect x="37" width="476" height="630" fill="url(#pattern2)" />
-
-                <path
-                  d="M285 51.6423L499.157 175.286C505.345 178.859 509.157 185.461 509.157 
-                   192.606V439.894C509.157 447.039 505.345 453.641 499.157 457.214L285 
-                   580.858C278.812 584.43 271.188 584.43 265 580.858L50.843 457.214C44.655 453.641 
-                   40.843 447.039 40.843 439.894V192.606C40.843 185.461 44.655 178.859 50.843 
-                   175.286L265 51.6423C271.188 48.0697 278.812 48.0696 285 51.6423Z"
-                  stroke="black"
-                  stroke-width="10"
-                />
-              </g>
-
-              <rect x="37" width="476" height="300" fill="url(#pattern3)" />
-
-              <defs>
-                <pattern
-                  id="pattern2"
-                  patternContentUnits="objectBoundingBox"
-                  width="1"
-                  height="1"
-                >
-                  <use
-                    href="#imageBorder"
-                    transform="matrix(0.00143057 0 0 0.00108108 0.0404062 0)"
-                  />
-                </pattern>
-
-                <pattern
-                  id="pattern3"
-                  patternContentUnits="objectBoundingBox"
-                  width="1"
-                  height="1"
-                >
-                  <use
-                    href="#imageBorder"
-                    transform="matrix(0.00143057 0 0 0.00226984 0.0404062 0)"
-                  />
-                </pattern>
-
-                <!-- Insert your profile (recommended size: 640 x 940) -->
-                <image
-                  class="about_img"
-                  id="imageBorder"
-                  width="640"
-                  height="940"
-                  href="assets/img/about.png"
-                />
-              </defs>
-            </svg>
+          <!-- Behind the Design -->
+          <div class="journey__behind">
+            <div class="journey__divider"></div>
+            <h4 class="journey__behind-title">Behind the Design</h4>
+            <p class="journey__behind-text">
+              This portfolio reflects two passions — piano and astronomy.
+              Music provides rhythm and structure; astronomy fuels curiosity and perspective.
+              Together, they remind me that great code, like art, is a harmony of logic and creativity.
+            </p>
           </div>
         </div>
       </section>
@@ -387,7 +380,7 @@
 
       <!--==================== PROJECTS ====================-->
       <section id="projects" class="section projects section">
-        <h2 class="section__title">Projects</h2>
+        <h2 class="section__title">My <span>Work</span></h2>
         <div class="project__container container grid">
           <div class="swiper mySwiper">
             <div class="swiper-wrapper">
@@ -564,8 +557,8 @@
       <section class="career section" id="career">
         <div class="container">
           <!-- Headings -->
-          <h2 class="section__subtitle-piano">Career Progression</h2>
-          <h3 class="section__title-keys">My <span class="vintage-text">Journey</span></h3>
+          <h2 class="section__subtitle-piano">Where I've Been</h2>
+          <h3 class="section__title-keys">Career <span class="vintage-text">Timeline</span></h3>
           
           <!-- Hologram component - now in its own wrapper -->
           <div class="hologram-wrapper">
@@ -621,7 +614,7 @@
       <!--==================== SERVICES ====================-->
       <section class="card-swap-section section" id="services">
         <h3 class="section__subtitle">Services</h3>
-        <h2 class="section__title">What <span>I</span> Do</h2>
+        <h2 class="section__title">What <span>I</span> Offer</h2>
 
         <div class="card-swap-content">
           <!-- Left side: Text content -->
@@ -676,7 +669,7 @@
 
       <!--==================== CONTACT ====================-->
       <section class="contact section" id="contact">
-        <h3 class="section__subtitle">Get In <span>Touch</span></h3>
+        <h3 class="section__subtitle">Let's <span>Connect</span></h3>
 
         <h2 class="section__title">Contact Me</h2>
 
@@ -841,6 +834,9 @@
 
     <!-- Variable Font Proximity Effect -->
     <script src="assets/js/variable-proximity.js"></script>
+
+    <!-- Journey Cards Swiper -->
+    <script src="assets/js/journey-cards.js"></script>
 
     <!-- Custom ChatBot -->
     <script src="https://cdn.lordicon.com/lordicon.js"></script>

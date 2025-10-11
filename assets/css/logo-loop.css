@@ -3,6 +3,57 @@
   padding: 4rem 0;
   overflow: hidden;
   background: var(--body-color);
+  position: relative;
+}
+
+/* Animated light beams on top and bottom borders */
+.logo-loop-section::before,
+.logo-loop-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  background-size: 50% 100%;
+  animation: lightBeamTravel 3s linear infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.logo-loop-section::before {
+  top: 0;
+}
+
+.logo-loop-section::after {
+  bottom: 0;
+  animation-delay: 1.5s; /* Offset the bottom beam */
+}
+
+/* Light theme - grey beams */
+body.light-theme .logo-loop-section::before,
+body.light-theme .logo-loop-section::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(100, 100, 100, 0.6) 50%,
+    transparent 100%
+  );
+  background-size: 50% 100%;
+}
+
+@keyframes lightBeamTravel {
+  0% {
+    background-position: -50% 0;
+  }
+  100% {
+    background-position: 150% 0;
+  }
 }
 
 .logo-loop-header {

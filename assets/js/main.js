@@ -1848,20 +1848,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /*=================== PIANO FUNCTIONS ===================*/
 
-  // Card fade timer function
+  // Card fade timer function - simplified, no transform
   const startCardFadeTimer = () => {
     if (cardFadeTimeout) {
       clearTimeout(cardFadeTimeout);
     }
 
     cardFadeTimeout = setTimeout(() => {
-      const cards = document.querySelectorAll(".journey-card");
+      const cards = document.querySelectorAll(".career-journey-card");
       cards.forEach((card) => {
-        card.style.transition = "all 0.5s ease-out";
+        card.style.transition = "opacity 0.4s ease-out";
         card.style.opacity = "0";
-        card.style.transform = "translateX(-50%) translateY(20px)";
       });
-    }, 5000); // 5 seconds
+    }, 6000); // 6 seconds
   };
 
   // Enhanced magic trail creation
@@ -2300,63 +2299,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Remove existing cards
     journeyContainer
-      .querySelectorAll(".journey-card")
+      .querySelectorAll(".career-journey-card")
       .forEach((card) => card.remove());
 
-    if (isMobile) {
-      // Mobile: Create single card for active stage
-      const card = document.createElement("div");
-      card.className = `journey-card ${activeStage.color}`;
-      card.style.transform = "translateX(-50%) translateY(20px)";
-      card.style.opacity = "0";
+    // Center all cards - no movement or transforms
+    const card = document.createElement("div");
+    card.className = `career-journey-card ${activeStage.color}`;
+    card.style.opacity = "0";
 
-      card.innerHTML = `
-        <div class="text-gray-800 relative z-10">
-          <div class="font-bold font-serif">${activeStage.year}</div>
-          <div class="text-lg font-semibold font-serif">${activeStage.title}</div>
-          <div class="text-sm font-serif">${activeStage.description}</div>
-        </div>
-      `;
+    card.innerHTML = `
+      <div class="text-gray-800 relative z-10">
+        <div class="font-bold font-serif">${activeStage.year}</div>
+        <div class="text-lg font-semibold font-serif">${activeStage.title}</div>
+        <div class="text-sm font-serif">${activeStage.description}</div>
+      </div>
+    `;
 
-      journeyContainer.appendChild(card);
+    journeyContainer.appendChild(card);
 
-      // Trigger animation after a small delay
-      setTimeout(() => {
-        card.style.transform = "translateX(-50%) translateY(0)";
-        card.style.opacity = "1";
-      }, 50);
-    } else {
-      // Desktop: Show only the active card centered below piano
-      const card = document.createElement("div");
-      card.className = `journey-card ${activeStage.color}`;
+    // Show card instantly with light ray animation
+    card.style.opacity = "1";
+    card.classList.add('light-ray-active');
 
-      // Set initial state - centered by CSS
-      card.style.opacity = "0";
-      card.style.transform = "translateX(-50%) translateY(20px)";
+    // Remove animation class after it completes
+    setTimeout(() => {
+      card.classList.remove('light-ray-active');
+    }, 800);
 
-      card.innerHTML = `
-        <div class="text-gray-800 relative z-10">
-          <div class="font-bold font-serif">${activeStage.year}</div>
-          <div class="text-lg font-semibold font-serif">${activeStage.title}</div>
-          <div class="text-sm font-serif">${activeStage.description}</div>
-        </div>
-      `;
-
-      journeyContainer.appendChild(card);
-
-      // Trigger animation
-      setTimeout(() => {
-        card.style.opacity = "1";
-        card.style.transform = "translateX(-50%) translateY(0)";
-      }, 50);
-    }
     startCardFadeTimer();
   };
 
   // Add window resize listener to handle layout changes
   window.addEventListener("resize", () => {
     const activeCard = document.querySelector(
-      '.journey-card[style*="opacity: 1"]'
+      '.career-journey-card[style*="opacity: 1"]'
     );
     if (activeCard) {
       const activeStage = careerStages.find(

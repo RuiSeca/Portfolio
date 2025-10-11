@@ -160,6 +160,45 @@ svg {
   color: var(--first-color);
 }
 
+/* ==================== CUSTOM SECTION TITLES ==================== */
+
+/* My Journey - Subtle cosmic shimmer */
+.about .section__title {
+  background: linear-gradient(
+    120deg,
+    var(--title-color) 0%,
+    #8b7fbf 50%,
+    var(--title-color) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: subtleCosmicShimmer 10s ease-in-out infinite;
+}
+
+@keyframes subtleCosmicShimmer {
+  0%, 100% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Technologies & Skills - Subtle tech glow */
+.logo-loop-header h1 {
+  color: var(--title-color);
+  position: relative;
+  transition: text-shadow 0.3s ease;
+}
+
+.logo-loop-header h1:hover {
+  text-shadow: 0 0 15px var(--first-color);
+}
+
+/* My Work - just uses span for red accent like nav logo */
+
 .main {
   overflow: hidden; /* For animation ScrollReveal */
 }
@@ -2490,13 +2529,12 @@ body.modal-open {
   align-items: center;
 }
 
-.journey-card {
+.career-journey-card {
   position: absolute;
   width: 280px;
   padding: 1rem;
-  border-radius: 0.5rem;
-  background: rgba(92, 73, 52, 0.1);
   border-radius: 8px;
+  background: rgba(92, 73, 52, 0.1);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(139, 115, 85, 0.3);
   box-shadow: 0 0 30px rgba(139, 115, 85, 0.2),
@@ -2517,7 +2555,7 @@ background: #f4e4d4;
 */
 
 /* Shine effect */
-.journey-card::before {
+.career-journey-card::before {
   content: "";
   position: absolute;
   top: -150%;
@@ -2554,25 +2592,39 @@ background: #f4e4d4;
   }
 }
 
-.journey-card.visible {
+.career-journey-card.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
+}
+
+/* Hover effect - white glow on dark mode */
+.career-journey-card:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Hover effect - black glow on light mode */
+body.light-theme .career-journey-card:hover {
+  border-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2),
+    inset 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
 /* Card Content Styles */
-.journey-card .font-bold {
+.career-journey-card .font-bold {
   font-size: 1.1rem;
   color: #5c4934;
   margin-bottom: 0.5rem;
 }
 
-.journey-card .text-lg {
+.career-journey-card .text-lg {
   font-size: 1.2rem;
   color: #8b7355;
   margin-bottom: 0.5rem;
 }
 
-.journey-card .text-sm {
+.career-journey-card .text-sm {
   font-size: 0.9rem;
   color: #a69585;
   line-height: 1.4;
@@ -2587,10 +2639,10 @@ html {
   padding-bottom: 1rem; /* Reduce gap to services section */
 }
 
-/* Journey Cards - Desktop */
+/* Journey Cards - Desktop - keep centered with margin auto */
 @media screen and (min-width: 769px) {
-  .journey-card {
-    transform: translateX(-50%);
+  .career-journey-card {
+    /* No transform needed, margin: auto handles centering */
   }
 }
 
@@ -2652,13 +2704,21 @@ html {
     width: 100%;
   }
 
-  .journey-card {
-    width: 90%;
-    max-width: 320px;
-    position: relative;
-    left: auto !important;
-    transform: none;
-    transition: all 0.4s ease-in-out;
+  .career-journey-card {
+    width: 250px;
+    padding: 0.875rem;
+  }
+
+  .career-journey-card .font-bold {
+    font-size: 1rem;
+  }
+
+  .career-journey-card .text-lg {
+    font-size: 1.1rem;
+  }
+
+  .career-journey-card .text-sm {
+    font-size: 0.85rem;
   }
 }
 
@@ -2699,20 +2759,20 @@ html {
     overflow: hidden;
   }
 
-  .journey-card {
-    padding: 1rem;
-    width: 95%;
+  .career-journey-card {
+    width: 260px;
+    padding: 0.9rem;
   }
 
-  .journey-card .font-bold {
+  .career-journey-card .font-bold {
     font-size: 1rem;
   }
 
-  .journey-card .text-lg {
+  .career-journey-card .text-lg {
     font-size: 1.1rem;
   }
 
-  .journey-card .text-sm {
+  .career-journey-card .text-sm {
     font-size: 0.85rem;
   }
   .career.section {
@@ -2733,13 +2793,13 @@ html {
 }
 
 /* Add JS animation classes */
-.journey-card[data-index="0"] {
+.career-journey-card[data-index="0"] {
   animation-delay: 0s;
 }
-.journey-card[data-index="1"] {
+.career-journey-card[data-index="1"] {
   animation-delay: 0.3s;
 }
-.journey-card[data-index="2"] {
+.career-journey-card[data-index="2"] {
   animation-delay: 0.6s;
 }
 
@@ -2772,7 +2832,7 @@ html {
     margin-right: auto;
   }
 
-  .journey-card {
+  .career-journey-card {
     width: 160px;
     padding: 1rem;
   }
@@ -2791,7 +2851,7 @@ html {
     margin-right: auto;
   }
 
-  .journey-card {
+  .career-journey-card {
     width: 140px;
     padding: 0.8rem;
   }
