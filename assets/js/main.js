@@ -3165,14 +3165,22 @@ function initLogoSpotlight() {
   const track = document.getElementById('logo-track');
   if (!container || !track) return;
 
-  // Create spotlight overlay elements
-  const spotlightOverlay = document.createElement('div');
-  spotlightOverlay.className = 'logo-spotlight-overlay';
-  container.appendChild(spotlightOverlay);
+  // Check if device supports hover (not a touch device)
+  const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
 
-  const spotlightFade = document.createElement('div');
-  spotlightFade.className = 'logo-spotlight-fade';
-  container.appendChild(spotlightFade);
+  // Only create spotlight overlays on non-touch devices
+  let spotlightOverlay, spotlightFade;
+
+  if (!isTouchDevice) {
+    // Create spotlight overlay elements
+    spotlightOverlay = document.createElement('div');
+    spotlightOverlay.className = 'logo-spotlight-overlay';
+    container.appendChild(spotlightOverlay);
+
+    spotlightFade = document.createElement('div');
+    spotlightFade.className = 'logo-spotlight-fade';
+    container.appendChild(spotlightFade);
+  }
 
   let highlightedLogo = null;
   let pos = { x: 0, y: 0 };
@@ -3185,20 +3193,23 @@ function initLogoSpotlight() {
     container.style.setProperty('--y', `${y}px`);
   };
 
-  // Handle mouse move for spotlight
+  // Handle mouse move for spotlight (only on non-touch devices)
   const handleMove = (e) => {
+    if (isTouchDevice) return;
     const rect = container.getBoundingClientRect();
     moveTo(e.clientX - rect.left, e.clientY - rect.top);
-    spotlightFade.style.opacity = '0';
+    if (spotlightFade) spotlightFade.style.opacity = '0';
   };
 
-  // Handle mouse leave - fade back in
+  // Handle mouse leave - fade back in (only on non-touch devices)
   const handleLeave = () => {
-    spotlightFade.style.opacity = '1';
+    if (isTouchDevice) return;
+    if (spotlightFade) spotlightFade.style.opacity = '1';
   };
 
-  // Handle card hover for individual spotlight
+  // Handle card hover for individual spotlight (only on non-touch devices)
   const handleCardMove = (e) => {
+    if (isTouchDevice) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -3230,20 +3241,29 @@ function initLogoSpotlight() {
     highlightedLogo = logoItem;
   };
 
-  // Add event listeners
-  container.addEventListener('pointermove', handleMove);
-  container.addEventListener('pointerleave', handleLeave);
+  // Add event listeners (only spotlight events on non-touch devices)
+  if (!isTouchDevice) {
+    container.addEventListener('pointermove', handleMove);
+    container.addEventListener('pointerleave', handleLeave);
+  }
 
   // Add listeners to all logo items
   const logoItems = container.querySelectorAll('.logo-item');
   logoItems.forEach(item => {
-    item.addEventListener('mousemove', handleCardMove);
+    // Only add mousemove for spotlight on non-touch devices
+    if (!isTouchDevice) {
+      item.addEventListener('mousemove', handleCardMove);
+    }
+    // Click/tap to highlight works on all devices
     item.addEventListener('click', handleClick);
+    item.addEventListener('touchend', handleClick);
   });
 
-  // Initialize position to center
-  const rect = container.getBoundingClientRect();
-  moveTo(rect.width / 2, rect.height / 2);
+  // Initialize position to center (only on non-touch devices)
+  if (!isTouchDevice) {
+    const rect = container.getBoundingClientRect();
+    moveTo(rect.width / 2, rect.height / 2);
+  }
 }
 
 /*=============== MODERN HEADER SCROLL EFFECT ===============*/

@@ -288,6 +288,45 @@ body.light-theme .logo-loop-section::after {
   }
 }
 
+/* Mobile tap state - logos only show color when tapped */
+@media (hover: none) and (pointer: coarse) {
+  /* Keep logos fully grayscale on mobile by default */
+  .logo-icon {
+    filter: grayscale(100%);
+    opacity: 0.7;
+  }
+
+  /* Remove hover effects on touch devices */
+  .logo-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .logo-item:hover .logo-icon {
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transform: none;
+  }
+
+  /* When tapped/highlighted, show full color */
+  .logo-item.highlighted {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 15px 40px rgba(var(--first-color), 0.5);
+    border-color: var(--first-color);
+  }
+
+  .logo-item.highlighted .logo-icon {
+    filter: grayscale(0%) drop-shadow(0 0 20px rgba(var(--first-color), 0.6)) !important;
+    opacity: 1 !important;
+    transform: scale(1.15);
+  }
+
+  .logo-item.highlighted .logo-name {
+    color: var(--first-color);
+    font-weight: 700;
+  }
+}
+
 /* Responsive */
 @media screen and (max-width: 768px) {
   .logo-loop-track {
