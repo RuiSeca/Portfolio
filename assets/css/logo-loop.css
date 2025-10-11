@@ -35,13 +35,13 @@
   animation-delay: 1.5s; /* Offset the bottom beam */
 }
 
-/* Light theme - grey beams */
-body.light-theme .logo-loop-section::before,
-body.light-theme .logo-loop-section::after {
+/* Light theme - dark grey/black beams */
+body.white-mode .logo-loop-section::before,
+body.white-mode .logo-loop-section::after {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(100, 100, 100, 0.6) 50%,
+    rgba(30, 30, 30, 0.8) 50%,
     transparent 100%
   );
   background-size: 50% 100%;
@@ -103,8 +103,10 @@ body.light-theme .logo-loop-section::after {
 .logo-loop-track {
   display: flex;
   gap: 4rem;
-  animation: scroll 30s linear infinite;
+  animation: scroll 10s linear infinite;
   will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 .logo-loop-track.paused {
@@ -281,49 +283,64 @@ body.light-theme .logo-loop-section::after {
 
 @keyframes scroll {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-33.333%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 /* Mobile tap state - logos only show color when tapped */
 @media (hover: none) and (pointer: coarse) {
+  /* Completely hide spotlight overlays on touch devices */
+  .logo-spotlight-overlay,
+  .logo-spotlight-fade {
+    display: none !important;
+  }
+
+  /* Disable individual card spotlight effect */
+  .logo-item::before {
+    display: none !important;
+  }
+
   /* Keep logos fully grayscale on mobile by default */
   .logo-icon {
-    filter: grayscale(100%);
-    opacity: 0.7;
+    filter: grayscale(100%) !important;
+    opacity: 0.7 !important;
   }
 
   /* Remove hover effects on touch devices */
   .logo-item:hover {
-    transform: none;
-    box-shadow: none;
+    transform: none !important;
+    box-shadow: none !important;
   }
 
   .logo-item:hover .logo-icon {
-    filter: grayscale(100%);
-    opacity: 0.7;
-    transform: none;
+    filter: grayscale(100%) !important;
+    opacity: 0.7 !important;
+    transform: none !important;
+  }
+
+  .logo-item:hover .logo-name {
+    color: var(--text-color) !important;
   }
 
   /* When tapped/highlighted, show full color */
   .logo-item.highlighted {
-    transform: translateY(-5px) scale(1.1);
-    box-shadow: 0 15px 40px rgba(var(--first-color), 0.5);
-    border-color: var(--first-color);
+    transform: translateY(-5px) scale(1.1) !important;
+    box-shadow: 0 15px 40px rgba(var(--first-color), 0.5) !important;
+    border-color: var(--first-color) !important;
   }
 
   .logo-item.highlighted .logo-icon {
     filter: grayscale(0%) drop-shadow(0 0 20px rgba(var(--first-color), 0.6)) !important;
     opacity: 1 !important;
-    transform: scale(1.15);
+    transform: scale(1.15) !important;
   }
 
   .logo-item.highlighted .logo-name {
-    color: var(--first-color);
-    font-weight: 700;
+    color: var(--first-color) !important;
+    font-weight: 700 !important;
   }
 }
 

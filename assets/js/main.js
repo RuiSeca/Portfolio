@@ -3143,14 +3143,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const track = document.getElementById('logo-track');
   if (track) {
     const logos = track.innerHTML;
-    // Duplicate logos 3 times for seamless infinite scroll
-    track.innerHTML = logos + logos + logos;
+    // Duplicate logos only twice for seamless infinite scroll
+    track.innerHTML = logos + logos;
 
-    // Calculate animation duration based on 100px/s speed
+    // Calculate exact animation duration based on track width
     setTimeout(() => {
-      const trackWidth = track.scrollWidth / 3; // Width of one set of logos
-      const speed = 100; // pixels per second
-      const duration = trackWidth / speed; // seconds
+      const trackWidth = track.scrollWidth / 2; // Width of one set
+      const speed = 150; // pixels per second (adjust for desired speed)
+      const duration = trackWidth / speed;
       track.style.animationDuration = `${duration}s`;
     }, 100);
 
@@ -3168,58 +3168,11 @@ function initLogoSpotlight() {
   // Check if device supports hover (not a touch device)
   const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
 
-  // Only create spotlight overlays on non-touch devices
-  let spotlightOverlay, spotlightFade;
-
-  if (!isTouchDevice) {
-    // Create spotlight overlay elements
-    spotlightOverlay = document.createElement('div');
-    spotlightOverlay.className = 'logo-spotlight-overlay';
-    container.appendChild(spotlightOverlay);
-
-    spotlightFade = document.createElement('div');
-    spotlightFade.className = 'logo-spotlight-fade';
-    container.appendChild(spotlightFade);
-  }
-
   let highlightedLogo = null;
-  let pos = { x: 0, y: 0 };
 
-  // Update spotlight position smoothly
-  const moveTo = (x, y) => {
-    pos.x = x;
-    pos.y = y;
-    container.style.setProperty('--x', `${x}px`);
-    container.style.setProperty('--y', `${y}px`);
-  };
-
-  // Handle mouse move for spotlight (only on non-touch devices)
-  const handleMove = (e) => {
-    if (isTouchDevice) return;
-    const rect = container.getBoundingClientRect();
-    moveTo(e.clientX - rect.left, e.clientY - rect.top);
-    if (spotlightFade) spotlightFade.style.opacity = '0';
-  };
-
-  // Handle mouse leave - fade back in (only on non-touch devices)
-  const handleLeave = () => {
-    if (isTouchDevice) return;
-    if (spotlightFade) spotlightFade.style.opacity = '1';
-  };
-
-  // Handle card hover for individual spotlight (only on non-touch devices)
-  const handleCardMove = (e) => {
-    if (isTouchDevice) return;
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty('--mouse-x', `${x}px`);
-    card.style.setProperty('--mouse-y', `${y}px`);
-  };
-
-  // Handle click to highlight and pause
+  // Handle click/tap to highlight and pause
   const handleClick = (e) => {
+    e.preventDefault();
     const logoItem = e.currentTarget;
 
     // If clicking the same logo, unhighlight and resume animation
@@ -3241,29 +3194,73 @@ function initLogoSpotlight() {
     highlightedLogo = logoItem;
   };
 
-  // Add event listeners (only spotlight events on non-touch devices)
-  if (!isTouchDevice) {
-    container.addEventListener('pointermove', handleMove);
-    container.addEventListener('pointerleave', handleLeave);
-  }
-
-  // Add listeners to all logo items
+  // Add click/tap listeners to all logo items (works on all devices)
   const logoItems = container.querySelectorAll('.logo-item');
   logoItems.forEach(item => {
-    // Only add mousemove for spotlight on non-touch devices
-    if (!isTouchDevice) {
-      item.addEventListener('mousemove', handleCardMove);
-    }
-    // Click/tap to highlight works on all devices
     item.addEventListener('click', handleClick);
     item.addEventListener('touchend', handleClick);
   });
 
-  // Initialize position to center (only on non-touch devices)
-  if (!isTouchDevice) {
-    const rect = container.getBoundingClientRect();
-    moveTo(rect.width / 2, rect.height / 2);
+  // If touch device, stop here - no spotlight effects
+  if (isTouchDevice) {
+    return;
   }
+
+  // === DESKTOP ONLY: Spotlight effects ===
+
+  // Create spotlight overlay elements
+  const spotlightOverlay = document.createElement('div');
+  spotlightOverlay.className = 'logo-spotlight-overlay';
+  container.appendChild(spotlightOverlay);
+
+  const spotlightFade = document.createElement('div');
+  spotlightFade.className = 'logo-spotlight-fade';
+  container.appendChild(spotlightFade);
+
+  let pos = { x: 0, y: 0 };
+
+  // Update spotlight position smoothly
+  const moveTo = (x, y) => {
+    pos.x = x;
+    pos.y = y;
+    container.style.setProperty('--x', `${x}px`);
+    container.style.setProperty('--y', `${y}px`);
+  };
+
+  // Handle mouse move for spotlight
+  const handleMove = (e) => {
+    const rect = container.getBoundingClientRect();
+    moveTo(e.clientX - rect.left, e.clientY - rect.top);
+    spotlightFade.style.opacity = '0';
+  };
+
+  // Handle mouse leave - fade back in
+  const handleLeave = () => {
+    spotlightFade.style.opacity = '1';
+  };
+
+  // Handle card hover for individual spotlight
+  const handleCardMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+  };
+
+  // Add spotlight event listeners
+  container.addEventListener('pointermove', handleMove);
+  container.addEventListener('pointerleave', handleLeave);
+
+  // Add mousemove to logo items for individual spotlight
+  logoItems.forEach(item => {
+    item.addEventListener('mousemove', handleCardMove);
+  });
+
+  // Initialize position to center
+  const rect = container.getBoundingClientRect();
+  moveTo(rect.width / 2, rect.height / 2);
 }
 
 /*=============== MODERN HEADER SCROLL EFFECT ===============*/
