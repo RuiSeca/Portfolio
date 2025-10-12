@@ -242,12 +242,15 @@ sr.reveal(".hologram-wrapper", {
 });
 
 // Card swap services section
-sr.reveal(".card-swap-section .section__subtitle, .card-swap-section .section__title", {
-  origin: "top",
-  distance: "60px",
-  scale: 0.85,
-  interval: 100,
-});
+sr.reveal(
+  ".card-swap-section .section__subtitle, .card-swap-section .section__title",
+  {
+    origin: "top",
+    distance: "60px",
+    scale: 0.85,
+    interval: 100,
+  }
+);
 
 sr.reveal(".card-swap-text", {
   origin: "left",
@@ -1786,7 +1789,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       note: "D2",
-      year: "2024",
+      year: "2025",
       title: "Direction",
       description: "Future Goals",
       color: "bg-orange-900",
@@ -1875,13 +1878,24 @@ document.addEventListener("DOMContentLoaded", () => {
     trail.style.overflow = "hidden";
 
     // Get current theme colors dynamically
-    const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+    const themeColors = window.getPianoThemeColors
+      ? window.getPianoThemeColors()
+      : { r: 215, g: 119, b: 6 };
     const colors = [
       `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.9)`,
-      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(themeColors.g + 20, 255)}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
-      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(themeColors.g - 20, 0)}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
+      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(
+        themeColors.g + 20,
+        255
+      )}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
+      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(
+        themeColors.g - 20,
+        0
+      )}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
       `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.75)`,
-      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(themeColors.g + 40, 255)}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
+      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(
+        themeColors.g + 40,
+        255
+      )}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
     ];
 
     // Screen size detection
@@ -2071,7 +2085,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (!isCurrentlyPlaying) {
             // Force audio context to resume if suspended - use same context as play button
-            const audioCtx = window.getAudioContext ? window.getAudioContext() : null;
+            const audioCtx = window.getAudioContext
+              ? window.getAudioContext()
+              : null;
             if (audioCtx && audioCtx.state === "suspended") {
               console.log("Resuming audio context from piano key");
               audioCtx.resume();
@@ -2149,7 +2165,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 100);
               });
             }
-
           } else {
             // Audio already playing - just ensure UI is consistent
             console.log("Audio already playing, ensuring UI is consistent");
@@ -2319,11 +2334,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show card instantly with light ray animation
     card.style.opacity = "1";
-    card.classList.add('light-ray-active');
+    card.classList.add("light-ray-active");
 
     // Remove animation class after it completes
     setTimeout(() => {
-      card.classList.remove('light-ray-active');
+      card.classList.remove("light-ray-active");
     }, 800);
 
     startCardFadeTimer();
@@ -2937,7 +2952,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (hologramProjection) {
       // Use dynamic theme color
-      const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+      const themeColors = window.getPianoThemeColors
+        ? window.getPianoThemeColors()
+        : { r: 215, g: 119, b: 6 };
       hologramProjection.style.boxShadow = `0 0 60px rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.8)`;
 
       setTimeout(() => {
@@ -2999,7 +3016,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Choose visualization based on current song
         const visType = songLibrary[currentSongIndex].visualizer;
         // Use dynamic theme color instead of hardcoded song color
-        const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+        const themeColors = window.getPianoThemeColors
+          ? window.getPianoThemeColors()
+          : { r: 215, g: 119, b: 6 };
         const color = `rgb(${themeColors.r}, ${themeColors.g}, ${themeColors.b})`;
 
         if (visType === "bars") {
@@ -3137,7 +3156,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
 /*=============== LOGO LOOP INFINITE SCROLL (robust) ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.getElementById("logo-track");
@@ -3156,7 +3174,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (imgs.length === 0) return Promise.resolve();
     return Promise.all(
       imgs.map((img) =>
-        img.complete ? Promise.resolve() : new Promise((res) => img.addEventListener("load", res, { once: true }))
+        img.complete
+          ? Promise.resolve()
+          : new Promise((res) =>
+              img.addEventListener("load", res, { once: true })
+            )
       )
     );
   };
@@ -3185,7 +3207,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const duration = Math.max(4, oneSetWidth / speed);
 
     // Set CSS custom properties for pixel-perfect animation
-    track.style.setProperty('--track-width', `-${oneSetWidth}px`);
+    track.style.setProperty("--track-width", `-${oneSetWidth}px`);
     track.style.animationDuration = `${duration}s`;
   };
 
@@ -3308,35 +3330,37 @@ function initLogoSpotlight() {
 }
 
 /*=============== MODERN HEADER SCROLL EFFECT ===============*/
-window.addEventListener('scroll', () => {
-  const header = document.getElementById('header');
+window.addEventListener("scroll", () => {
+  const header = document.getElementById("header");
   if (window.scrollY >= 50) {
-    header.classList.add('scrolled');
+    header.classList.add("scrolled");
   } else {
-    header.classList.remove('scrolled');
+    header.classList.remove("scrolled");
   }
 });
 
 // Active link on scroll
-const sections = document.querySelectorAll('section[id]');
+const sections = document.querySelectorAll("section[id]");
 
 function scrollActive() {
   const scrollY = window.pageYOffset;
 
-  sections.forEach(current => {
+  sections.forEach((current) => {
     const sectionHeight = current.offsetHeight;
     const sectionTop = current.offsetTop - 100;
-    const sectionId = current.getAttribute('id');
-    const navLink = document.querySelector('.nav__link[href*=' + sectionId + ']');
+    const sectionId = current.getAttribute("id");
+    const navLink = document.querySelector(
+      ".nav__link[href*=" + sectionId + "]"
+    );
 
     if (navLink) {
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-        navLink.classList.add('active');
+        navLink.classList.add("active");
       } else {
-        navLink.classList.remove('active');
+        navLink.classList.remove("active");
       }
     }
   });
 }
 
-window.addEventListener('scroll', scrollActive);
+window.addEventListener("scroll", scrollActive);
