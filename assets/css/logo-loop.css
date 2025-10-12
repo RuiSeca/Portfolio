@@ -103,10 +103,14 @@ body.white-mode .logo-loop-section::after {
 .logo-loop-track {
   display: flex;
   gap: 4rem;
-  animation: scroll 10s linear infinite;
+  animation: scrollPixelPerfect 10s linear infinite;
   will-change: transform;
   backface-visibility: hidden;
-  perspective: 1000px;
+  /* Ensure smooth rendering and prevent sub-pixel issues */
+  transform: translate3d(0, 0, 0);
+  transform-style: preserve-3d;
+  /* CSS variable for pixel-perfect animation */
+  --track-width: -50%;
 }
 
 .logo-loop-track.paused {
@@ -281,12 +285,34 @@ body.white-mode .logo-loop-section::after {
   transition: opacity 0.25s ease;
 }
 
-@keyframes scroll {
-  0% {
+/* Pixel-perfect infinite scroll animation */
+@keyframes scrollPixelPerfect {
+  from {
     transform: translate3d(0, 0, 0);
   }
-  100% {
+  to {
+    transform: translate3d(var(--track-width), 0, 0);
+  }
+}
+
+/* Fallback percentage-based animation */
+@keyframes scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
     transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .logo-loop-track {
+    animation: none;
+  }
+
+  .logo-loop-track.paused {
+    animation: none;
   }
 }
 

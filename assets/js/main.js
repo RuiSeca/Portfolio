@@ -242,15 +242,12 @@ sr.reveal(".hologram-wrapper", {
 });
 
 // Card swap services section
-sr.reveal(
-  ".card-swap-section .section__subtitle, .card-swap-section .section__title",
-  {
-    origin: "top",
-    distance: "60px",
-    scale: 0.85,
-    interval: 100,
-  }
-);
+sr.reveal(".card-swap-section .section__subtitle, .card-swap-section .section__title", {
+  origin: "top",
+  distance: "60px",
+  scale: 0.85,
+  interval: 100,
+});
 
 sr.reveal(".card-swap-text", {
   origin: "left",
@@ -1789,7 +1786,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       note: "D2",
-      year: "2025",
+      year: "2024",
       title: "Direction",
       description: "Future Goals",
       color: "bg-orange-900",
@@ -1878,24 +1875,13 @@ document.addEventListener("DOMContentLoaded", () => {
     trail.style.overflow = "hidden";
 
     // Get current theme colors dynamically
-    const themeColors = window.getPianoThemeColors
-      ? window.getPianoThemeColors()
-      : { r: 215, g: 119, b: 6 };
+    const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
     const colors = [
       `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.9)`,
-      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(
-        themeColors.g + 20,
-        255
-      )}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
-      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(
-        themeColors.g - 20,
-        0
-      )}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
+      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(themeColors.g + 20, 255)}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
+      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(themeColors.g - 20, 0)}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
       `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.75)`,
-      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(
-        themeColors.g + 40,
-        255
-      )}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
+      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(themeColors.g + 40, 255)}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
     ];
 
     // Screen size detection
@@ -2085,9 +2071,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (!isCurrentlyPlaying) {
             // Force audio context to resume if suspended - use same context as play button
-            const audioCtx = window.getAudioContext
-              ? window.getAudioContext()
-              : null;
+            const audioCtx = window.getAudioContext ? window.getAudioContext() : null;
             if (audioCtx && audioCtx.state === "suspended") {
               console.log("Resuming audio context from piano key");
               audioCtx.resume();
@@ -2165,6 +2149,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 100);
               });
             }
+
           } else {
             // Audio already playing - just ensure UI is consistent
             console.log("Audio already playing, ensuring UI is consistent");
@@ -2334,11 +2319,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show card instantly with light ray animation
     card.style.opacity = "1";
-    card.classList.add("light-ray-active");
+    card.classList.add('light-ray-active');
 
     // Remove animation class after it completes
     setTimeout(() => {
-      card.classList.remove("light-ray-active");
+      card.classList.remove('light-ray-active');
     }, 800);
 
     startCardFadeTimer();
@@ -2952,9 +2937,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (hologramProjection) {
       // Use dynamic theme color
-      const themeColors = window.getPianoThemeColors
-        ? window.getPianoThemeColors()
-        : { r: 215, g: 119, b: 6 };
+      const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
       hologramProjection.style.boxShadow = `0 0 60px rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.8)`;
 
       setTimeout(() => {
@@ -3016,9 +2999,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Choose visualization based on current song
         const visType = songLibrary[currentSongIndex].visualizer;
         // Use dynamic theme color instead of hardcoded song color
-        const themeColors = window.getPianoThemeColors
-          ? window.getPianoThemeColors()
-          : { r: 215, g: 119, b: 6 };
+        const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
         const color = `rgb(${themeColors.r}, ${themeColors.g}, ${themeColors.b})`;
 
         if (visType === "bars") {
@@ -3156,163 +3137,206 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/*=============== LOGO LOOP INFINITE SCROLL ===============*/
+
+/*=============== LOGO LOOP INFINITE SCROLL (robust) ===============*/
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.getElementById("logo-track");
-  if (track) {
-    const logos = track.innerHTML;
-    // Duplicate logos only twice for seamless infinite scroll
-    track.innerHTML = logos + logos;
+  const container = document.querySelector(".logo-loop-container");
 
-    // Calculate exact animation duration based on track width
-    setTimeout(() => {
-      const trackWidth = track.scrollWidth / 2; // Width of one set
-      const speed = 150; // pixels per second (adjust for desired speed)
-      const duration = trackWidth / speed;
-      track.style.animationDuration = `${duration}s`;
-    }, 100);
+  if (!track || !container) return;
 
-    // Initialize spotlight effect
-    initLogoSpotlight();
+  // Ensure the element has the class your CSS expects
+  if (!track.classList.contains("logo-loop-track")) {
+    track.classList.add("logo-loop-track");
   }
+
+  // Helper: wait for all images inside the track to finish loading
+  const waitForImages = () => {
+    const imgs = Array.from(track.querySelectorAll("img"));
+    if (imgs.length === 0) return Promise.resolve();
+    return Promise.all(
+      imgs.map((img) =>
+        img.complete ? Promise.resolve() : new Promise((res) => img.addEventListener("load", res, { once: true }))
+      )
+    );
+  };
+
+  // Duplicate/cloning logic (safer than innerHTML duplication)
+  const ensureDuplicated = () => {
+    if (track.dataset.duplicated === "true") return;
+
+    const originalChildren = Array.from(track.children);
+
+    // Clone children ONCE to create seamless loop
+    // This makes the track exactly 200% of original width
+    // Animation will translate -50% which is exactly one set
+    originalChildren.forEach((child) => {
+      track.appendChild(child.cloneNode(true));
+    });
+
+    track.dataset.duplicated = "true";
+  };
+
+  // Compute animation duration based on pixel speed
+  const setScrollDuration = (speed = 150) => {
+    // track.scrollWidth is total width (two sets after duplication)
+    const oneSetWidth = track.scrollWidth / 2;
+    // guard for extremely small widths
+    const duration = Math.max(4, oneSetWidth / speed);
+
+    // Set CSS custom properties for pixel-perfect animation
+    track.style.setProperty('--track-width', `-${oneSetWidth}px`);
+    track.style.animationDuration = `${duration}s`;
+  };
+
+  // Initialize after images ready
+  waitForImages().then(() => {
+    ensureDuplicated();
+    // Allow layout to settle (usually not necessary but safe)
+    requestAnimationFrame(() => setScrollDuration(150));
+  });
+
+  // Recalculate on resize (throttle)
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      // Recalculate animation with new dimensions
+      setScrollDuration(150);
+    }, 120);
+  });
+
+  // Initialize spotlight & interaction handlers AFTER duplication so listeners attach to visible items
+  // (initLogoSpotlight will query container/track for items)
+  // but we must call it AFTER duplication is done above. If duplication hasn't finished yet,
+  // it's fine because initLogoSpotlight is called inside it below — see the fallback:
+  // If duplication was already done earlier, we still call initLogoSpotlight now.
+  initLogoSpotlight();
 });
 
-/*=============== LOGO SPOTLIGHT EFFECT ===============*/
+/*=============== LOGO SPOTLIGHT EFFECT (improved) ===============*/
 function initLogoSpotlight() {
   const container = document.querySelector(".logo-loop-container");
   const track = document.getElementById("logo-track");
   if (!container || !track) return;
 
-  // Check if device supports hover (not a touch device)
-  const isTouchDevice = !window.matchMedia("(hover: hover)").matches;
+  // Detect hover-capable devices: true => has hover (desktop)
+  const hasHover = window.matchMedia("(hover: hover)").matches;
 
+  // Avoid attaching listeners multiple times
+  if (container.dataset.spotlightInit === "true") return;
+  container.dataset.spotlightInit = "true";
+
+  // Pointer-based click/tap handling (prevents double touch+click)
   let highlightedLogo = null;
 
-  // Handle click/tap to highlight and pause
-  const handleClick = (e) => {
-    e.preventDefault();
-    const logoItem = e.currentTarget;
+  const onPointerUp = (e) => {
+    // Only handle primary pointer (avoid right-clicks)
+    if (e.button && e.button !== 0) return;
 
-    // If clicking the same logo, unhighlight and resume animation
-    if (highlightedLogo === logoItem) {
-      logoItem.classList.remove("highlighted");
+    const item = e.target.closest(".logo-item");
+    if (!item) return;
+
+    // Toggle highlight
+    if (highlightedLogo === item) {
+      item.classList.remove("highlighted");
       track.classList.remove("paused");
       highlightedLogo = null;
-      return;
+    } else {
+      if (highlightedLogo) highlightedLogo.classList.remove("highlighted");
+      item.classList.add("highlighted");
+      track.classList.add("paused");
+      highlightedLogo = item;
     }
-
-    // Remove previous highlight
-    if (highlightedLogo) {
-      highlightedLogo.classList.remove("highlighted");
-    }
-
-    // Add highlight to clicked logo and pause animation
-    logoItem.classList.add("highlighted");
-    track.classList.add("paused");
-    highlightedLogo = logoItem;
   };
 
-  // Add click/tap listeners to all logo items (works on all devices)
-  const logoItems = container.querySelectorAll(".logo-item");
-  logoItems.forEach((item) => {
-    item.addEventListener("click", handleClick);
-    item.addEventListener("touchend", handleClick);
-  });
+  // Use pointerup on container to capture both mouse and touch consistently
+  container.addEventListener("pointerup", onPointerUp);
 
-  // If touch device, stop here - no spotlight effects
-  if (isTouchDevice) {
+  // Desktop-only: global spotlight and card-level mouse move
+  if (!hasHover) {
+    // touch device — do no further spotlight things
     return;
   }
 
-  // === DESKTOP ONLY: Spotlight effects ===
+  // create overlays only once
+  if (!container.querySelector(".logo-spotlight-overlay")) {
+    const spotlightOverlay = document.createElement("div");
+    spotlightOverlay.className = "logo-spotlight-overlay";
+    container.appendChild(spotlightOverlay);
 
-  // Create spotlight overlay elements
-  const spotlightOverlay = document.createElement("div");
-  spotlightOverlay.className = "logo-spotlight-overlay";
-  container.appendChild(spotlightOverlay);
+    const spotlightFade = document.createElement("div");
+    spotlightFade.className = "logo-spotlight-fade";
+    container.appendChild(spotlightFade);
+  }
 
-  const spotlightFade = document.createElement("div");
-  spotlightFade.className = "logo-spotlight-fade";
-  container.appendChild(spotlightFade);
+  const spotlightFade = container.querySelector(".logo-spotlight-fade");
 
-  let pos = { x: 0, y: 0 };
-
-  // Update spotlight position smoothly
+  // Smoothly set CSS variables
   const moveTo = (x, y) => {
-    pos.x = x;
-    pos.y = y;
     container.style.setProperty("--x", `${x}px`);
     container.style.setProperty("--y", `${y}px`);
   };
 
-  // Handle mouse move for spotlight
   const handleMove = (e) => {
     const rect = container.getBoundingClientRect();
     moveTo(e.clientX - rect.left, e.clientY - rect.top);
-    spotlightFade.style.opacity = "0";
+    if (spotlightFade) spotlightFade.style.opacity = "0";
   };
-
-  // Handle mouse leave - fade back in
   const handleLeave = () => {
-    spotlightFade.style.opacity = "1";
+    if (spotlightFade) spotlightFade.style.opacity = "1";
   };
 
-  // Handle card hover for individual spotlight
-  const handleCardMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
-  };
-
-  // Add spotlight event listeners
   container.addEventListener("pointermove", handleMove);
   container.addEventListener("pointerleave", handleLeave);
 
-  // Add mousemove to logo items for individual spotlight
+  // Card-level mousemove to update per-card radial spotlight
+  const logoItems = Array.from(container.querySelectorAll(".logo-item"));
   logoItems.forEach((item) => {
-    item.addEventListener("mousemove", handleCardMove);
+    item.addEventListener("mousemove", (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      item.style.setProperty("--mouse-x", `${x}px`);
+      item.style.setProperty("--mouse-y", `${y}px`);
+    });
   });
 
-  // Initialize position to center
+  // initialize position
   const rect = container.getBoundingClientRect();
   moveTo(rect.width / 2, rect.height / 2);
 }
 
 /*=============== MODERN HEADER SCROLL EFFECT ===============*/
-window.addEventListener("scroll", () => {
-  const header = document.getElementById("header");
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('header');
   if (window.scrollY >= 50) {
-    header.classList.add("scrolled");
+    header.classList.add('scrolled');
   } else {
-    header.classList.remove("scrolled");
+    header.classList.remove('scrolled');
   }
 });
 
 // Active link on scroll
-const sections = document.querySelectorAll("section[id]");
+const sections = document.querySelectorAll('section[id]');
 
 function scrollActive() {
   const scrollY = window.pageYOffset;
 
-  sections.forEach((current) => {
+  sections.forEach(current => {
     const sectionHeight = current.offsetHeight;
     const sectionTop = current.offsetTop - 100;
-    const sectionId = current.getAttribute("id");
-    const navLink = document.querySelector(
-      ".nav__link[href*=" + sectionId + "]"
-    );
+    const sectionId = current.getAttribute('id');
+    const navLink = document.querySelector('.nav__link[href*=' + sectionId + ']');
 
     if (navLink) {
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-        navLink.classList.add("active");
+        navLink.classList.add('active');
       } else {
-        navLink.classList.remove("active");
+        navLink.classList.remove('active');
       }
     }
   });
 }
 
-window.addEventListener("scroll", scrollActive);
+window.addEventListener('scroll', scrollActive);
