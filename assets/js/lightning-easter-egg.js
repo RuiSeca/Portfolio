@@ -306,16 +306,26 @@ function initLightningEasterEgg() {
   // Track which logos have been struck
   const struckLogos = new Set();
 
-  // Attach click listeners to logo items
-  document.addEventListener('click', (e) => {
+  // Attach pointerup listener to match main.js - use capturing phase to run BEFORE main.js toggle
+  document.addEventListener('pointerup', (e) => {
     const logoItem = e.target.closest('.logo-item');
     if (!logoItem) return;
 
-    // Get a unique identifier for this logo (use data-color + text content)
+    // Check current state BEFORE the toggle happens
+    const isCurrentlyHighlighted = logoItem.classList.contains('highlighted');
+
+    // We only want lightning when logo is NOT currently highlighted
+    // (meaning it's about to BE highlighted after this click)
+    if (isCurrentlyHighlighted) {
+      // Already highlighted - this click will unhighlight - NO lightning
+      return;
+    }
+
+    // Logo is not highlighted yet - this click will highlight it - TRIGGER LIGHTNING!
     const logoName = logoItem.querySelector('.logo-name')?.textContent || '';
     const logoId = logoName.trim();
 
-    // Only trigger once per logo
+    // Only trigger once per logo (cooldown)
     if (struckLogos.has(logoId)) return;
     struckLogos.add(logoId);
 
@@ -326,7 +336,7 @@ function initLightningEasterEgg() {
     setTimeout(() => {
       struckLogos.delete(logoId);
     }, 1000); // Cooldown period
-  });
+  }, true); // Use capture phase to ensure this runs before main.js
 }
 
 // Expose function globally
