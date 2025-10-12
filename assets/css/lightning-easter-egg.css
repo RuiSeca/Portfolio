@@ -1,0 +1,91 @@
+/* Lightning Easter Egg Styles ⚡ */
+
+/* Title letter styling */
+#tech-stack-title .letter {
+  display: inline-block;
+  transition: all 0.3s ease-out;
+  will-change: transform, color, text-shadow;
+}
+
+#tech-stack-title .letter-space {
+  display: inline-block;
+  width: 0.3em;
+}
+
+/* Lightning overlay container */
+.lightning-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: visible;
+}
+
+/* Lightning bolt styling */
+.lightning-bolt {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: flickerBolt 0.1s infinite;
+}
+
+.lightning-branch {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: flickerBranch 0.15s infinite;
+}
+
+/* Flicker animation for lightning */
+@keyframes flickerBolt {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes flickerBranch {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.4; }
+}
+
+/* Flash effect on impact */
+.lightning-flash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Mobile optimizations */
+@media screen and (max-width: 768px) {
+  #tech-stack-title .letter {
+    transition: all 0.2s ease-out;
+  }
+
+  .lightning-bolt {
+    stroke-width: 2 !important;
+  }
+
+  .lightning-branch {
+    stroke-width: 1.5 !important;
+  }
+
+  /* Reduce glow effects on mobile for performance */
+  .lightning-bolt,
+  .lightning-branch {
+    filter: none !important;
+  }
+}
+
+/* Ensure title stays above logo items */
+.logo-loop-header {
+  position: relative;
+  z-index: 10;
+}
+
+/* Prevent text selection during lightning animation */
+.logo-loop-section.lightning-active {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}

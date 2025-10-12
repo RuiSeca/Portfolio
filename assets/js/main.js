@@ -3235,6 +3235,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // it's fine because initLogoSpotlight is called inside it below — see the fallback:
   // If duplication was already done earlier, we still call initLogoSpotlight now.
   initLogoSpotlight();
+
+  // Initialize lightning easter egg
+  initLightningEasterEgg();
 });
 
 /*=============== LOGO SPOTLIGHT EFFECT (improved) ===============*/
