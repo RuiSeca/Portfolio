@@ -1035,8 +1035,8 @@ span {
   padding: 1rem 1.25rem;
   border-radius: 0.5rem;
   background: rgba(20, 20, 30, 0.7);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--title-color);
   transition: border 0.3s ease, box-shadow 0.3s ease;
@@ -1358,8 +1358,8 @@ span {
   width: 16em;
   height: auto;
   background: rgba(20, 20, 30, 0.7);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1.5em;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
@@ -2575,6 +2575,7 @@ body.modal-open {
   padding: 1rem;
   border-radius: 8px;
   background: rgba(92, 73, 52, 0.1);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(139, 115, 85, 0.3);
   box-shadow: 0 0 30px rgba(139, 115, 85, 0.2),

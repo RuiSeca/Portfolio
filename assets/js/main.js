@@ -242,12 +242,15 @@ sr.reveal(".hologram-wrapper", {
 });
 
 // Card swap services section
-sr.reveal(".card-swap-section .section__subtitle, .card-swap-section .section__title", {
-  origin: "top",
-  distance: "60px",
-  scale: 0.85,
-  interval: 100,
-});
+sr.reveal(
+  ".card-swap-section .section__subtitle, .card-swap-section .section__title",
+  {
+    origin: "top",
+    distance: "60px",
+    scale: 0.85,
+    interval: 100,
+  }
+);
 
 sr.reveal(".card-swap-text", {
   origin: "left",
@@ -1786,7 +1789,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       note: "D2",
-      year: "2024",
+      year: "2025",
       title: "Direction",
       description: "Future Goals",
       color: "bg-orange-900",
@@ -1875,13 +1878,24 @@ document.addEventListener("DOMContentLoaded", () => {
     trail.style.overflow = "hidden";
 
     // Get current theme colors dynamically
-    const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+    const themeColors = window.getPianoThemeColors
+      ? window.getPianoThemeColors()
+      : { r: 215, g: 119, b: 6 };
     const colors = [
       `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.9)`,
-      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(themeColors.g + 20, 255)}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
-      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(themeColors.g - 20, 0)}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
+      `rgba(${Math.min(themeColors.r + 20, 255)}, ${Math.min(
+        themeColors.g + 20,
+        255
+      )}, ${Math.min(themeColors.b + 20, 255)}, 0.85)`,
+      `rgba(${Math.max(themeColors.r - 20, 0)}, ${Math.max(
+        themeColors.g - 20,
+        0
+      )}, ${Math.max(themeColors.b - 20, 0)}, 0.8)`,
       `rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.75)`,
-      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(themeColors.g + 40, 255)}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
+      `rgba(${Math.min(themeColors.r + 40, 255)}, ${Math.min(
+        themeColors.g + 40,
+        255
+      )}, ${Math.min(themeColors.b + 40, 255)}, 0.7)`,
     ];
 
     // Screen size detection
@@ -2071,7 +2085,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
           if (!isCurrentlyPlaying) {
             // Force audio context to resume if suspended - use same context as play button
-            const audioCtx = window.getAudioContext ? window.getAudioContext() : null;
+            const audioCtx = window.getAudioContext
+              ? window.getAudioContext()
+              : null;
             if (audioCtx && audioCtx.state === "suspended") {
               console.log("Resuming audio context from piano key");
               audioCtx.resume();
@@ -2149,7 +2165,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 100);
               });
             }
-
           } else {
             // Audio already playing - just ensure UI is consistent
             console.log("Audio already playing, ensuring UI is consistent");
@@ -2319,11 +2334,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Show card instantly with light ray animation
     card.style.opacity = "1";
-    card.classList.add('light-ray-active');
+    card.classList.add("light-ray-active");
 
     // Remove animation class after it completes
     setTimeout(() => {
-      card.classList.remove('light-ray-active');
+      card.classList.remove("light-ray-active");
     }, 800);
 
     startCardFadeTimer();
@@ -2937,7 +2952,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (hologramProjection) {
       // Use dynamic theme color
-      const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+      const themeColors = window.getPianoThemeColors
+        ? window.getPianoThemeColors()
+        : { r: 215, g: 119, b: 6 };
       hologramProjection.style.boxShadow = `0 0 60px rgba(${themeColors.r}, ${themeColors.g}, ${themeColors.b}, 0.8)`;
 
       setTimeout(() => {
@@ -2999,7 +3016,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Choose visualization based on current song
         const visType = songLibrary[currentSongIndex].visualizer;
         // Use dynamic theme color instead of hardcoded song color
-        const themeColors = window.getPianoThemeColors ? window.getPianoThemeColors() : { r: 215, g: 119, b: 6 };
+        const themeColors = window.getPianoThemeColors
+          ? window.getPianoThemeColors()
+          : { r: 215, g: 119, b: 6 };
         const color = `rgb(${themeColors.r}, ${themeColors.g}, ${themeColors.b})`;
 
         if (visType === "bars") {
@@ -3137,10 +3156,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
 /*=============== LOGO LOOP INFINITE SCROLL ===============*/
-document.addEventListener('DOMContentLoaded', () => {
-  const track = document.getElementById('logo-track');
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.getElementById("logo-track");
   if (track) {
     const logos = track.innerHTML;
     // Duplicate logos only twice for seamless infinite scroll
@@ -3161,12 +3179,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /*=============== LOGO SPOTLIGHT EFFECT ===============*/
 function initLogoSpotlight() {
-  const container = document.querySelector('.logo-loop-container');
-  const track = document.getElementById('logo-track');
+  const container = document.querySelector(".logo-loop-container");
+  const track = document.getElementById("logo-track");
   if (!container || !track) return;
 
   // Check if device supports hover (not a touch device)
-  const isTouchDevice = !window.matchMedia('(hover: hover)').matches;
+  const isTouchDevice = !window.matchMedia("(hover: hover)").matches;
 
   let highlightedLogo = null;
 
@@ -3177,28 +3195,28 @@ function initLogoSpotlight() {
 
     // If clicking the same logo, unhighlight and resume animation
     if (highlightedLogo === logoItem) {
-      logoItem.classList.remove('highlighted');
-      track.classList.remove('paused');
+      logoItem.classList.remove("highlighted");
+      track.classList.remove("paused");
       highlightedLogo = null;
       return;
     }
 
     // Remove previous highlight
     if (highlightedLogo) {
-      highlightedLogo.classList.remove('highlighted');
+      highlightedLogo.classList.remove("highlighted");
     }
 
     // Add highlight to clicked logo and pause animation
-    logoItem.classList.add('highlighted');
-    track.classList.add('paused');
+    logoItem.classList.add("highlighted");
+    track.classList.add("paused");
     highlightedLogo = logoItem;
   };
 
   // Add click/tap listeners to all logo items (works on all devices)
-  const logoItems = container.querySelectorAll('.logo-item');
-  logoItems.forEach(item => {
-    item.addEventListener('click', handleClick);
-    item.addEventListener('touchend', handleClick);
+  const logoItems = container.querySelectorAll(".logo-item");
+  logoItems.forEach((item) => {
+    item.addEventListener("click", handleClick);
+    item.addEventListener("touchend", handleClick);
   });
 
   // If touch device, stop here - no spotlight effects
@@ -3209,12 +3227,12 @@ function initLogoSpotlight() {
   // === DESKTOP ONLY: Spotlight effects ===
 
   // Create spotlight overlay elements
-  const spotlightOverlay = document.createElement('div');
-  spotlightOverlay.className = 'logo-spotlight-overlay';
+  const spotlightOverlay = document.createElement("div");
+  spotlightOverlay.className = "logo-spotlight-overlay";
   container.appendChild(spotlightOverlay);
 
-  const spotlightFade = document.createElement('div');
-  spotlightFade.className = 'logo-spotlight-fade';
+  const spotlightFade = document.createElement("div");
+  spotlightFade.className = "logo-spotlight-fade";
   container.appendChild(spotlightFade);
 
   let pos = { x: 0, y: 0 };
@@ -3223,20 +3241,20 @@ function initLogoSpotlight() {
   const moveTo = (x, y) => {
     pos.x = x;
     pos.y = y;
-    container.style.setProperty('--x', `${x}px`);
-    container.style.setProperty('--y', `${y}px`);
+    container.style.setProperty("--x", `${x}px`);
+    container.style.setProperty("--y", `${y}px`);
   };
 
   // Handle mouse move for spotlight
   const handleMove = (e) => {
     const rect = container.getBoundingClientRect();
     moveTo(e.clientX - rect.left, e.clientY - rect.top);
-    spotlightFade.style.opacity = '0';
+    spotlightFade.style.opacity = "0";
   };
 
   // Handle mouse leave - fade back in
   const handleLeave = () => {
-    spotlightFade.style.opacity = '1';
+    spotlightFade.style.opacity = "1";
   };
 
   // Handle card hover for individual spotlight
@@ -3245,17 +3263,17 @@ function initLogoSpotlight() {
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    card.style.setProperty('--mouse-x', `${x}px`);
-    card.style.setProperty('--mouse-y', `${y}px`);
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
   };
 
   // Add spotlight event listeners
-  container.addEventListener('pointermove', handleMove);
-  container.addEventListener('pointerleave', handleLeave);
+  container.addEventListener("pointermove", handleMove);
+  container.addEventListener("pointerleave", handleLeave);
 
   // Add mousemove to logo items for individual spotlight
-  logoItems.forEach(item => {
-    item.addEventListener('mousemove', handleCardMove);
+  logoItems.forEach((item) => {
+    item.addEventListener("mousemove", handleCardMove);
   });
 
   // Initialize position to center
@@ -3264,35 +3282,37 @@ function initLogoSpotlight() {
 }
 
 /*=============== MODERN HEADER SCROLL EFFECT ===============*/
-window.addEventListener('scroll', () => {
-  const header = document.getElementById('header');
+window.addEventListener("scroll", () => {
+  const header = document.getElementById("header");
   if (window.scrollY >= 50) {
-    header.classList.add('scrolled');
+    header.classList.add("scrolled");
   } else {
-    header.classList.remove('scrolled');
+    header.classList.remove("scrolled");
   }
 });
 
 // Active link on scroll
-const sections = document.querySelectorAll('section[id]');
+const sections = document.querySelectorAll("section[id]");
 
 function scrollActive() {
   const scrollY = window.pageYOffset;
 
-  sections.forEach(current => {
+  sections.forEach((current) => {
     const sectionHeight = current.offsetHeight;
     const sectionTop = current.offsetTop - 100;
-    const sectionId = current.getAttribute('id');
-    const navLink = document.querySelector('.nav__link[href*=' + sectionId + ']');
+    const sectionId = current.getAttribute("id");
+    const navLink = document.querySelector(
+      ".nav__link[href*=" + sectionId + "]"
+    );
 
     if (navLink) {
       if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-        navLink.classList.add('active');
+        navLink.classList.add("active");
       } else {
-        navLink.classList.remove('active');
+        navLink.classList.remove("active");
       }
     }
   });
 }
 
-window.addEventListener('scroll', scrollActive);
+window.addEventListener("scroll", scrollActive);
