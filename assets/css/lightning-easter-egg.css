@@ -75,6 +75,34 @@
   .lightning-branch {
     filter: none !important;
   }
+
+  /* Reduce breathing glow intensity on mobile */
+  @keyframes breatheGlowStrong {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.06) drop-shadow(0 0 8px currentColor);
+    }
+  }
+
+  @keyframes breatheGlowMedium {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.03) drop-shadow(0 0 4px currentColor);
+    }
+  }
+
+  @keyframes breatheGlowWeak {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.01) drop-shadow(0 0 2px currentColor);
+    }
+  }
 }
 
 /* Ensure title stays above logo items */

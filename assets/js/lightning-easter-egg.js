@@ -270,14 +270,25 @@ function initLightningEasterEgg() {
     title.setAttribute('data-glow-color', color);
     title.style.setProperty('--strike-color', color);
 
-    // Apply initial glow
+    // Check if mobile for reduced glow
+    const isMobile = window.innerWidth <= 768;
+
+    // Apply initial glow (reduced on mobile)
     title.style.transition = 'text-shadow 0.5s ease-out';
-    title.style.textShadow = `
-      0 0 20px ${color},
-      0 0 40px ${color},
-      0 0 60px ${color},
-      0 0 80px ${color}
-    `;
+    if (isMobile) {
+      title.style.textShadow = `
+        0 0 10px ${color},
+        0 0 20px ${color},
+        0 0 30px ${color}
+      `;
+    } else {
+      title.style.textShadow = `
+        0 0 20px ${color},
+        0 0 40px ${color},
+        0 0 60px ${color},
+        0 0 80px ${color}
+      `;
+    }
 
     // First breath - strongest (starts immediately)
     title.classList.add('breathing-glow-strong');
