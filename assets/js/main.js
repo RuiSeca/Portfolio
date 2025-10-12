@@ -1933,12 +1933,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const pianoScale = isSmallMobile ? 0.6 : isMobile ? 0.8 : 1;
 
     // Adjust coordinates based on container position and piano scaling
+    // For piano: getBoundingClientRect() gives us transformed (scaled) screen coordinates
+    // But particles are INSIDE the scaled container, so we need to "un-scale" them
     const relativeX = isCard
       ? x - containerRect.left
-      : (x - containerRect.left) * (1 / pianoScale);
+      : (x - containerRect.left) / pianoScale; // Divide by scale to get original position
     const relativeY = isCard
       ? y - containerRect.top
-      : (y - containerRect.top) * (1 / pianoScale);
+      : (y - containerRect.top) / pianoScale; // Divide by scale to get original position
 
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement("div");
@@ -1970,9 +1972,7 @@ document.addEventListener("DOMContentLoaded", () => {
       particle.style.left = `${startX}px`;
       particle.style.top = `${startY}px`;
       particle.style.zIndex = "9999";
-      particle.style.transform = isCard
-        ? "translate(-50%, -50%) scale(0)"
-        : `translate(-50%, -50%) scale(0) scale(${1 / pianoScale})`;
+      particle.style.transform = "translate(-50%, -50%) scale(0)";
       particle.style.opacity = "0";
 
       const lifetime =
@@ -1996,10 +1996,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ? 10
           : 20;
 
-        const scale = isCard
-          ? Math.random() * (isMobile ? 0.3 : 0.5) + (isMobile ? 0.3 : 0.5)
-          : (Math.random() * (isMobile ? 0.3 : 0.5) + (isMobile ? 0.3 : 0.5)) *
-            (1 / pianoScale);
+        const scale =
+          Math.random() * (isMobile ? 0.3 : 0.5) + (isMobile ? 0.3 : 0.5);
 
         particle.style.transform = `
           translate(
@@ -2213,10 +2211,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Create visual effects
       const keyRect = key.getBoundingClientRect();
       const isBlack = stage.type === "black";
-      createEnhancedMagicTrail(
-        keyRect.left + keyRect.width / 2,
-        keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9)
-      );
+
+      // Calculate center point of the key for particles
+      const particleX = keyRect.left + keyRect.width / 2;
+      const particleY =
+        keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9);
+
+      createEnhancedMagicTrail(particleX, particleY);
 
       // Smooth scroll to show both piano and cards
       const pianoCabinetContainer = document.querySelector(".piano-container");
