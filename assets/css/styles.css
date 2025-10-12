@@ -194,7 +194,7 @@ svg {
 }
 
 .logo-loop-header h1:hover {
-  text-shadow: 0 0 15px var(--first-color);
+  text-shadow: 0 0 15px var(--strike-color, var(--first-color));
 }
 
 /* My Work - just uses span for red accent like nav logo */

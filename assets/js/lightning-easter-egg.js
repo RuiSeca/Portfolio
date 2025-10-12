@@ -213,7 +213,7 @@ function initLightningEasterEgg() {
     });
   }
 
-  // Strike title letters sequentially
+  // Strike title letters sequentially and apply persistent glow
   function strikeTitleLetters(color) {
     const letters = title.querySelectorAll('.letter');
 
@@ -240,19 +240,67 @@ function initLightningEasterEgg() {
         ];
         letter.animate(shakeKeyframes, { duration: 100 });
 
-        // Fade back to normal
+        // Fade back but keep persistent glow
         setTimeout(() => {
           letter.style.transition = 'all 0.3s ease-out';
           letter.style.color = '';
           letter.style.textShadow = `0 0 5px ${color}`;
           letter.style.transform = 'scale(1)';
 
-          setTimeout(() => {
-            letter.style.textShadow = '';
-          }, 300);
+          // After the initial fade, apply persistent glow to the title
+          if (index === letters.length - 1) {
+            setTimeout(() => {
+              applyPersistentGlow(color);
+            }, 300);
+          }
         }, 100);
       }, index * 50); // 50ms delay per letter
     });
+  }
+
+  // Apply persistent glow to the entire title with progressive breathing
+  function applyPersistentGlow(color) {
+    // Clear any existing letter shadows first
+    const letters = title.querySelectorAll('.letter');
+    letters.forEach(letter => {
+      letter.style.textShadow = '';
+    });
+
+    // Store color for the animation and hover effect
+    title.setAttribute('data-glow-color', color);
+    title.style.setProperty('--strike-color', color);
+
+    // Apply initial glow
+    title.style.transition = 'text-shadow 0.5s ease-out';
+    title.style.textShadow = `
+      0 0 20px ${color},
+      0 0 40px ${color},
+      0 0 60px ${color},
+      0 0 80px ${color}
+    `;
+
+    // First breath - strongest (starts immediately)
+    title.classList.add('breathing-glow-strong');
+
+    // After first breath (2s), switch to medium
+    setTimeout(() => {
+      title.classList.remove('breathing-glow-strong');
+      title.classList.add('breathing-glow-medium');
+    }, 2000);
+
+    // After second breath (4s total), switch to weak
+    setTimeout(() => {
+      title.classList.remove('breathing-glow-medium');
+      title.classList.add('breathing-glow-weak');
+    }, 4000);
+
+    // After third breath (6s total), fade away completely
+    setTimeout(() => {
+      title.classList.remove('breathing-glow-weak');
+      title.style.transition = 'text-shadow 2s ease-out';
+      title.style.textShadow = '';
+      title.removeAttribute('data-glow-color');
+    }, 6000);
   }
 
   // Track which logos have been struck

@@ -89,3 +89,56 @@
   -webkit-user-select: none;
   -moz-user-select: none;
 }
+
+/* Progressive breathing glow animations */
+
+/* First breath - strongest */
+#tech-stack-title.breathing-glow-strong {
+  animation: breatheGlowStrong 2s ease-in-out 1;
+}
+
+@keyframes breatheGlowStrong {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 5px transparent);
+  }
+  50% {
+    filter: brightness(1.12) drop-shadow(0 0 25px currentColor);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 5px transparent);
+  }
+}
+
+/* Second breath - medium (dramatically less) */
+#tech-stack-title.breathing-glow-medium {
+  animation: breatheGlowMedium 2s ease-in-out 1;
+}
+
+@keyframes breatheGlowMedium {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 3px transparent);
+  }
+  50% {
+    filter: brightness(1.05) drop-shadow(0 0 10px currentColor);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 3px transparent);
+  }
+}
+
+/* Third breath - barely visible */
+#tech-stack-title.breathing-glow-weak {
+  animation: breatheGlowWeak 2s ease-in-out 1;
+}
+
+@keyframes breatheGlowWeak {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 1px transparent);
+  }
+  50% {
+    filter: brightness(1.02) drop-shadow(0 0 3px currentColor);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 1px transparent);
+  }
+}
