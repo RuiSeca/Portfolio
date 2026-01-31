@@ -1381,11 +1381,15 @@ StoryViewer.prototype.loadVideo = function () {
 
   setTimeout(function () {
     self.modalContent.classList.remove("sliding-left", "sliding-right");
-    // Revert to non-autoplay story, keep inline playback and show no controls overlay
-    let url = self.projects[self.currentIndex].videoUrl;
-    // For Drive sources, prefer preview URL for reliability
+
+    // Get the video URL from the main projectData (not projectsData) for proper URLs
+    var fullProjectData = projectData[currentProject.modalId];
+    let url = fullProjectData ? fullProjectData.videoUrl : self.projects[self.currentIndex].videoUrl;
+
+    // For Drive sources, convert to embed URL
     if (url && url.includes("drive.google.com")) {
       try {
+        // Extract file ID from various formats
         const previewMatch = url.match(/\/file\/d\/([^/]+)/);
         const idFromPreview = previewMatch ? previewMatch[1] : null;
         const idFromQuery = (() => {
@@ -1398,20 +1402,15 @@ StoryViewer.prototype.loadVideo = function () {
         })();
         const fileId = idFromPreview || idFromQuery;
         if (fileId) {
+          // Use embed format for iframe playback
           url = `https://drive.google.com/file/d/${fileId}/preview`;
         }
       } catch (_) {}
     }
-    self.video.removeAttribute("controls");
-    self.video.removeAttribute("autoplay");
-    self.video.muted = true;
-    self.video.setAttribute("playsinline", "");
-    self.video.setAttribute("webkit-playsinline", "");
-    self.video.setAttribute("preload", "metadata");
+
+    // For iframe, just set the src - Google Drive will handle the rest
     self.video.src = url;
     self.lastTimestamp = null;
-
-    // Do not force autoplay; respect user gesture
   }, 300);
 
   this.lastIndex = this.currentIndex;
@@ -1432,7 +1431,7 @@ StoryViewer.prototype.close = function () {
     this.animationFrameId = null;
   }
   this.modal.classList.add("hidden");
-  this.video.pause();
+  // For iframe, just clear the src to stop playback
   this.video.src = "";
   this.progressBarFill.style.width = "0%";
   this.closeMenu();
