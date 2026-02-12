@@ -1,0 +1,255 @@
+/* ==================== JOURNEY SEQUENCE (SCROLLYTELLING) ==================== */
+
+/* Main Section Wrapper */
+.journey-sequence-section {
+  position: relative;
+  height: 800vh; /* Cinematic Length */
+  background-color: #050505;
+  z-index: 10;
+}
+
+/* Container */
+.journey-sequence__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  will-change: transform, position;
+}
+
+.journey-sequence__container.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.journey-sequence__container.is-bottom {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  left: 0;
+}
+
+/* Canvas */
+#journey-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0; /* Managed by JS */
+  transition: opacity 1s ease;
+}
+
+/* Text Overlays Container */
+.journey-overlays {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Common Text Beat Styles */
+.journey-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 90%;
+  max-width: 900px; /* Big wide text */
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Intro Text (Behind the Design) */
+.journey-intro {
+  z-index: 5;
+}
+
+/* Star Text (Ready to see my journey?) */
+.journey-start-text {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  opacity: 1; /* Starts visible */
+  z-index: 6;
+}
+
+.journey-start-text h2 {
+  font-size: 3rem;
+  font-family: 'Georgia', serif;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 2px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* Shared Metallic Title Style */
+.journey-text h3,
+.journey__behind-title {
+  font-size: 3.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  
+  /* Metallic chrome effect */
+  background: linear-gradient(
+    135deg,
+    #434343 0%,
+    #a8a8a8 20%,
+    #ffffff 40%,
+    #c0c0c0 50%,
+    #ffffff 60%,
+    #a8a8a8 80%,
+    #434343 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: metallicShine 8s ease-in-out infinite;
+  
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes metallicShine {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Big Sleek Text */
+.journey-text p,
+.journey__behind-text {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-weight: 300;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.journey__divider {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--first-color, #fff), transparent);
+  margin: 0 auto 2rem;
+  opacity: 0.8;
+  position: relative;
+}
+
+.journey__divider::before,
+.journey__divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 24px;
+  background: var(--first-color, #fff);
+  opacity: 0.4;
+}
+
+.journey__divider::before { left: -20px; border-radius: 2px 2px 0 0; }
+.journey__divider::after { right: -20px; border-radius: 2px 2px 0 0; }
+
+/* Scroll Symbol Container (Positioning & JS Control) */
+.journey-scroll-symbol {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  opacity: 1; /* JS will assume control, but start visible */
+}
+
+/* Inner Wrapper (Holds Animation & Layout) */
+.journey-scroll-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  animation: scrollPulse 2s infinite; /* Animation lives here now */
+}
+
+.journey-scroll-inner i {
+  font-size: 3rem;
+}
+
+.journey-scroll-inner span {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+/* Updated Pulse (Applies to Inner Wrapper) */
+@keyframes scrollPulse {
+  0% { transform: translateY(0); opacity: 0.3; }
+  50% { transform: translateY(10px); opacity: 0.8; }
+  100% { transform: translateY(0); opacity: 0.3; }
+}
+
+/* Mobile Adjustments */
+@media screen and (max-width: 768px) {
+  .journey-text h3,
+  .journey__behind-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .journey-text p,
+  .journey__behind-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  .journey-start-text h2 {
+    font-size: 1.8rem;
+    padding: 0 1rem;
+  }
+  .journey-scroll-symbol {
+    bottom: 25%;
+  }
+}
+
+/* Scroll Hint (Hidden/Removed) */
+.scroll-hint { display: none; }
+
+/* Loading Indicator */
+.journey-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 10;
+}
+
+.journey-loader__bar {
+  height: 100%;
+  background: #fff;
+  width: 0%;
+  transition: width 0.1s linear;
+}

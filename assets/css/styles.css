@@ -200,7 +200,8 @@ svg {
 /* My Work - just uses span for red accent like nav logo */
 
 .main {
-  overflow: hidden; /* For animation ScrollReveal */
+  overflow-x: hidden; /* For animation ScrollReveal */
+  overflow-y: visible; /* Allow sticky positioning for Journey section */
 }
 
 /* White Mode Styles */

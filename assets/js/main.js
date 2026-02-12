@@ -1788,7 +1788,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       note: "D2",
-      year: "2025",
+      year: "2026",
       title: "Direction",
       description: "Future Goals",
       color: "bg-orange-900",

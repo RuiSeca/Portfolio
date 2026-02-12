@@ -38,7 +38,8 @@
     <link rel="stylesheet" href="assets/css/lightning-easter-egg.css" />
     <link rel="stylesheet" href="assets/css/card-swap.css" />
     <link rel="stylesheet" href="assets/css/decrypted-text.css" />
-    <link rel="stylesheet" href="assets/css/journey-cards.css" />
+    <!-- <link rel="stylesheet" href="assets/css/journey-cards.css" /> -->
+    <link rel="stylesheet" href="assets/css/journey-sequence.css" />
     <!-- Modern header must load LAST to override any conflicting styles -->
     <link rel="stylesheet" href="assets/css/modern-header.css" />
 
@@ -242,94 +243,70 @@
       </section>
 
       <!--==================== ABOUT ====================-->
-      <section class="about section" id="about">
-        <div class="journey__container container">
-          <h2 class="section__title">My Journey</h2>
-          <p class="section__subtitle journey__subtitle">From code to cosmos — a path shaped by creativity, curiosity, and security.</p>
+      <!--==================== JOURNEY (NEW SCROLL SEQUENCE) ====================-->
+      <section class="journey-sequence-section" id="about">
+        <div class="journey-sequence__container">
+          <canvas id="journey-canvas"></canvas>
+          
+          <div class="journey-overlays">
+             <!-- Intro: Behind the Design (Black Screen Phase) -->
+             <div class="journey-text journey-intro">
+               <div class="journey__divider"></div>
+               <h3 class="journey__behind-title">Behind the Design</h3>
+               <p class="journey__behind-text">
+                 This portfolio reflects two passions — piano and astronomy.
+                 Music provides rhythm and structure; astronomy fuels curiosity and perspective.
+                 Together, they remind me that great code, like art, is a harmony of logic and creativity.
+               </p>
+             </div>
 
-          <!-- Journey Cards Swiper -->
-          <div class="journey-swiper-wrapper">
-            <div class="swiper journeySwiper">
-              <div class="swiper-wrapper">
+             <!-- Beat 1: Foundation -->
+             <div class="journey-text journey-beat-1">
+               <h3>Foundation</h3>
+               <p>Built a foundation in Computer Science at Anglia Ruskin University, exploring algorithms, data structures, and full-stack development. Discovered that clean logic can be as elegant as music.</p>
+             </div>
 
-                <!-- Card 1 - Foundation -->
-                <div class="swiper-slide">
-                  <div class="journey-card">
-                    <div class="journey-card__icon">
-                      <i class="ri-graduation-cap-line"></i>
-                    </div>
-                    <h3 class="journey-card__title">Foundation</h3>
-                    <p class="journey-card__description">
-                      Built a foundation in Computer Science at Anglia Ruskin University, exploring algorithms, data structures, and full-stack development.
-                      <br><br>
-                      Discovered that clean logic can be as elegant as music.
-                    </p>
-                  </div>
-                </div>
+             <!-- Beat 2: Exploration -->
+             <div class="journey-text journey-beat-2">
+               <h3>Exploration</h3>
+               <p>Through collaborative projects, I learned to merge creativity with engineering, designing efficient, expressive systems. Every challenge felt like composing a new melody in code.</p>
+             </div>
 
-                <!-- Card 2 - Exploration -->
-                <div class="swiper-slide">
-                  <div class="journey-card">
-                    <div class="journey-card__icon">
-                      <i class="ri-lightbulb-line"></i>
-                    </div>
-                    <h3 class="journey-card__title">Exploration</h3>
-                    <p class="journey-card__description">
-                      Through collaborative projects, I learned to merge creativity with engineering, designing efficient, expressive systems.
-                      <br><br>
-                      Every challenge felt like composing a new melody in code.
-                    </p>
-                  </div>
-                </div>
+             <!-- Beat 3: Specialization -->
+             <div class="journey-text journey-beat-3">
+               <h3>Specialization</h3>
+               <p>Completing an MSc in Cyber Security at University of Surrey refined my focus on secure software architecture and cloud innovation — building technology that protects as much as it performs.</p>
+             </div>
 
-                <!-- Card 3 - Specialization -->
-                <div class="swiper-slide">
-                  <div class="journey-card">
-                    <div class="journey-card__icon">
-                      <i class="ri-shield-keyhole-line"></i>
-                    </div>
-                    <h3 class="journey-card__title">Specialization</h3>
-                    <p class="journey-card__description">
-                      Completing an MSc in Cyber Security at University of Surrey refined my focus on secure software architecture and cloud innovation — building technology that protects as much as it performs.
-                    </p>
-                  </div>
-                </div>
+             <!-- Beat 4: Vision -->
+             <div class="journey-text journey-beat-4">
+               <h3>Vision</h3>
+               <p>Now based in London, I continue building secure, full-stack applications using React, Node.js, Flutter, and AWS, always looking for ways to merge technical depth with creative problem-solving.</p>
+             </div>
+          </div>
 
-                <!-- Card 4 - Vision -->
-                <div class="swiper-slide">
-                  <div class="journey-card">
-                    <div class="journey-card__icon">
-                      <i class="ri-rocket-2-line"></i>
-                    </div>
-                    <h3 class="journey-card__title">Vision</h3>
-                    <p class="journey-card__description">
-                      Now based in London, I continue building secure, full-stack applications using React, Node.js, Flutter, and AWS, always looking for ways to merge technical depth with creative problem-solving.
-                      <br><br>
-                      My love for piano and astronomy inspires balance between precision and imagination in everything I build.
-                    </p>
-                  </div>
-                </div>
+          <!-- Intro Welcome Text -->
+          <div class="journey-start-text">
+            <h2>Ready to see my journey?</h2>
+          </div>
 
-              </div>
-              <!-- Swiper Pagination -->
-              <div class="swiper-pagination journey-pagination"></div>
+          <!-- Intro Scroll Symbol -->
+          <div class="journey-scroll-symbol">
+            <div class="journey-scroll-inner">
+              <i class="ri-mouse-line"></i>
+              <span>Scroll for experience</span>
             </div>
           </div>
 
-          <!-- Behind the Design -->
-          <div class="journey__behind">
-            <div class="journey__divider"></div>
-            <h4 class="journey__behind-title">Behind the Design</h4>
-            <p class="journey__behind-text">
-              This portfolio reflects two passions — piano and astronomy.
-              Music provides rhythm and structure; astronomy fuels curiosity and perspective.
-              Together, they remind me that great code, like art, is a harmony of logic and creativity.
-            </p>
+          <div class="scroll-hint">Scroll to explore</div>
+          
+          <div class="journey-loader">
+            <div class="journey-loader__bar"></div>
           </div>
         </div>
       </section>
-      
-      
+
+
       <!--==================== SKILLS - LOGO LOOP ====================-->
       <section class="logo-loop-section section">
         <div class="logo-loop-header">
@@ -876,7 +853,9 @@
     <script src="assets/js/variable-proximity.js"></script>
 
     <!-- Journey Cards Swiper -->
-    <script src="assets/js/journey-cards.js"></script>
+    <!-- Journey Cards Swiper (Backup) -->
+    <!-- <script src="assets/js/journey-cards.js"></script> -->
+    <script src="assets/js/journey-sequence.js"></script>
 
     <!-- Lightning Easter Egg -->
     <script src="assets/js/lightning-easter-egg.js"></script>
