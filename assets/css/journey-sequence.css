@@ -3,7 +3,7 @@
 /* Main Section Wrapper */
 .journey-sequence-section {
   position: relative;
-  height: 800vh; /* Cinematic Length */
+  height: 600vh; /* Cinematic Length - Adjusted for 175 frames */
   background-color: #050505;
   z-index: 10;
 }

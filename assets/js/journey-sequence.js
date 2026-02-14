@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // Configuration
-    const frameCount = 232; 
+    const frameCount = 175; 
     const images = [];
     const imagePath = (index) => {
-        const paddedIndex = index.toString().padStart(3, '0');
-        return `assets/img/space/ezgif-frame-${paddedIndex}.jpg`;
+        const paddedIndex = index.toString().padStart(5, '0');
+        return `assets/img/piano/ezgif-frame-${paddedIndex}.jpg`;
     };
 
     // State
