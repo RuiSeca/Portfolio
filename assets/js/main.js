@@ -780,58 +780,57 @@ const projectData = {
       "Transaction Management",
     ],
   },
-  "weather-cast": {
-    title: "Weather Cast",
+  "car-portfolio": {
+    title: "Cinematic Automotive Portfolio",
     description: `
-    <p><strong class="title-text">A modern weather forecasting application delivering real-time data through an intuitive interface.</strong><br/><br/></p>
+    <p><strong class="title-text">A premium, high-performance digital experience showcasing automotive excellence through advanced motion design and cinematic storytelling.</strong><br/><br/></p>
 
     <p><strong class="title-text">Key Features:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Real-time weather updates using OpenWeatherMap API integration</li>
-      <li class="description-text">Dynamic UI that adapts to different weather conditions</li>
-      <li class="description-text">Daily and weekend forecast presentations</li>
-      <li class="description-text">Severe weather alerts and notifications</li>
-      <li class="description-text">Location-based weather tracking</li>
+      <li class="description-text">Hero Sequence: Immersive scroll-controlled image transitions for a cinematic intro</li>
+      <li class="description-text">Philosophy Rotation: Synchronized 3D car rotation effect interactive with editorial captions</li>
+      <li class="description-text">Infinite Road: High-performance canvas-based animation with 578-frame rendering</li>
+      <li class="description-text">Lenis Integration: Ultra-smooth scrolling implementation for a luxury editorial feel</li>
+      <li class="description-text">Responsive Motion: Fluid animation states optimized for both desktop and mobile viewports</li>
     </ul>
 
     <p><strong class="title-text">Technical Highlights:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">First-time implementation of external API integration</li>
-      <li class="description-text">Advanced switch statement logic for weather condition handling</li>
-      <li class="description-text">Dynamic UI updates based on real-time data</li>
-      <li class="description-text">Efficient data fetching and caching mechanisms</li>
+      <li class="description-text">Advanced HTML5 Canvas rendering for synchronized frame-by-frame sequences</li>
+      <li class="description-text">Complex Framer Motion choreography for professional scroll-driven storytelling</li>
+      <li class="description-text">Strategic asset preloading architecture ensuring low-latency interactions</li>
+      <li class="description-text">Custom animation interpolation for frame-accurate visual synchronization</li>
     </ul>
 
     <p><strong class="title-text">Design Philosophy:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Minimalist, user-focused interface</li>
-      <li class="description-text">Intuitive navigation and information hierarchy</li>
-      <li class="description-text">Clear visual presentation of weather data</li>
-      <li class="description-text">Responsive design for all devices</li>
+      <li class="description-text">Premium dark-mode cinematic aesthetic</li>
+      <li class="description-text">Editorial-grade typography and focused information hierarchy</li>
+      <li class="description-text">Minimalist but high-impact visual fluidity</li>
+      <li class="description-text">Motion-first approach to user engagement and experience</li>
     </ul>
 
     <p><strong class="title-text">Learning Outcomes:</strong></p>
     <ul style="list-style-type: circle; padding-left: 20px;">
-      <li class="description-text">Mastered API integration and data handling</li>
-      <li class="description-text">Improved conditional logic implementation</li>
-      <li class="description-text">Enhanced UI/UX design skills</li>
-      <li class="description-text">Developed efficient data management strategies</li>
+      <li class="description-text">Mastered high-fidelity image sequence optimization for modern browsers</li>
+      <li class="description-text">Implemented performance-critical canvas rendering for multi-frame data</li>
+      <li class="description-text">Advanced state management for multi-stage synchronized animations</li>
+      <li class="description-text">Refined premium digital design and interactive storytelling skills</li>
     </ul>
 
-    <p><strong class="title-text">The result is a sleek, functional weather application that prioritizes user experience while delivering accurate, timely weather information.</strong><br/><br/></p>
+    <p><strong class="title-text">The result is a visually stunning, high-performance portfolio that demonstrates the intersection of engineering precision and artistic design.</strong><br/><br/></p>
   `,
-    videoUrl:
-      "https://drive.google.com/uc?export=download&id=1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP",
-    liveUrl: "https://weather-cast-show.netlify.app/",
-    githubUrl: "https://github.com/RuiSeca/weatherApp",
+    videoUrl: "ADD_YOUR_VIDEO_URL_HERE",
+    liveUrl: "https://car-portfolio-orcin.vercel.app/",
+    githubUrl: "https://github.com/RuiSeca/car-portfolio",
     technologies: [
-      "OpenWeatherMap API",
-      "JavaScript",
-      "HTML5",
-      "CSS3",
-      "REST API",
-      "Local Storage",
-      "Dynamic UI",
+      "Next.js 15",
+      "Framer Motion",
+      "Tailwind CSS",
+      "React Lenis",
+      "HTML5 Canvas",
+      "TypeScript",
+      "Motion Design",
     ],
   },
 };
