@@ -820,7 +820,7 @@ const projectData = {
 
     <p><strong class="title-text">The result is a visually stunning, high-performance portfolio that demonstrates the intersection of engineering precision and artistic design.</strong><br/><br/></p>
   `,
-    videoUrl: "ADD_YOUR_VIDEO_URL_HERE",
+    videoUrl: "https://drive.google.com/uc?export=download&id=1vSPmHW-TtdORXhiqv6kFRHMc9EijVn1E",
     liveUrl: "https://car-portfolio-orcin.vercel.app/",
     githubUrl: "https://github.com/RuiSeca/car-portfolio",
     technologies: [
