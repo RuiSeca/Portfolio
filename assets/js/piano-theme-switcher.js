@@ -27,8 +27,8 @@ class PianoThemeSwitcher {
     const savedTheme = localStorage.getItem(this.storageKey);
     if (savedTheme && this.themes.includes(savedTheme)) {
       this.currentTheme = savedTheme;
-      this.applyTheme(savedTheme);
     }
+    this.applyTheme(this.currentTheme);
   }
 
   setupEventListeners() {
