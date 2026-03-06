@@ -3,7 +3,7 @@
 class PianoThemeSwitcher {
   constructor() {
     this.themes = ['beige', 'red', 'blue', 'purple', 'green', 'pink', 'cyan', 'black', 'white'];
-    this.currentTheme = 'beige';
+    this.currentTheme = 'red';
     this.storageKey = 'pianoThemePreference';
 
     this.init();
