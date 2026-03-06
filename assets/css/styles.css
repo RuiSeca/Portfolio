@@ -3819,3 +3819,23 @@ body.light-theme .footer__bottom {
     padding-top: 1.5rem;
   }
 }
+
+/* --- Blob Hover Effects --- */
+.home__blob {
+  transition: transform 0.4s ease-in-out, filter 0.4s ease-in-out;
+}
+
+.home__blob:hover {
+  transform: translateY(-10px) scale(1.02);
+  filter: drop-shadow(0 20px 24px hsla(var(--hue), 100%, 40%, 0.4));
+}
+
+.home__img {
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease;
+  transform-origin: center;
+}
+
+.home__blob:hover .home__img {
+  transform: translate(30px, 35px) scale(0.95);
+  filter: saturate(1.2) brightness(1.1);
+}
