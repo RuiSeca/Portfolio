@@ -162,6 +162,17 @@ body.white-mode .logo-loop-section::after {
   transform: scale(1.1);
 }
 
+/* Black-on-transparent icons (Next.js) vanish on the dark glass cards: invert them */
+.logo-icon--invert,
+.logo-item:hover .logo-icon--invert {
+  filter: grayscale(100%) invert(1);
+}
+
+.white-mode .logo-icon--invert,
+.white-mode .logo-item:hover .logo-icon--invert {
+  filter: grayscale(100%);
+}
+
 .logo-name {
   font-size: 0.875rem;
   font-weight: 500;
@@ -333,6 +344,14 @@ body.white-mode .logo-loop-section::after {
   .logo-icon {
     filter: grayscale(100%) !important;
     opacity: 0.7 !important;
+  }
+
+  .logo-icon--invert {
+    filter: grayscale(100%) invert(1) !important;
+  }
+
+  .white-mode .logo-icon--invert {
+    filter: grayscale(100%) !important;
   }
 
   /* Remove hover effects on touch devices */

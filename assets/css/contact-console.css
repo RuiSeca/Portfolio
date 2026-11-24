@@ -1,0 +1,518 @@
+/* ==================== CONTACT - TRANSMISSION CONSOLE ====================
+ * A "mission control" take on the contact form: glass console + status panel. Same form id and
+ * input names as before (the EmailJS template depends on them). The submit handler in main.js sets
+ * data-state on the form: idle -> sending -> sent | error, which drives the LED and the launch strip.
+ * Dark by default; body.white-mode overrides at the bottom.
+ */
+
+.cx {
+  --cx-line: rgba(255, 255, 255, 0.13);
+  --cx-glass: linear-gradient(160deg, rgba(18, 22, 34, 0.86), rgba(10, 12, 20, 0.8));
+  --cx-field: rgba(255, 255, 255, 0.045);
+  --cx-field-line: rgba(255, 255, 255, 0.15);
+  --cx-ok: #3ddc84;
+  --cx-warn: #ffb24a;
+  --cx-bad: #ff6b6b;
+  --cx-accent: var(--first-color, #e63946);
+  --cx-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  position: relative;
+  padding: 6rem 1.25rem 5rem;
+}
+
+/* ---------- heading ---------- */
+.cx__head {
+  max-width: 40rem;
+  margin: 0 auto 2.6rem;
+  text-align: center;
+}
+
+.cx__kicker {
+  margin: 0 0 0.7rem;
+  font-family: var(--cx-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.cx__kicker span {
+  color: var(--cx-accent);
+}
+
+.cx__title {
+  margin: 0;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  font-weight: 600;
+  line-height: 1.05;
+  color: var(--title-color);
+}
+
+/* ---------- layout ---------- */
+.cx__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.2rem);
+  max-width: 1100px;
+  margin: 0 auto;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .cx__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- console ---------- */
+.cx__console,
+.cx__panel {
+  position: relative;
+  border: 1px solid var(--cx-line);
+  border-radius: 1.3rem;
+  background: var(--cx-glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+/* faint scan-lines */
+.cx__console::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 100% 4px;
+}
+
+.cx__console {
+  padding-bottom: 1.6rem;
+}
+
+.cx__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--cx-line);
+  font-family: var(--cx-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.cx__led {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--cx-ok);
+  box-shadow: 0 0 10px var(--cx-ok);
+  animation: cx-pulse 2.2s ease-in-out infinite;
+}
+
+.cx__state {
+  margin-left: auto;
+  color: var(--cx-ok);
+}
+
+.cx__console[data-state="sending"] .cx__led {
+  background: var(--cx-warn);
+  box-shadow: 0 0 10px var(--cx-warn);
+  animation-duration: 0.6s;
+}
+
+.cx__console[data-state="sending"] .cx__state {
+  color: var(--cx-warn);
+}
+
+.cx__console[data-state="error"] .cx__led {
+  background: var(--cx-bad);
+  box-shadow: 0 0 10px var(--cx-bad);
+}
+
+.cx__console[data-state="error"] .cx__state {
+  color: var(--cx-bad);
+}
+
+@keyframes cx-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ---------- fields ---------- */
+.cx__fields {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1.4rem 1.25rem 0;
+}
+
+@media (max-width: 560px) {
+  .cx__fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cx__field--wide {
+  grid-column: 1 / -1;
+}
+
+.cx__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.cx__field span {
+  font-family: var(--cx-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.cx__field input,
+.cx__field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--cx-field-line);
+  border-radius: 0.7rem;
+  background: var(--cx-field);
+  color: var(--title-color);
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.cx__field textarea {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.cx__field input::placeholder,
+.cx__field textarea::placeholder {
+  color: rgba(255, 255, 255, 0.34);
+}
+
+.cx__field input:focus,
+.cx__field textarea:focus {
+  border-color: var(--cx-accent);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cx-accent) 24%, transparent);
+}
+
+/* ---------- status message ---------- */
+.cx__message {
+  position: relative;
+  min-height: 1.4rem;
+  margin: 1rem 1.25rem 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+.cx__console[data-state="sent"] .cx__message {
+  color: var(--cx-ok);
+}
+
+.cx__console[data-state="error"] .cx__message {
+  color: var(--cx-bad);
+}
+
+/* ---------- send button + launch strip ---------- */
+.cx__actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1rem 1.25rem 0;
+}
+
+.cx__send {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--cx-accent);
+  color: #fff;
+  font: 600 0.9rem/1 var(--body-font, "Poppins", sans-serif);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+}
+
+/* the label is a <span>, which the site's global styles recolour to the title colour (black in light mode) */
+.cx__send-label {
+  color: inherit;
+}
+
+.cx__send:hover,
+.cx__send:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px -8px color-mix(in srgb, var(--cx-accent) 70%, transparent);
+  filter: brightness(1.08);
+  outline: none;
+}
+
+.cx__console[data-state="sending"] .cx__send {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.cx__launch {
+  position: relative;
+  flex: 1;
+  height: 28px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  min-width: 0;
+}
+
+.cx__console[data-state="sending"] .cx__launch,
+.cx__console[data-state="sent"] .cx__launch {
+  opacity: 1;
+}
+
+.cx__launch-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 6px, transparent 6px 12px);
+}
+
+.cx__ship {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 44px;
+  height: 19px;
+  transform: translateY(-50%);
+}
+
+.cx__hull {
+  fill: #e6edff;
+}
+
+.cx__wing {
+  fill: #ff7a3d;
+}
+
+.cx__glass {
+  fill: #4cc9ff;
+}
+
+.cx__flame {
+  fill: #ffb24a;
+  transform-origin: 12px 12px;
+  animation: cx-flame 0.18s ease-in-out infinite alternate;
+}
+
+@keyframes cx-flame {
+  from {
+    transform: scaleX(0.6);
+    opacity: 0.7;
+  }
+  to {
+    transform: scaleX(1.25);
+    opacity: 1;
+  }
+}
+
+.cx__console[data-state="sending"] .cx__ship {
+  animation: cx-fly 1.3s cubic-bezier(0.55, 0, 0.3, 1) infinite;
+}
+
+.cx__console[data-state="sent"] .cx__ship {
+  animation: cx-away 0.9s cubic-bezier(0.5, 0, 1, 0.6) forwards;
+}
+
+@keyframes cx-fly {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(100% - 44px);
+  }
+}
+
+@keyframes cx-away {
+  from {
+    left: calc(100% - 44px);
+    opacity: 1;
+  }
+  to {
+    left: calc(100% + 80px);
+    opacity: 0;
+  }
+}
+
+/* ---------- status panel ---------- */
+.cx__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.6rem;
+}
+
+.cx__panel-title,
+.cx__panel-sub {
+  margin: 0;
+  font-family: var(--cx-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.cx__panel-title {
+  color: var(--cx-accent);
+}
+
+.cx__stats {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cx__stats li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--cx-line);
+}
+
+.cx__stats li span {
+  flex: 0 0 auto;
+  font-family: var(--cx-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.cx__stats li b {
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-align: right;
+  color: var(--title-color);
+}
+
+.cx__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.cx__open i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--cx-ok);
+  box-shadow: 0 0 8px var(--cx-ok);
+  animation: cx-pulse 2.2s ease-in-out infinite;
+}
+
+.cx__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.cx__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--cx-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--title-color);
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+
+.cx__links a i {
+  font-size: 1.05rem;
+}
+
+.cx__links a:hover,
+.cx__links a:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--cx-accent);
+  background: color-mix(in srgb, var(--cx-accent) 14%, transparent);
+  outline: none;
+}
+
+/* ---------- light theme ---------- */
+.white-mode .cx {
+  --cx-line: rgba(0, 0, 0, 0.12);
+  --cx-glass: linear-gradient(160deg, rgba(255, 255, 255, 0.94), rgba(244, 245, 250, 0.9));
+  --cx-field: rgba(0, 0, 0, 0.035);
+  --cx-field-line: rgba(0, 0, 0, 0.18);
+}
+
+.white-mode .cx__console,
+.white-mode .cx__panel {
+  box-shadow: 0 30px 60px -36px rgba(20, 20, 40, 0.35);
+}
+
+.white-mode .cx__console::before {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+}
+
+.white-mode .cx__field input::placeholder,
+.white-mode .cx__field textarea::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.white-mode .cx__field input:focus,
+.white-mode .cx__field textarea:focus {
+  background: #fff;
+}
+
+.white-mode .cx__links a {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.white-mode .cx__launch-line {
+  background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0 6px, transparent 6px 12px);
+}
+
+.white-mode .cx__hull {
+  fill: #5d6a8a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx__led,
+  .cx__open i,
+  .cx__flame {
+    animation: none;
+  }
+
+  .cx__console[data-state="sending"] .cx__ship,
+  .cx__console[data-state="sent"] .cx__ship {
+    animation: none;
+    left: calc(50% - 22px);
+  }
+}

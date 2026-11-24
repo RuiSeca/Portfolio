@@ -1,0 +1,28 @@
+/* ==================== CAREER PIANO - 3D BUILD-IN ====================
+ * Driven by assets/js/piano-3d.js, which sets --build (0..1) on #piano-container and toggles
+ * .piano-3d-building while it is < 1. Only INDIVIDUAL transform properties (rotate / translate)
+ * are used, so the piano's existing `transform` rules keep working untouched.
+ * Wrapped in @supports so browsers without them just show the piano normally.
+ */
+
+@supports (rotate: 1 0 0 1deg) {
+  /* perspective must sit on the direct parent of the thing that rotates (JS-created wrapper div) */
+  #piano-container.piano-3d-building > div {
+    perspective: 1300px;
+    perspective-origin: 50% 25%;
+  }
+
+  /* the cabinet tilts up out of the page */
+  #piano-container.piano-3d-building .piano-container {
+    rotate: 1 0 0 calc((1 - var(--build, 1)) * 64deg);
+    translate: 0 calc((1 - var(--build, 1)) * 70px) calc((1 - var(--build, 1)) * -260px);
+    opacity: calc(0.1 + var(--build, 1) * 0.9);
+  }
+
+  /* each key rises into place; --i (key order) staggers them so it reads as a wave */
+  #piano-container.piano-3d-building .piano-key {
+    --k: clamp(0, calc(var(--build, 1) * 2.1 - var(--i, 0) * 0.07), 1);
+    translate: 0 calc((1 - var(--k)) * -110px);
+    opacity: var(--k);
+  }
+}

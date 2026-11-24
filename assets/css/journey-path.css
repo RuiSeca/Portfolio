@@ -1,0 +1,657 @@
+/* ==================== ABOUT - JOURNEY PATH ====================
+ * A ship leaves from behind the profile photo in the hero, flies down the page and docks at the first
+ * stop; small "bases" build up along its path. Lights are blue while the ship is arriving and turn gold
+ * once it has passed; the last base (the current role) stays softly pulsing blue.
+ * Plain SVG + CSS variables - no WebGL.
+ *
+ * The section has NO background of its own: it shows the same page background as everything else, in
+ * both themes. All the colours below are variables, switched by body.white-mode.
+ *
+ * Progressive enhancement:
+ *   default       -> a clean, fully visible list (no JS / before JS runs)
+ *   .jp--ready    -> the SVG layer (path, bases, ship) has been built
+ *   .jp--live     -> scroll-driven reveals are on (not set for prefers-reduced-motion)
+ *
+ * Stacking (inside <main>, which is made position:relative): the SVG layer (z-index 1) sits above the
+ * hero's galaxy canvas (0) but below the hero content (.home__container, z-index 1, later in the DOM) and
+ * below the About copy (z-index 2) - so the ship can hide behind the photo and slide behind the text.
+ */
+
+.main {
+  position: relative;
+}
+
+/* The SVG layer lives in <main> (outside the section), so it needs the same variables. */
+.jp,
+.jp-overlay {
+  /* theme: dark (default) */
+  --jp-ink: #eef2ff;
+  --jp-dim: rgba(222, 232, 255, 0.66);
+  --jp-blue: #4cc9ff;
+  --jp-gold: #ffc247;
+  --jp-off: #4f5878;
+  --jp-line: rgba(200, 215, 255, 0.24);
+  --jp-title-0: #ffffff;
+  --jp-title-1: #9fb7e8;
+  --jp-glow-gold: rgba(255, 194, 71, 0.5);
+  /* ship */
+  --jp-h0: #7a8cb6;
+  --jp-h1: #c9d6f1;
+  --jp-h2: #ffffff;
+  --jp-w0: #4f5c80;
+  --jp-w1: #a3b3d9;
+  --jp-ship-stroke: transparent;
+  --jp-ship-shadow: 0.42;
+  /* buildings */
+  --jp-f0: #4d5a86;
+  --jp-f1: #343c5c;
+  --jp-s0: #2b3250;
+  --jp-s1: #1f2539;
+  --jp-top: rgba(160, 178, 225, 0.55);
+  --jp-edge: rgba(205, 222, 255, 0.45);
+  --jp-plate-fill: rgba(200, 215, 255, 0.06);
+  --jp-plate-stroke: rgba(200, 215, 255, 0.28);
+  --jp-shadow: 0.3;
+  --jp-door: #1b2036;
+  --jp-solar-fill: rgba(76, 150, 230, 0.4);
+  --jp-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+.jp {
+  position: relative;
+  padding: 7rem 1.25rem 6rem;
+  color: var(--jp-ink);
+}
+
+.white-mode .jp,
+.white-mode .jp-overlay {
+  /* theme: light */
+  --jp-ink: #0b0d14;
+  --jp-dim: rgba(10, 14, 28, 0.66);
+  --jp-blue: #0a8fd0;
+  --jp-gold: #d99200;
+  --jp-off: #aeb7cf;
+  --jp-line: rgba(30, 45, 90, 0.26);
+  --jp-title-0: #0b0d14;
+  --jp-title-1: #3d4f86;
+  --jp-glow-gold: rgba(217, 146, 0, 0.35);
+  --jp-h0: #6a7da9;
+  --jp-h1: #b6c3e2;
+  --jp-h2: #f4f7fd;
+  --jp-w0: #5a6890;
+  --jp-w1: #95a5cc;
+  --jp-ship-stroke: rgba(25, 40, 90, 0.4);
+  --jp-ship-shadow: 0.28;
+  --jp-f0: #eef2fa;
+  --jp-f1: #d2dbee;
+  --jp-s0: #b2bdd9;
+  --jp-s1: #9aa7c8;
+  --jp-top: rgba(255, 255, 255, 0.95);
+  --jp-edge: rgba(30, 45, 90, 0.38);
+  --jp-plate-fill: rgba(30, 45, 90, 0.05);
+  --jp-plate-stroke: rgba(30, 45, 90, 0.28);
+  --jp-shadow: 0.16;
+  --jp-door: #8f9bbd;
+  --jp-solar-fill: rgba(40, 110, 200, 0.35);
+}
+
+.jp__inner {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ---------- header ---------- */
+.jp__head {
+  position: relative;
+  z-index: 2; /* above the SVG layer: the ship passes BEHIND the heading */
+  max-width: 46rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.jp__kicker {
+  margin: 0;
+  font-family: var(--jp-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--jp-blue);
+}
+
+.jp__title {
+  margin: 0.9rem 0 1.3rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2rem, 4.8vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  background: linear-gradient(180deg, var(--jp-title-0) 25%, var(--jp-title-1) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.jp__lede {
+  max-width: 38rem;
+  margin: 0 auto;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--jp-dim);
+}
+
+.jp__cue {
+  position: relative;
+  width: 1px;
+  height: 56px;
+  margin: 2.4rem auto 0;
+  background: linear-gradient(var(--jp-line), transparent);
+}
+
+.jp__cue span {
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--jp-blue);
+  box-shadow: 0 0 10px var(--jp-blue);
+  animation: jp-cue 2.4s ease-in-out infinite;
+}
+
+@keyframes jp-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(52px);
+    opacity: 0;
+  }
+}
+
+/* ---------- track: the list ---------- */
+.jp__track {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.jp__start {
+  height: 10rem;
+}
+
+.jp__list {
+  position: relative;
+  z-index: 2; /* above the SVG layer */
+  display: grid;
+  row-gap: clamp(8.5rem, 21vh, 13rem);
+  margin: 0;
+  padding: 0 0 4rem;
+  list-style: none;
+}
+
+.jp-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 270px minmax(0, 1fr);
+  align-items: center;
+}
+
+.jp-step__node {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  width: 2px;
+  height: 2px;
+}
+
+.jp-step__body {
+  grid-row: 1;
+  max-width: 26rem;
+}
+
+.jp-step:nth-child(odd) .jp-step__body {
+  grid-column: 1;
+  justify-self: end;
+  padding-right: 1.6rem;
+  text-align: right;
+}
+
+.jp-step:nth-child(even) .jp-step__body {
+  grid-column: 3;
+  justify-self: start;
+  padding-left: 1.6rem;
+}
+
+/* no-JS look: a quiet centre line with a dot per step */
+.jp:not(.jp--ready) .jp__list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--jp-line);
+}
+
+.jp:not(.jp--ready) .jp-step__node {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--jp-gold);
+  box-shadow: 0 0 12px var(--jp-glow-gold);
+}
+
+/* ---------- step text ---------- */
+.jp-step__kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.65rem;
+  font-family: var(--jp-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--jp-dim);
+}
+
+.jp-step:nth-child(odd) .jp-step__kicker {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.jp-step__kicker i {
+  flex: 0 0 auto;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--jp-c, var(--jp-gold));
+  box-shadow: 0 0 9px var(--jp-c, var(--jp-glow-gold));
+  transition: background 0.6s ease, box-shadow 0.6s ease;
+}
+
+.jp-step h3 {
+  margin: 0 0 0.7rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--jp-ink);
+}
+
+.jp-step__org {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--jp-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--jp-blue);
+}
+
+.jp-step__body > p:not(.jp-step__kicker) {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.75;
+  color: var(--jp-dim);
+}
+
+.jp-step__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.jp-step__chips li {
+  padding: 0.22rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--jp-blue) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--jp-blue) 9%, transparent);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: var(--jp-blue);
+}
+
+.jp-step__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 1.25rem;
+  padding: 0.7rem 1.2rem;
+  border: 1px solid color-mix(in srgb, var(--jp-blue) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--jp-blue) 10%, transparent);
+  color: var(--jp-ink);
+  font: 600 0.85rem/1 var(--body-font, "Poppins", sans-serif);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.jp-step__btn:hover,
+.jp-step__btn:focus-visible {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--jp-blue) 20%, transparent);
+  border-color: var(--jp-blue);
+  outline: none;
+}
+
+/* ---------- live (scroll-driven) text reveal ---------- */
+.jp--live .jp-step__body {
+  opacity: var(--w, 0);
+  transform: translateY(calc((1 - var(--w, 0)) * 18px));
+}
+
+/* ---------- state colours (shared by text + SVG bases) ---------- */
+[data-state="arriving"] {
+  --jp-c: var(--jp-blue);
+}
+
+[data-state="done"] {
+  --jp-c: var(--jp-gold);
+}
+
+[data-state="current"] {
+  --jp-c: var(--jp-blue);
+}
+
+[data-state="current"].jp-step .jp-step__kicker i {
+  animation: jp-pulse 2.2s ease-in-out infinite;
+}
+
+/* =================== THE SVG LAYER =================== */
+.jp-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.jp__svg {
+  display: block;
+  overflow: visible;
+}
+
+/* the hero text/photo sit above the layer: make that explicit (they are later in the DOM too) */
+.home__container {
+  position: relative;
+  z-index: 1;
+}
+
+/* theme-driven gradient stops */
+.jp-st-h0 { stop-color: var(--jp-h0); }
+.jp-st-h1 { stop-color: var(--jp-h1); }
+.jp-st-h2 { stop-color: var(--jp-h2); }
+.jp-st-w0 { stop-color: var(--jp-w0); }
+.jp-st-w1 { stop-color: var(--jp-w1); }
+.jp-st-f0 { stop-color: var(--jp-f0); }
+.jp-st-f1 { stop-color: var(--jp-f1); }
+.jp-st-s0 { stop-color: var(--jp-s0); }
+.jp-st-s1 { stop-color: var(--jp-s1); }
+
+.jp-path {
+  fill: none;
+  stroke: var(--jp-line);
+  stroke-width: 1.6;
+  stroke-dasharray: 2 9;
+  stroke-linecap: round;
+}
+
+.jp-path-done {
+  fill: none;
+  stroke: var(--jp-gold);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px var(--jp-glow-gold));
+}
+
+.jp-conn {
+  fill: none;
+  stroke: var(--jp-line);
+  stroke-width: 1;
+}
+
+.jp-conn-dot {
+  fill: var(--jp-c, var(--jp-off));
+  transition: fill 0.6s ease;
+}
+
+/* ---------- a base: plate + ring on the "ground", layers rising out of it, lights ---------- */
+:where(.jp-base) {
+  --jp-c: var(--jp-off); /* zero specificity: the [data-state] colours above always win */
+}
+
+.jp-plate {
+  fill: var(--jp-plate-fill);
+  stroke: var(--jp-plate-stroke);
+  stroke-width: 1;
+}
+
+.jp-ring {
+  fill: none;
+  stroke: var(--jp-c);
+  stroke-width: 1.3;
+  opacity: 0.85;
+  transition: stroke 0.6s ease;
+}
+
+/* each layer rises into place in sequence as --b (0..1) grows; --n = number of layers */
+.jp-layer {
+  --k: clamp(0, calc(var(--b, 0) * (var(--n, 4) + 0.6) - var(--i, 0)), 1);
+  opacity: var(--k);
+  transform: translateY(calc((1 - var(--k)) * 14px));
+}
+
+/* oblique "3D": lit front face, darker side face, lighter top face */
+.jp-face {
+  fill: url(#jp-g-face);
+  stroke: var(--jp-edge);
+  stroke-width: 0.8;
+}
+
+.jp-side {
+  fill: url(#jp-g-side);
+  stroke: var(--jp-edge);
+  stroke-width: 0.6;
+}
+
+.jp-top {
+  fill: var(--jp-top);
+  stroke: var(--jp-edge);
+  stroke-width: 0.6;
+}
+
+.jp-shadow {
+  fill: #000;
+  opacity: var(--jp-shadow);
+}
+
+.jp-door {
+  fill: var(--jp-door);
+}
+
+.jp-light {
+  fill: var(--jp-c);
+  transition: fill 0.6s ease;
+}
+
+.jp-dim {
+  opacity: 0.45;
+}
+
+.jp-beacon {
+  filter: drop-shadow(0 0 5px var(--jp-c));
+}
+
+[data-state="current"] .jp-beacon,
+[data-state="current"] .jp-ring {
+  animation: jp-pulse 2.2s ease-in-out infinite;
+}
+
+.jp-dome {
+  fill: color-mix(in srgb, var(--jp-blue) 10%, transparent);
+  stroke: var(--jp-edge);
+  stroke-width: 1;
+}
+
+.jp-lattice,
+.jp-shield,
+.jp-dish,
+.jp-orbit {
+  fill: none;
+  stroke: var(--jp-edge);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.jp-dish {
+  stroke-width: 2.2;
+}
+
+.jp-shield {
+  stroke: var(--jp-c);
+  stroke-width: 1.4;
+  transition: stroke 0.6s ease;
+}
+
+.jp-orbit {
+  stroke: var(--jp-c);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  opacity: 0.75;
+  transition: stroke 0.6s ease;
+}
+
+.jp-mast {
+  fill: var(--jp-edge);
+}
+
+.jp-solar {
+  fill: var(--jp-solar-fill);
+  stroke: var(--jp-edge);
+  stroke-width: 0.8;
+}
+
+.jp-solar-grid {
+  fill: none;
+  stroke: var(--jp-edge);
+  stroke-width: 0.6;
+  opacity: 0.7;
+}
+
+/* ---------- the ship ---------- */
+.jp-ship-shadow {
+  fill: #000;
+  opacity: var(--jp-ship-shadow);
+}
+
+.jp-ship-line path,
+.jp-ship-line rect {
+  stroke: var(--jp-ship-stroke);
+  stroke-width: 0.9;
+  stroke-linejoin: round;
+}
+
+.jp-ship__bob {
+  animation: jp-bob 3.4s ease-in-out infinite;
+}
+
+.jp-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: jp-flame 0.16s ease-in-out infinite alternate;
+}
+
+@keyframes jp-flame {
+  from {
+    transform: scaleY(0.78);
+    opacity: 0.8;
+  }
+  to {
+    transform: scaleY(1.12);
+    opacity: 1;
+  }
+}
+
+@keyframes jp-bob {
+  0%,
+  100% {
+    transform: translateX(-1.2px);
+  }
+  50% {
+    transform: translateX(1.2px);
+  }
+}
+
+@keyframes jp-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ---------- small screens ---------- */
+@media (max-width: 799px) {
+  .jp {
+    padding: 5.5rem 1.25rem 4.5rem;
+  }
+
+  .jp__start {
+    height: 6.5rem;
+  }
+
+  .jp__list {
+    row-gap: clamp(5.5rem, 13vh, 8rem);
+  }
+
+  .jp-step {
+    grid-template-columns: 84px minmax(0, 1fr);
+  }
+
+  .jp-step__node {
+    grid-column: 1;
+  }
+
+  .jp-step:nth-child(odd) .jp-step__body,
+  .jp-step:nth-child(even) .jp-step__body {
+    grid-column: 2;
+    justify-self: start;
+    padding: 0 0 0 0.4rem;
+    text-align: left;
+  }
+
+  .jp-step:nth-child(odd) .jp-step__kicker {
+    justify-content: flex-start;
+    flex-direction: row;
+  }
+
+  .jp:not(.jp--ready) .jp__list::before {
+    left: 42px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp__cue span,
+  .jp-ship__bob,
+  .jp-flame,
+  [data-state="current"] .jp-beacon,
+  [data-state="current"] .jp-ring,
+  [data-state="current"].jp-step .jp-step__kicker i {
+    animation: none;
+  }
+}

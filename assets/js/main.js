@@ -40,65 +40,45 @@ window.addEventListener("scroll", () => {
   }
 });
 
-/*=============== CARD SWIPER ===============*/
-
-const swiper = new Swiper(".mySwiper", {
-  slidesPerView: "auto", // Makes each slide take up its natural width
-  spaceBetween: 20, // Slight gap between slides
-  centeredSlides: true, // Keeps the center slide visible in the middle
-  slideToClickedSlide: true, // Allows clicking to navigate directly to a slide
-  effect: "coverflow", // Adds a 3D stacking effect
-  coverflowEffect: {
-    rotate: 50, // Degree of rotation
-    stretch: 0, // Stretch factor
-    depth: 150, // Depth of the 3D effect
-    modifier: 1, // Modifier to increase/decrease effect intensity
-    slideShadows: true, // Adds shadow to each slide
+/*=============== PROJECTS SHOWCASE ===============*/
+// The Swiper carousel was replaced by the pinned horizontal showcase in assets/js/projects-showcase.js.
+// The story viewer below only ever calls swiper.slideTo(index, ...), so this tiny stand-in keeps it
+// working: it asks the showcase to bring that project into view (no-op when the showcase isn't pinned).
+const swiper = {
+  slideTo: function (index) {
+    if (window.projectsShowcase) window.projectsShowcase.slideTo(index);
   },
-  scrollbar: {
-    el: ".swiper-scrollbar",
-    draggable: 150, // Allows for dragging the scrollbar
-  },
-  on: {
-    slideChangeTransitionStart: function () {
-      // Add a fix for Firefox and Safari when slide changes
-      setTimeout(() => {
-        swiper.update(); // Update Swiper after slide change
-      }, 50);
-    },
-  },
-});
+};
 
 // Redirect to another website via card
 function redirectToAnotherWebsite(url) {
   window.location.href = url;
 }
-// Sync the scrollbar with Swiper's scroll position
-swiper.on("scroll", function () {
-  var scrollbarThumb = document.querySelector(".swiper-scrollbar-thumb");
-  var scrollbarWidth = document.querySelector(".swiper-scrollbar").offsetWidth;
-  var thumbWidth = scrollbarThumb.offsetWidth;
-  var swiperWidth = swiper.width;
-
-  var scrollPercentage = swiper.translate / (swiperWidth - swiper.width);
-  var scrollThumbPosition = (scrollbarWidth - thumbWidth) * scrollPercentage;
-
-  scrollbarThumb.style.transform = "translateX(" + scrollThumbPosition + "px)";
-});
 
 /*=============== EMAIL JS ===============*/
+// The form is the "transmission console" (assets/css/contact-console.css). Its data-state attribute
+// (idle -> sending -> sent | error) drives the status LED and the little ship that flies along the
+// launch strip while the message is on its way.
 const contactForm = document.getElementById("contact-form"),
   contactMessage = document.getElementById("contact-message"),
-  loaderWrapper = document.querySelector(".wrapper"); // Assuming you have a wrapper for the loading animation
+  contactStatus = document.getElementById("cx-status");
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const setContactState = (state, label) => {
+  contactForm.dataset.state = state;
+  if (contactStatus) contactStatus.textContent = label;
+};
+
 const sendEmail = async (e) => {
   e.preventDefault();
+  if (contactForm.dataset.state === "sending") return; // ignore double submits
 
-  // Show loading animation
-  loaderWrapper.style.visibility = "visible";
-  loaderWrapper.style.opacity = "1";
+  setContactState("sending", "Transmitting");
+  contactMessage.textContent = "";
+  const started = Date.now();
+  // keep the launch animation on screen for at least ~1.4s, even if EmailJS answers instantly
+  const minAnimation = () => delay(Math.max(0, 1400 - (Date.now() - started)));
 
   try {
     await emailjs.sendForm(
@@ -107,30 +87,22 @@ const sendEmail = async (e) => {
       "#contact-form",
       "pkfqcCbNu3mq8Ks-J"
     );
+    await minAnimation();
 
-    // Introduce a longer delay
-    await delay(2000);
-
-    // Hide loading animation on success
-    loaderWrapper.style.opacity = "0";
-    setTimeout(() => {
-      loaderWrapper.style.visibility = "hidden";
-    }, 300);
-
-    contactMessage.textContent = "Message Sent Successfully 🟢";
-    setTimeout(() => {
-      contactMessage.textContent = "";
-    }, 5000);
+    setContactState("sent", "Received");
+    contactMessage.textContent = "Transmission received. Thanks for reaching out - I'll reply soon.";
     contactForm.reset();
-  } catch (error) {
-    // Hide loading animation on error
-    loaderWrapper.style.opacity = "0";
     setTimeout(() => {
-      loaderWrapper.style.visibility = "hidden";
-    }, 300);
-
-    // Show service error Message
-    contactMessage.textContent = "Message not sent (error) 🔴";
+      if (contactForm.dataset.state === "sent") {
+        setContactState("idle", "Standby");
+        contactMessage.textContent = "";
+      }
+    }, 7000);
+  } catch (error) {
+    await minAnimation();
+    setContactState("error", "Signal lost");
+    contactMessage.textContent =
+      "Message not sent. Please try again, or reach me on LinkedIn.";
   }
 };
 
@@ -179,123 +151,61 @@ function handleScroll() {
 window.addEventListener("scroll", handleScroll);
 
 /*=============== SCROLL REVEAL ANIMATION ===============*/
+// One smooth, shared preset: short travel, gentle scale, long ease-out tail.
+// (Previously 2.5s duration + 0.85 zoom + 400ms delay, which felt heavy.)
+// NOTE: never reveal a pinned/fixed stage (#about, #projects stage) or any of
+// its ancestors - a transform on an ancestor breaks position:fixed pinning.
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
 const sr = ScrollReveal({
-  distance: "60px",
-  duration: 2500,
-  delay: 400,
-  scale: 0.85, // Add scale for the zoom effect
+  distance: "36px",
+  duration: 1300,
+  delay: 0,
+  easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+  scale: 0.97,
+  opacity: 0,
+  viewFactor: 0.15,
+  reset: false,
+  cleanup: true, // strip inline styles after the reveal finishes
 });
 
-// Reveal for titles and descriptions with zoom
-sr.reveal(".section__title, .about__description", { scale: 0.85 });
+// Skip every reveal for users who prefer reduced motion (content stays visible)
+const reveal = (selector, options) => {
+  if (!prefersReducedMotion) sr.reveal(selector, options);
+};
 
-// Specific reveal for the image with origin bottom and zoom
-sr.reveal(".about__image", { origin: "bottom", scale: 0.85 });
-
-// Skills with zoom effect and staggered delay
-sr.reveal(".header__skills, .skills__box, .skills__name, .skills__icon", {
-  scale: 0.85,
-  interval: 75,
-});
-
-// Services section with zoom
-sr.reveal(".services__card, .services__description", {
-  duration: 2000,
-  distance: "80px",
-  scale: 0.85,
-});
-
-// Project container with zoom and different origin
-sr.reveal(".project__container", {
-  origin: "left",
-  distance: "100px",
-  scale: 0.85,
-});
-
-sr.reveal(".piano__container", {
-  origin: "right",
-  distance: "100px",
-  scale: 0.85,
-});
-
-// Logo loop / Technologies section
-sr.reveal(".logo-loop-section", {
-  origin: "bottom",
-  distance: "80px",
-  scale: 0.85,
-  duration: 2000,
-});
-
-// Career section (My Journey)
-sr.reveal(".career .section__subtitle-piano, .career .section__title-keys", {
-  origin: "top",
-  distance: "60px",
-  scale: 0.85,
-  interval: 100,
-});
-
-sr.reveal(".hologram-wrapper", {
-  origin: "left",
-  distance: "100px",
-  scale: 0.85,
-  duration: 2500,
-});
-
-// Card swap services section
-sr.reveal(
-  ".card-swap-section .section__subtitle, .card-swap-section .section__title",
-  {
-    origin: "top",
-    distance: "60px",
-    scale: 0.85,
-    interval: 100,
-  }
+// Section headings
+reveal(
+  ".section__title, .section__subtitle, .career .section__subtitle-piano, .career .section__title-keys",
+  { origin: "top", interval: 90 }
 );
 
-sr.reveal(".card-swap-text", {
-  origin: "left",
-  distance: "100px",
-  scale: 0.85,
-  duration: 2500,
-});
+// Tech stack
+reveal(".logo-loop-section", { origin: "bottom", distance: "50px" });
 
-sr.reveal(".card-swap-wrapper", {
-  origin: "right",
-  distance: "100px",
-  scale: 0.85,
-  duration: 2500,
-});
+// Career (piano + hologram) - the piano itself builds in with its own 3D scroll effect
+reveal(".hologram-wrapper", { origin: "left", distance: "60px" });
 
-// Contact section
-sr.reveal(".contact .section__subtitle, .contact .section__title", {
-  origin: "top",
-  distance: "60px",
-  scale: 0.85,
-  interval: 100,
-});
+// Services (card swap)
+reveal(".card-swap-text", { origin: "left", distance: "60px" });
+reveal(".card-swap-wrapper", { origin: "right", distance: "60px" });
 
-sr.reveal(".contact__form", {
-  origin: "left",
-  distance: "100px",
-  scale: 0.85,
-  duration: 2500,
-});
-
-sr.reveal(".contact .wrapper", {
-  origin: "right",
-  distance: "100px",
-  scale: 0.85,
-  duration: 2500,
-});
+// Contact (transmission console)
+reveal(".cx__head", { origin: "top", distance: "40px" });
+reveal(".cx__console", { origin: "left", distance: "60px" });
+reveal(".cx__panel", { origin: "right", distance: "60px", delay: 120 });
 
 /*=============== Typer ===============*/
 
 let typed = new Typed("#typed", {
   strings: [
-    "Back-End Developer",
-    "Programmer",
-    "Freelancer",
-    "Back-End Developer",
+    "Junior Software Engineer",
+    "Full-Stack Developer",
+    "Java & React Developer",
+    "MSc Cyber Security Graduate",
+    "Junior Software Engineer",
   ],
   typeSpeed: 50,
   backSpeed: 30,
@@ -831,6 +741,51 @@ const projectData = {
       "HTML5 Canvas",
       "TypeScript",
       "Motion Design",
+    ],
+  },
+  // Current role - opened from the About flight ("View role details") and the career piano.
+  // No videoUrl / liveUrl / githubUrl: openProjectModal() simply omits those blocks.
+  cognizant: {
+    title: "Junior Software Engineer - Cognizant",
+    badge: "Current role",
+    description: `
+    <p><strong class="title-text">Junior Software Engineer at Cognizant</strong>, contributing to the development, maintenance and testing of enterprise software solutions within a large-scale UK public-sector environment.</p>
+
+    <p class="description-text">I work across both frontend and backend development, gaining practical experience with modern web technologies, Java-based backend services, Python development, REST APIs, relational databases and enterprise software architecture.</p>
+
+    <p class="description-text">I collaborate within an Agile engineering team: contributing to development tasks, investigating defects, validating application behaviour and supporting the delivery of reliable software in an established enterprise environment.</p>
+
+    <p><strong class="title-text">Key Responsibilities &amp; Engineering Contributions:</strong></p>
+    <ul style="list-style-type: circle; padding-left: 20px;">
+      <li class="description-text"><strong>Full-Stack Development:</strong> working across frontend and backend technologies, including React, Next.js, TypeScript, Java and Python</li>
+      <li class="description-text"><strong>Backend Engineering:</strong> developing and understanding backend services using Java and Spring Boot, with exposure to REST API architecture, service integration and application logic</li>
+      <li class="description-text"><strong>Frontend Engineering:</strong> working with modern JavaScript frameworks and TypeScript to contribute to web application functionality and user-facing features</li>
+      <li class="description-text"><strong>Database Engineering:</strong> working with SQL and relational database environments, validating data changes and investigating database behaviour</li>
+      <li class="description-text"><strong>Database Migrations:</strong> using Liquibase to manage database changes, changelogs, migration scripts and rollback procedures</li>
+      <li class="description-text"><strong>Software Testing &amp; QA:</strong> functional testing, validating business requirements, investigating defects and checking that application changes behave as expected</li>
+      <li class="description-text"><strong>Test Automation:</strong> working with existing automation and regression-testing approaches to improve coverage and identify potential regressions</li>
+      <li class="description-text"><strong>Version Control:</strong> Git-based workflows with feature branches, commit reviews and integrating changes while keeping environments aligned with the latest code</li>
+      <li class="description-text"><strong>Development Environments:</strong> building, running and troubleshooting applications in WSL, Ubuntu and Linux-based environments</li>
+      <li class="description-text"><strong>Python Development:</strong> Python project environments and dependency management using Poetry</li>
+      <li class="description-text"><strong>Enterprise Collaboration:</strong> established engineering workflows, technical documentation, development tickets, team collaboration and code integration processes</li>
+    </ul>
+  `,
+    technologies: [
+      "Java",
+      "Spring Boot",
+      "Python",
+      "TypeScript",
+      "JavaScript",
+      "React",
+      "Next.js",
+      "SQL",
+      "PostgreSQL",
+      "Liquibase",
+      "Git",
+      "Poetry",
+      "WSL",
+      "Ubuntu",
+      "Linux",
     ],
   },
 };
@@ -1462,10 +1417,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Function to update the viewed state for all cards
   const updateViewedStateForAllCards = () => {
-    const projectCards = document.querySelectorAll(".card");
+    const projectCards = document.querySelectorAll(".pw-panel");
     projectCards.forEach((card, index) => {
       const projectId = projectsData[index]?.modalId;
-      const cardImage = card.querySelector(".card__image");
+      const cardImage = card.querySelector(".pw-panel__media");
 
       if (cardImage && projectId && viewedStories[projectId]) {
         // Add viewed styling - just a subtle gray overlay
@@ -1513,10 +1468,10 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Add click handlers to each project card
-  const projectCards = document.querySelectorAll(".card");
+  const projectCards = document.querySelectorAll(".pw-panel");
   projectCards.forEach((card, index) => {
-    // Find the card image container
-    const cardImage = card.querySelector(".card__image");
+    // Find the panel's media container
+    const cardImage = card.querySelector(".pw-panel__media");
     if (cardImage) {
       // Make the image container relative positioning
       cardImage.style.position = "relative";
@@ -1525,6 +1480,13 @@ document.addEventListener("DOMContentLoaded", function () {
       cardImage.style.cursor = "pointer";
       cardImage.addEventListener("click", function (e) {
         storyViewer.open(index);
+      });
+      // The media is a role=button: Enter / Space open the story viewer too
+      cardImage.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          storyViewer.open(index);
+        }
       });
     }
   });
@@ -1577,18 +1539,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // Add a CSS style for mobile responsiveness
 const styleElement = document.createElement("style");
 styleElement.textContent = `
-  .card__image {
-    transition: transform 0.2s ease;
-  }
-  
-  .card__image:hover {
-    transform: scale(1.02);
-  }
-  
-  .card__image:active {
-    transform: scale(0.98);
-  }
-  
   .story-viewed-overlay {
     transition: opacity 0.3s ease;
   }
@@ -1626,16 +1576,18 @@ const projectsData = [
       "https://drive.google.com/file/d/1Rklwqh1eXskFd-SWbPnYlC25uVv0r0s8/preview",
     detailUrl: "#csrf-attack",
     githubUrl: "https://github.com/RuiSeca/CSRF-attack",
-    liveUrl: "http://crfs.infinityfreeapp.com/public/index.php",
+    liveUrl: "http://csrf.infinityfreeapp.com/public/index.php",
     modalId: "CSRF Attack Demonstrator",
   },
   {
+    // 5th project is the Car Portfolio (this entry used to point at an unrelated weather app,
+    // so the Car Portfolio panel opened the wrong story video)
     videoUrl:
-      "https://drive.google.com/file/d/1QroicLv2vzWFRleqsg3E6ku3zhLGl-BP/preview",
-    detailUrl: "#weather-cast",
-    githubUrl: "https://github.com/RuiSeca/weatherApp",
-    liveUrl: "https://weather-cast-show.netlify.app/",
-    modalId: "weather-cast",
+      "https://drive.google.com/file/d/1vSPmHW-TtdORXhiqv6kFRHMc9EijVn1E/preview",
+    detailUrl: "#car-portfolio",
+    githubUrl: "https://github.com/RuiSeca/car-portfolio",
+    liveUrl: "https://car-portfolio-orcin.vercel.app/",
+    modalId: "car-portfolio",
   },
 ];
 
@@ -1684,7 +1636,7 @@ document.addEventListener("DOMContentLoaded", () => {
       note: "C",
       year: "2020",
       title: "Beginning - Cambridge",
-      description: "Started Journey BSc of CS at Anglia Ruskin University",
+      description: "Started a BSc in Computer Science at Anglia Ruskin University",
       color: "bg-amber-100",
       type: "white",
     },
@@ -1778,18 +1730,19 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       note: "C2",
-      year: "2024",
-      title: "New Chapter - Guilford",
+      year: "2024 - 2025",
+      title: "New Chapter - Guildford",
       description:
-        "Milestone Started MSc of Cyber Security at Surrey University",
+        "MSc in Cyber Security at the University of Surrey",
       color: "bg-orange-700",
       type: "white",
     },
     {
       note: "D2",
       year: "2026",
-      title: "Direction",
-      description: "Future Goals",
+      title: "Cognizant",
+      description:
+        "Junior Software Engineer - enterprise full-stack with Java, Spring Boot, React & TypeScript",
       color: "bg-orange-900",
       type: "white",
     },

@@ -1,0 +1,415 @@
+/* ==================== MY WORK - SHOWCASE ====================
+ * Default (mobile / reduced motion / no JS): plain vertical stack of panels.
+ * .pw--live (desktop, set by assets/js/projects-showcase.js): stage is pinned by scroll-pin.js while
+ * vertical scroll slides the track sideways.
+ *
+ * IMPORTANT: no transform / filter / contain / perspective on .pw (or its ancestors) - it would
+ * become the containing block of the position:fixed stage and break pinning. (The panels and the
+ * track may transform freely: they are descendants.)
+ * Dark by default; body.white-mode overrides are at the bottom.
+ */
+
+.pw {
+  --pw-w: min(1120px, 84vw);
+  --pw-pad: clamp(1.25rem, 5vw, 5rem);
+  --pw-line: rgba(255, 255, 255, 0.12);
+  --pw-glass: rgba(20, 22, 32, 0.62);
+  --pw-accent: var(--first-color, #e63946);
+  --pw-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  position: relative;
+  padding: 6rem 0 4rem;
+}
+
+/* ---------- heading ---------- */
+.pw__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1180px;
+  margin: 0 auto 2rem;
+  padding: 0 var(--pw-pad);
+}
+
+.pw__kicker {
+  margin: 0 0 0.6rem;
+  font-family: var(--pw-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.pw__title {
+  margin: 0;
+  font-size: clamp(2.3rem, 7vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--title-color);
+}
+
+.pw__title span {
+  color: var(--pw-accent);
+}
+
+.pw__counter {
+  display: none;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-family: var(--pw-mono);
+  color: var(--text-color);
+}
+
+.pw__counter b {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--pw-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.pw__counter i {
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+.pw__foot {
+  display: none;
+}
+
+/* ---------- panels (stacked layout) ---------- */
+.pw__viewport {
+  padding: 0 var(--pw-pad);
+}
+
+.pw__track {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  gap: 1.6rem;
+  max-width: 1180px;
+}
+
+.pw-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid var(--pw-line);
+  border-radius: 1.5rem;
+  background: var(--pw-glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.7);
+}
+
+.pw-panel__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  transform: perspective(900px) rotateX(calc(var(--tx, 0) * 1deg)) rotateY(calc(var(--ty, 0) * 1deg));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+  box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.75);
+}
+
+.pw-panel__media:focus-visible {
+  outline: 2px solid var(--pw-accent);
+  outline-offset: 4px;
+}
+
+.pw-panel__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  transform: scale(1.08);
+  translate: calc(var(--ty, 0) * -0.7px) calc(var(--tx, 0) * 0.7px);
+  transition: translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* soft light that follows the pointer */
+.pw-panel__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.22), transparent 55%);
+  opacity: var(--glare, 0);
+  transition: opacity 0.35s ease;
+}
+
+.pw-panel__play {
+  position: absolute;
+  left: 0.9rem;
+  bottom: 0.9rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(8, 10, 18, 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.pw-panel__index {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  font-weight: 700;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.28);
+  font-variant-numeric: tabular-nums;
+}
+
+.pw-panel__title {
+  margin: 0 0 0.7rem;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--title-color);
+}
+
+.pw-panel__text {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.25vw, 1.02rem);
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+.pw-panel__tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+}
+
+.pw-panel__tags li {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--pw-line);
+  border-radius: 999px;
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+  color: var(--text-color);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pw-panel__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+  padding: 0.8rem 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--pw-accent);
+  color: #fff;
+  font: 600 0.88rem/1 var(--body-font, "Poppins", sans-serif);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+}
+
+.pw-panel__btn:hover,
+.pw-panel__btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -8px color-mix(in srgb, var(--pw-accent) 70%, transparent);
+  filter: brightness(1.08);
+  outline: none;
+}
+
+/* ---------- LIVE: pinned horizontal layout ---------- */
+.pw--live {
+  padding: 0; /* section height is set from JS (stage height + scroll distance) */
+}
+
+.pw--live .pw__stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  padding: 5.5rem 0 1.6rem;
+  overflow: hidden;
+}
+
+/* faint accent glow behind the panels */
+.pw--live .pw__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 55% at 50% 52%, color-mix(in srgb, var(--pw-accent) 14%, transparent), transparent 70%);
+}
+
+.pw--live .pw__head {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 var(--pw-pad);
+}
+
+.pw--live .pw__counter {
+  display: flex;
+}
+
+.pw--live .pw__viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.pw--live .pw__track {
+  position: relative; /* offsetParent for the panel centres measured in JS */
+  display: flex;
+  align-items: center;
+  gap: clamp(2rem, 7vw, 7rem);
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  padding: 0 calc((100vw - var(--pw-w)) / 2);
+  will-change: transform;
+}
+
+.pw--live .pw-panel {
+  flex: 0 0 var(--pw-w);
+  width: var(--pw-w);
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(1rem, 2vw, 1.8rem);
+  transform: perspective(1400px) rotateY(var(--pry, 0deg)) scale(var(--psc, 1));
+  opacity: var(--pop, 1);
+  will-change: transform, opacity;
+}
+
+.pw--live .pw-panel.is-active {
+  border-color: color-mix(in srgb, var(--pw-accent) 45%, transparent);
+}
+
+.pw--live .pw__foot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  /* keep clear of the site's fixed scroll-to-top button in the bottom-right corner */
+  padding: 0 calc(var(--pw-pad) + 3.5rem) 0 var(--pw-pad);
+}
+
+.pw__progress {
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--pw-line);
+  overflow: hidden;
+}
+
+.pw__fill {
+  height: 100%;
+  background: var(--pw-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.pw__hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--pw-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+/* medium desktop / tablet: stack image above text inside each panel */
+@media (max-width: 1000px) {
+  .pw--live .pw-panel {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .pw--live .pw-panel__media {
+    aspect-ratio: 16 / 8;
+  }
+
+  .pw--live .pw-panel__index {
+    display: none;
+  }
+}
+
+/* short desktop windows */
+@media (min-width: 768px) and (max-height: 760px) {
+  .pw--live .pw-panel__text {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .pw--live .pw-panel__tags {
+    margin-top: 0.7rem;
+  }
+
+  .pw--live .pw-panel__btn {
+    margin-top: 0.9rem;
+    padding: 0.65rem 1.1rem;
+  }
+}
+
+/* two columns for stacked layout on tablets (not pinned) */
+@media (min-width: 560px) and (max-width: 767px) {
+  .pw__track {
+    gap: 1.8rem;
+  }
+}
+
+/* ---------- light theme ---------- */
+.white-mode .pw {
+  --pw-line: rgba(0, 0, 0, 0.12);
+  --pw-glass: rgba(255, 255, 255, 0.82);
+}
+
+.white-mode .pw-panel {
+  box-shadow: 0 30px 60px -34px rgba(20, 20, 40, 0.35);
+}
+
+.white-mode .pw-panel__index {
+  -webkit-text-stroke-color: rgba(0, 0, 0, 0.28);
+}
+
+.white-mode .pw-panel__tags li {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pw-panel__media,
+  .pw-panel__media img {
+    transition: none;
+  }
+}
