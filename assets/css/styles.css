@@ -600,6 +600,9 @@ svg {
 
 .home__content {
   display: grid;
+  /* The column can never grow past the screen, whatever the typed line is doing.
+     (A plain `auto` track grows to its widest child, which stretched the whole hero on phones.) */
+  grid-template-columns: minmax(0, 1fr);
   row-gap: 2rem;
   position: relative;
   z-index: 1;
@@ -873,9 +876,18 @@ span {
     text-align: center;
   }
 
-  /* Adjust font size and margin for .home__container h1 */
+  /* Side gutter, so the hero text never touches the screen edges */
+  .home__content {
+    padding-inline: 1.25rem;
+  }
+
+  /* The typed role ("A Junior Software Engineer", "A MSc Cyber Security Graduate"...) is wider than
+     a phone at this size, so it wraps instead of forcing one long line. */
   .home__container h1 {
-    font-size: 32px; /* Adjust the font size for smaller screens */
+    font-size: clamp(24px, 7.2vw, 32px);
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: break-word;
     margin-bottom: 20px; /* Adjust the margin as needed */
   }
 
@@ -900,6 +912,24 @@ span {
   .label {
     margin-top: 1em; /* Adjust the margin as needed */
     -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Phones: the hero fills the screen, but grows when its content is taller than a short screen
+   (it used to be a fixed 100vh with overflow hidden, which clipped the top and the social links). */
+@media (max-width: 768px) {
+  .home {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+}
+
+/* Phones: some typed roles need two lines. Always reserve both, so the line wrapping (or un-wrapping)
+   while it types and deletes never moves the description, button and links below it. */
+@media (max-width: 540px) {
+  .home__container h1 {
+    min-height: 2.5em; /* 2 lines at line-height 1.25 */
   }
 }
 
