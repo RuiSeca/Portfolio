@@ -16,13 +16,16 @@
       rel="stylesheet"
     />
 
-    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Preconnect to the font hosts and CDNs for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+
+    <!-- Poppins (was a chained @import in styles.css; loading it here lets it download in parallel) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
     <!-- Variable Font for Proximity Effect -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
-
-    <!-- Preconnect to CDNs for faster loading -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -30,6 +33,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/piano-themes.css" />
     <link rel="stylesheet" href="assets/css/piano-3d.css" />
+    <link rel="stylesheet" href="assets/css/piano-card.css" />
     <link rel="stylesheet" href="assets/css/contact-console.css" />
     <link rel="stylesheet" href="assets/css/logo-loop.css" />
     <link rel="stylesheet" href="assets/css/lightning-easter-egg.css" />
@@ -68,7 +72,7 @@
             </li>
 
             <li class="nav__item">
-              <a href="#services" class="nav__link">Services</a>
+              <a href="#services" class="nav__link">Expertise</a>
             </li>
 
             <li class="nav__item">
@@ -661,16 +665,17 @@
 
       <!--==================== SERVICES ====================-->
       <section class="card-swap-section section" id="services">
-        <h3 class="section__subtitle">Services</h3>
-        <h2 class="section__title">What <span>I</span> Offer</h2>
+        <h3 class="section__subtitle">Expertise</h3>
+        <h2 class="section__title">What <span>I</span> Do</h2>
 
         <div class="card-swap-content">
           <!-- Left side: Text content -->
           <div class="card-swap-text">
-            <h3>Full-Stack Development Services</h3>
+            <h3>Enterprise full-stack, built with care</h3>
             <p>
-              Specializing in modern web development, Flutter mobile apps,
-              and secure database architecture. Ready to bring your vision to life.
+              I build and maintain full-stack software with Java, Spring Boot,
+              React and TypeScript, and bring a security mindset from my MSc in
+              Cyber Security to everything I write.
             </p>
             <div class="click-hint">
               <i class="ri-arrow-right-line"></i>
@@ -683,31 +688,31 @@
             <div class="card-swap-container">
               <div class="swap-card">
                 <i class="ri-layout-3-line swap-card__icon"></i>
-                <h2 class="swap-card__title">Web Development</h2>
+                <h2 class="swap-card__title">Full-Stack Engineering</h2>
                 <p class="swap-card__description">
-                  Full-stack web applications with modern JavaScript frameworks,
-                  RESTful APIs, and responsive design. From landing pages to
-                  complex platforms scalable and maintainable solutions.
-                </p>
-              </div>
-
-              <div class="swap-card">
-                <i class="ri-smartphone-fill swap-card__icon"></i>
-                <h2 class="swap-card__title">Mobile Development</h2>
-                <p class="swap-card__description">
-                  Cross-platform mobile apps with Flutter. Native performance,
-                  beautiful UI, and seamless iOS/Android deployment. Build once,
-                  run everywhere with consistent user experience.
+                  Java and Spring Boot services with React and TypeScript front
+                  ends. REST APIs, clean service design and maintainable code,
+                  from the first endpoint to the finished interface.
                 </p>
               </div>
 
               <div class="swap-card">
                 <i class="ri-database-2-fill swap-card__icon"></i>
-                <h2 class="swap-card__title">Database Solutions</h2>
+                <h2 class="swap-card__title">Data &amp; Databases</h2>
                 <p class="swap-card__description">
-                  Secure database architecture with MongoDB, SQL, Azure, AWS, and Firebase.
-                  Data modeling, optimization, and cloud integration. Ensuring
-                  your data is safe, fast, and scalable.
+                  Relational design and versioned migrations with PostgreSQL and
+                  Liquibase, plus SQL and MongoDB. Well-structured schemas and
+                  queries that stay readable and fast.
+                </p>
+              </div>
+
+              <div class="swap-card">
+                <i class="ri-shield-check-fill swap-card__icon"></i>
+                <h2 class="swap-card__title">Secure by Design</h2>
+                <p class="swap-card__description">
+                  My MSc in Cyber Security shapes how I build: thinking about
+                  threats early, validating input, and understanding attacks such
+                  as CSRF, which I demonstrate in one of my projects.
                 </p>
               </div>
             </div>
@@ -837,7 +842,7 @@
               <li><a href="#about" class="footer__link">About</a></li>
               <li><a href="#projects" class="footer__link">Projects</a></li>
               <li><a href="#career" class="footer__link">Career</a></li>
-              <li><a href="#services" class="footer__link">Services</a></li>
+              <li><a href="#services" class="footer__link">Expertise</a></li>
               <li><a href="#contact" class="footer__link">Contact</a></li>
             </ul>
           </div>
@@ -889,21 +894,11 @@
       </div>
     </footer>
 
-    <!-- Add these before your other scripts -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
-
-    <!-- Scroll Reveal -->
+    <!-- Scroll Reveal (v4.0.9, local copy) -->
     <script src="assets/js/scrollreveal.min.js"></script>
 
-    <!-- TypeIt Library -->
+    <!-- Typed.js (hero role typing) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
-
-    <!-- ScrollReveal Library -->
-    <script src="https://unpkg.com/scrollreveal@4/dist/scrollreveal.min.js"></script>
 
     <!-- EmailJS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -949,8 +944,5 @@
 
     <!-- Lightning Easter Egg -->
     <script src="assets/js/lightning-easter-egg.js"></script>
-
-    <!-- Custom ChatBot -->
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
   </body>
 </html>

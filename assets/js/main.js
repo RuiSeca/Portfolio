@@ -1593,43 +1593,35 @@ const projectsData = [
 
 /*=============== Project Piano & Hologram Integration ===============*/
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize global variables and preload audio
-  window.mainAudio = new Audio("/assets/audio/wonder.mp3");
+  // The song is ~9 MB, so it is not downloaded on page load: it starts loading when the career section
+  // gets close to the screen (see warmUpSong below), so the first key press can start it right away.
+  window.mainAudio = new Audio();
+  window.mainAudio.preload = "none";
+  window.mainAudio.src = "assets/audio/wonder.mp3";
   window.mainAudio.volume = 0.5;
   window.isPlaying = false;
 
-  // Preload audio to ensure it's ready to play immediately
-  setTimeout(() => {
-    // Force audio to be ready for immediate playback
-    if (window.mainAudio) {
-      // Create a short silent audio buffer
-      const silentAudio = new Audio(
-        "data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
-      );
-      silentAudio
-        .play()
-        .then(() => {
-          // Now preload the actual audio file
-          window.mainAudio.load();
-          console.log("Audio preloaded and ready for playback");
-        })
-        .catch((err) => {
-          console.log("Silent audio failed, trying alternative approach", err);
-          // Alternative approach
-          window.mainAudio.load();
-        });
-
-      // Ensure audio context is created and ready
-      if (
-        typeof AudioContext !== "undefined" ||
-        typeof webkitAudioContext !== "undefined"
-      ) {
-        const AudioContextClass =
-          window.AudioContext || window.webkitAudioContext;
-        window.preInitializedAudioContext = new AudioContextClass();
-      }
-    }
-  }, 500);
+  const warmUpSong = () => {
+    if (!window.mainAudio || window.mainAudio.dataset.warm) return;
+    window.mainAudio.dataset.warm = "1";
+    window.mainAudio.preload = "auto";
+    window.mainAudio.load();
+  };
+  const careerSection = document.getElementById("career");
+  if (careerSection && "IntersectionObserver" in window) {
+    const warmObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          warmUpSong();
+          warmObserver.disconnect();
+        }
+      },
+      { rootMargin: "800px 0px" }
+    );
+    warmObserver.observe(careerSection);
+  } else {
+    setTimeout(warmUpSong, 3000);
+  }
 
   const careerStages = [
     {
@@ -1637,7 +1629,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2020",
       title: "Beginning - Cambridge",
       description: "Started a BSc in Computer Science at Anglia Ruskin University",
-      color: "bg-amber-100",
       type: "white",
     },
     {
@@ -1645,7 +1636,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2020",
       title: "First Steps",
       description: "Learning Basics",
-      color: "bg-amber-200",
       type: "black",
     },
     {
@@ -1653,7 +1643,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2020",
       title: "Development",
       description: "Growing Skills",
-      color: "bg-amber-300",
       type: "white",
     },
     {
@@ -1661,7 +1650,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2021",
       title: "Direction",
       description: "Finding Path",
-      color: "bg-amber-400",
       type: "black",
     },
     {
@@ -1669,7 +1657,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2021",
       title: "Evolution",
       description: "Skills Growth",
-      color: "bg-amber-500",
       type: "white",
     },
     {
@@ -1677,7 +1664,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2021",
       title: "Focus",
       description: "Specializing",
-      color: "bg-amber-600",
       type: "white",
     },
     {
@@ -1685,7 +1671,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2022",
       title: "Forward",
       description: "Developing Projects",
-      color: "bg-amber-700",
       type: "black",
     },
     {
@@ -1693,7 +1678,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2022",
       title: "Growth",
       description: "Learning New Things",
-      color: "bg-amber-800",
       type: "white",
     },
     {
@@ -1701,7 +1685,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2022",
       title: "Guidance",
       description: "Finding Guidance",
-      color: "bg-amber-900",
       type: "black",
     },
     {
@@ -1709,7 +1692,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2023",
       title: "Achievement",
       description: "University Final Project Success",
-      color: "bg-orange-400",
       type: "white",
     },
     {
@@ -1717,7 +1699,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2023",
       title: "Advancement",
       description: "Enhancing Progress",
-      color: "bg-orange-500",
       type: "black",
     },
     {
@@ -1725,7 +1706,6 @@ document.addEventListener("DOMContentLoaded", () => {
       year: "2023",
       title: "Building",
       description: "Building Robust Codebase",
-      color: "bg-orange-600",
       type: "white",
     },
     {
@@ -1734,7 +1714,6 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "New Chapter - Guildford",
       description:
         "MSc in Cyber Security at the University of Surrey",
-      color: "bg-orange-700",
       type: "white",
     },
     {
@@ -1743,7 +1722,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "Cognizant",
       description:
         "Junior Software Engineer - enterprise full-stack with Java, Spring Boot, React & TypeScript",
-      color: "bg-orange-900",
+      modalId: "cognizant",
       type: "white",
     },
   ];
@@ -1781,7 +1760,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Create sound control element
   const soundControl = document.createElement("button");
   soundControl.className = "sound-control";
-  soundControl.innerHTML = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+  soundControl.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
   </svg>`;
   pianoCabinetContainer.appendChild(soundControl);
@@ -1803,7 +1782,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /*=================== PIANO FUNCTIONS ===================*/
 
   // Card fade timer function - simplified, no transform
-  const startCardFadeTimer = () => {
+  const startCardFadeTimer = (delay = 6000) => {
     if (cardFadeTimeout) {
       clearTimeout(cardFadeTimeout);
     }
@@ -1813,8 +1792,9 @@ document.addEventListener("DOMContentLoaded", () => {
       cards.forEach((card) => {
         card.style.transition = "opacity 0.4s ease-out";
         card.style.opacity = "0";
+        setTimeout(() => card.remove(), 450);
       });
-    }, 6000); // 6 seconds
+    }, delay);
   };
 
   // Enhanced magic trail creation
@@ -1976,12 +1956,222 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => trail.remove(), isMobile ? 1500 : 2000);
   };
 
+  // Keys in chronological order (same order as careerStages): keyboard stepping + "Play my career"
+  const pianoKeys = [];
+  let hintBar = null;
+  let autoButton = null;
+  let autoTimer = null;
+  let autoIndex = 0;
+  let autoObserver = null;
+  const AUTO_STEP_MS = 3200;
+
+  // Pressing a key starts the song (or keeps it going) and pulses the hologram - the original behaviour,
+  // so visitors can play along with the music.
+  const playSongFromKey = () => {
+    // Play sound if not muted
+    if (!isMuted) {
+      if (window.mainAudio) {
+        // IMPORTANT: This logic needs to be more robust
+        const isCurrentlyPlaying = !window.mainAudio.paused;
+
+        if (!isCurrentlyPlaying) {
+          // Force audio context to resume if suspended - use same context as play button
+          const audioCtx = window.getAudioContext
+            ? window.getAudioContext()
+            : null;
+          if (audioCtx && audioCtx.state === "suspended") {
+            console.log("Resuming audio context from piano key");
+            audioCtx.resume();
+          }
+
+          console.log("Starting audio from piano key click");
+          window.mainAudio.currentTime = 0;
+
+          // Set our global playing flag BEFORE attempting to play
+          // This helps work around browser audio timing issues
+          window.isPlaying = true;
+
+          // Update hologram UI immediately, don't wait for promise
+          const playBtn = document.querySelector(".play-btn");
+          if (playBtn) {
+            playBtn.classList.add("playing");
+
+            // Toggle Remix icons visibility immediately
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "none";
+              pauseIcon.style.display = "block";
+            }
+          }
+
+          // Update piano UI immediately - WHITE dot when playing
+          soundControl.classList.add("playing");
+          statusDot.classList.add("playing");
+          statusDot.style.opacity = "1";
+
+          // Start visualizer immediately
+          window.visualizerActive = true;
+          if (
+            window.hologramFunctions &&
+            window.hologramFunctions.drawVisualizer
+          ) {
+            window.hologramFunctions.drawVisualizer();
+          }
+
+          // Now attempt to play the audio with better error handling
+          const playPromise = window.mainAudio.play();
+
+          if (playPromise !== undefined) {
+            playPromise.catch((error) => {
+              console.error("Play failed:", error);
+
+              // Retry once before giving up
+              setTimeout(() => {
+                window.mainAudio.play().catch((e) => {
+                  console.error("Retry failed too:", e);
+
+                  // Now we can reset the UI since both attempts failed
+                  window.isPlaying = false;
+
+                  // Reset hologram UI
+                  if (playBtn) {
+                    playBtn.classList.remove("playing");
+                    const playIcon = playBtn.querySelector(".ri-play-fill");
+                    const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+                    if (playIcon && pauseIcon) {
+                      playIcon.style.display = "block";
+                      pauseIcon.style.display = "none";
+                    }
+                  }
+
+                  // Reset piano UI - RED dot when not playing
+                  soundControl.classList.remove("playing");
+                  statusDot.classList.remove("playing");
+                  statusDot.style.opacity = "0.5";
+
+                  // Stop visualizer
+                  window.visualizerActive = false;
+                });
+              }, 100);
+            });
+          }
+        } else {
+          // Audio already playing - just ensure UI is consistent
+          console.log("Audio already playing, ensuring UI is consistent");
+          window.isPlaying = true;
+
+          // Update hologram state
+          const playBtn = document.querySelector(".play-btn");
+          if (playBtn) {
+            playBtn.classList.add("playing");
+
+            // Toggle Remix icons visibility
+            const playIcon = playBtn.querySelector(".ri-play-fill");
+            const pauseIcon = playBtn.querySelector(".ri-pause-fill");
+
+            if (playIcon && pauseIcon) {
+              playIcon.style.display = "none";
+              pauseIcon.style.display = "block";
+            }
+          }
+
+          // Ensure visualizer is running
+          window.visualizerActive = true;
+          if (
+            window.hologramFunctions &&
+            window.hologramFunctions.drawVisualizer
+          ) {
+            window.hologramFunctions.drawVisualizer();
+          }
+
+          // Pulse the hologram to provide visual feedback even if already playing
+          if (
+            window.hologramFunctions &&
+            window.hologramFunctions.pulseHologram
+          ) {
+            window.hologramFunctions.pulseHologram();
+          }
+
+          // Ensure piano UI shows playing state
+          soundControl.classList.add("playing");
+          statusDot.classList.add("playing");
+          statusDot.style.opacity = "1";
+        }
+      }
+    }
+  };
+
+  // Press a key: it starts the song, glows, throws particles and shows the stage card.
+  // auto = driven by "Play my career" (so no header hiding and no page scrolling).
+  const pressKey = (key, stage, { auto = false } = {}) => {
+    if (!auto) {
+      stopAutoplay();
+      if (hintBar) hintBar.classList.add("is-used");
+
+      // Hide header when a piano key is pressed
+      const header = document.getElementById("header");
+      if (header) {
+        header.style.transform = "translateY(-100%)";
+        header.style.transition = "transform 0.3s ease";
+      }
+    }
+
+    // Clear active state from all keys
+    document.querySelectorAll(".piano-key").forEach((k) => {
+      k.classList.remove("active");
+      const oldGlow = k.querySelector(".glow-effect");
+      if (oldGlow) oldGlow.remove();
+    });
+
+    // Add active class to current key
+    key.classList.add("active");
+    const glowEffect = document.createElement("div");
+    glowEffect.className = "glow-effect";
+    key.appendChild(glowEffect);
+
+    // Start the song (same as before)
+    playSongFromKey();
+
+    // Particles from the centre of the key
+    const keyRect = key.getBoundingClientRect();
+    const isBlack = stage.type === "black";
+    createEnhancedMagicTrail(
+      keyRect.left + keyRect.width / 2,
+      keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9)
+    );
+
+    if (!auto) {
+      // Smooth scroll to show both piano and cards
+      const pianoRect = document
+        .querySelector(".piano-container")
+        .getBoundingClientRect();
+      window.scrollTo({
+        top: window.scrollY + pianoRect.top - window.innerHeight * 0.2,
+        behavior: "smooth",
+      });
+    }
+
+    updateJourneyCard(stage, { auto });
+
+    // Remove active class after animation completes
+    setTimeout(() => {
+      key.classList.remove("active");
+      const glow = key.querySelector(".glow-effect");
+      if (glow) glow.remove();
+    }, 300);
+  };
+
   // Function to create piano key
-  const createPianoKey = (stage, index) => {
+  const createPianoKey = (stage) => {
+    const index = careerStages.indexOf(stage);
     const key = document.createElement("button");
     const isBlack = stage.type === "black";
 
+    key.type = "button";
     key.className = `piano-key ${isBlack ? "black" : "white"}`;
+    key.dataset.note = stage.note;
+    key.setAttribute("aria-label", `${stage.year}: ${stage.title}`);
 
     // Position calculation for black keys
     if (isBlack) {
@@ -1994,9 +2184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "C#2": 9.2,
         "D#2": 10.7,
       };
-      const noteBase = stage.note.includes("2") ? stage.note : stage.note;
-      const offset = blackKeyPositions[noteBase] * 3.5;
-      key.style.left = `${offset}rem`;
+      key.style.left = `${blackKeyPositions[stage.note] * 3.5}rem`;
     } else {
       const whiteKeyIndex = careerStages
         .filter((s) => s.type === "white")
@@ -2004,197 +2192,66 @@ document.addEventListener("DOMContentLoaded", () => {
       key.style.left = `${whiteKeyIndex * 3.5}rem`;
     }
 
-    key.addEventListener("click", () => {
-      // Hide header when piano key is pressed
-      const header = document.getElementById("header");
-      if (header) {
-        header.style.transform = "translateY(-100%)";
-        header.style.transition = "transform 0.3s ease";
-      }
+    key.addEventListener("click", () => pressKey(key, stage));
 
-      // Clear active state from all keys
-      document.querySelectorAll(".piano-key").forEach((k) => {
-        k.classList.remove("active");
-        if (k.querySelector(".glow-effect")) {
-          k.querySelector(".glow-effect").remove();
-        }
-      });
-
-      // Add active class to current key
-      key.classList.add("active");
-      const glowEffect = document.createElement("div");
-      glowEffect.className = "glow-effect";
-      key.appendChild(glowEffect);
-
-      // Play sound if not muted
-      if (!isMuted) {
-        if (window.mainAudio) {
-          // IMPORTANT: This logic needs to be more robust
-          const isCurrentlyPlaying = !window.mainAudio.paused;
-
-          if (!isCurrentlyPlaying) {
-            // Force audio context to resume if suspended - use same context as play button
-            const audioCtx = window.getAudioContext
-              ? window.getAudioContext()
-              : null;
-            if (audioCtx && audioCtx.state === "suspended") {
-              console.log("Resuming audio context from piano key");
-              audioCtx.resume();
-            }
-
-            console.log("Starting audio from piano key click");
-            window.mainAudio.currentTime = 0;
-
-            // Set our global playing flag BEFORE attempting to play
-            // This helps work around browser audio timing issues
-            window.isPlaying = true;
-
-            // Update hologram UI immediately, don't wait for promise
-            const playBtn = document.querySelector(".play-btn");
-            if (playBtn) {
-              playBtn.classList.add("playing");
-
-              // Toggle Remix icons visibility immediately
-              const playIcon = playBtn.querySelector(".ri-play-fill");
-              const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-              if (playIcon && pauseIcon) {
-                playIcon.style.display = "none";
-                pauseIcon.style.display = "block";
-              }
-            }
-
-            // Update piano UI immediately - WHITE dot when playing
-            soundControl.classList.add("playing");
-            statusDot.classList.add("playing");
-            statusDot.style.opacity = "1";
-
-            // Start visualizer immediately
-            window.visualizerActive = true;
-            if (
-              window.hologramFunctions &&
-              window.hologramFunctions.drawVisualizer
-            ) {
-              window.hologramFunctions.drawVisualizer();
-            }
-
-            // Now attempt to play the audio with better error handling
-            const playPromise = window.mainAudio.play();
-
-            if (playPromise !== undefined) {
-              playPromise.catch((error) => {
-                console.error("Play failed:", error);
-
-                // Retry once before giving up
-                setTimeout(() => {
-                  window.mainAudio.play().catch((e) => {
-                    console.error("Retry failed too:", e);
-
-                    // Now we can reset the UI since both attempts failed
-                    window.isPlaying = false;
-
-                    // Reset hologram UI
-                    if (playBtn) {
-                      playBtn.classList.remove("playing");
-                      const playIcon = playBtn.querySelector(".ri-play-fill");
-                      const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-                      if (playIcon && pauseIcon) {
-                        playIcon.style.display = "block";
-                        pauseIcon.style.display = "none";
-                      }
-                    }
-
-                    // Reset piano UI - RED dot when not playing
-                    soundControl.classList.remove("playing");
-                    statusDot.classList.remove("playing");
-                    statusDot.style.opacity = "0.5";
-
-                    // Stop visualizer
-                    window.visualizerActive = false;
-                  });
-                }, 100);
-              });
-            }
-          } else {
-            // Audio already playing - just ensure UI is consistent
-            console.log("Audio already playing, ensuring UI is consistent");
-            window.isPlaying = true;
-
-            // Update hologram state
-            const playBtn = document.querySelector(".play-btn");
-            if (playBtn) {
-              playBtn.classList.add("playing");
-
-              // Toggle Remix icons visibility
-              const playIcon = playBtn.querySelector(".ri-play-fill");
-              const pauseIcon = playBtn.querySelector(".ri-pause-fill");
-
-              if (playIcon && pauseIcon) {
-                playIcon.style.display = "none";
-                pauseIcon.style.display = "block";
-              }
-            }
-
-            // Ensure visualizer is running
-            window.visualizerActive = true;
-            if (
-              window.hologramFunctions &&
-              window.hologramFunctions.drawVisualizer
-            ) {
-              window.hologramFunctions.drawVisualizer();
-            }
-
-            // Pulse the hologram to provide visual feedback even if already playing
-            if (
-              window.hologramFunctions &&
-              window.hologramFunctions.pulseHologram
-            ) {
-              window.hologramFunctions.pulseHologram();
-            }
-
-            // Ensure piano UI shows playing state
-            soundControl.classList.add("playing");
-            statusDot.classList.add("playing");
-            statusDot.style.opacity = "1";
-          }
-        }
-      }
-
-      // Create visual effects
-      const keyRect = key.getBoundingClientRect();
-      const isBlack = stage.type === "black";
-
-      // Calculate center point of the key for particles
-      const particleX = keyRect.left + keyRect.width / 2;
-      const particleY =
-        keyRect.top + (isBlack ? keyRect.height * 0.7 : keyRect.height * 0.9);
-
-      createEnhancedMagicTrail(particleX, particleY);
-
-      // Smooth scroll to show both piano and cards
-      const pianoCabinetContainer = document.querySelector(".piano-container");
-      const viewportHeight = window.innerHeight;
-      const pianoRect = pianoCabinetContainer.getBoundingClientRect();
-      const targetPosition =
-        window.scrollY + pianoRect.top - viewportHeight * 0.2;
-      window.scrollTo({
-        top: targetPosition,
-        behavior: "smooth",
-      });
-
-      // Update journey card
-      updateJourneyCard(stage);
-
-      // Remove active class after animation completes
-      setTimeout(() => {
-        key.classList.remove("active");
-        if (key.querySelector(".glow-effect")) {
-          key.querySelector(".glow-effect").remove();
-        }
-      }, 300);
+    // Left / Right arrows walk the career in order (and play each chapter)
+    key.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const next = pianoKeys[index + (e.key === "ArrowRight" ? 1 : -1)];
+      if (!next) return;
+      e.preventDefault();
+      next.focus();
+      next.click();
     });
 
+    pianoKeys[index] = key;
     return key;
   };
+
+  // "Play my career": steps through every chapter in order, then stops on the current role
+  function setAutoUi(on) {
+    if (!autoButton) return;
+    autoButton.setAttribute("aria-pressed", on ? "true" : "false");
+    autoButton.querySelector("i").className = on ? "ri-stop-fill" : "ri-play-fill";
+    autoButton.querySelector("span").textContent = on ? "Stop" : "Play my career";
+  }
+
+  function stopAutoplay() {
+    clearTimeout(autoTimer);
+    autoTimer = null;
+    if (autoObserver) {
+      autoObserver.disconnect();
+      autoObserver = null;
+    }
+    setAutoUi(false);
+  }
+
+  function stepAutoplay() {
+    const i = autoIndex++;
+    pressKey(pianoKeys[i], careerStages[i], { auto: true });
+    if (autoIndex >= careerStages.length) {
+      stopAutoplay(); // the last card (Cognizant) stays on screen
+      return;
+    }
+    autoTimer = setTimeout(stepAutoplay, AUTO_STEP_MS);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    autoIndex = 0;
+    setAutoUi(true);
+    // stop if the visitor scrolls the piano away
+    if ("IntersectionObserver" in window) {
+      autoObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) stopAutoplay();
+        },
+        { threshold: 0.2 }
+      );
+      autoObserver.observe(pianoCabinetContainer);
+    }
+    stepAutoplay();
+  }
 
   // Create white keys first
   careerStages
@@ -2210,9 +2267,25 @@ document.addEventListener("DOMContentLoaded", () => {
       keysContainer.appendChild(createPianoKey(stage));
     });
 
-  // Create journey container
+  // Hint + "Play my career" button, above the piano
+  hintBar = document.createElement("div");
+  hintBar.className = "piano-hint";
+  hintBar.innerHTML = `
+    <p class="piano-hint__text">Tap a key to play along: each one is a chapter of my career</p>
+    <button type="button" class="piano-hint__play" aria-pressed="false">
+      <i class="ri-play-fill" aria-hidden="true"></i><span>Play my career</span>
+    </button>`;
+  container.insertBefore(hintBar, pianoCabinetContainer);
+  autoButton = hintBar.querySelector(".piano-hint__play");
+  autoButton.addEventListener("click", () => {
+    if (autoTimer) stopAutoplay();
+    else startAutoplay();
+  });
+
+  // Create journey container (a polite live region, so screen readers announce each chapter)
   const journeyContainer = document.createElement("div");
   journeyContainer.className = "journey-container";
+  journeyContainer.setAttribute("aria-live", "polite");
   container.appendChild(journeyContainer);
 
   // Sound control functionality
@@ -2221,10 +2294,10 @@ document.addEventListener("DOMContentLoaded", () => {
     soundControl.classList.toggle("muted", isMuted);
 
     soundControl.innerHTML = isMuted
-      ? `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M23 3l-12 12M11 5L6 9H2v6h4l5 4M14 9.5c.5.7.8 1.6.8 2.5s-.3 1.8-.8 2.5M17 7c1.2 1.3 2 3.1 2 5s-.8 3.7-2 5"/>
         </svg>`
-      : `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
         </svg>`;
 
@@ -2256,9 +2329,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Update journey card function
-  const updateJourneyCard = (activeStage) => {
+  const updateJourneyCard = (activeStage, { auto = false } = {}) => {
     const journeyContainer = document.querySelector(".journey-container");
-    const isMobile = window.innerWidth <= 768;
 
     if (cardFadeTimeout) {
       clearTimeout(cardFadeTimeout);
@@ -2269,48 +2341,47 @@ document.addEventListener("DOMContentLoaded", () => {
       .querySelectorAll(".career-journey-card")
       .forEach((card) => card.remove());
 
-    // Center all cards - no movement or transforms
+    const index = careerStages.indexOf(activeStage);
     const card = document.createElement("div");
-    card.className = `career-journey-card ${activeStage.color}`;
-    card.style.opacity = "0";
+    card.className = "career-journey-card";
+    card.style.setProperty("--p", ((index + 1) / careerStages.length).toFixed(3));
 
+    // (text comes from the careerStages literals above, so it is trusted)
     card.innerHTML = `
-      <div class="text-gray-800 relative z-10">
-        <div class="font-bold font-serif">${activeStage.year}</div>
-        <div class="text-lg font-semibold font-serif">${activeStage.title}</div>
-        <div class="text-sm font-serif">${activeStage.description}</div>
+      <div class="career-journey-card__meta">
+        <span class="career-journey-card__year">${activeStage.year}</span>
+        <span class="career-journey-card__step">${index + 1} / ${careerStages.length}</span>
       </div>
+      <div class="career-journey-card__title">${activeStage.title}</div>
+      <p class="career-journey-card__text">${activeStage.description}</p>
+      ${
+        activeStage.modalId
+          ? '<button type="button" class="career-journey-card__cta">View role details</button>'
+          : ""
+      }
     `;
+
+    if (activeStage.modalId) {
+      card
+        .querySelector(".career-journey-card__cta")
+        .addEventListener("click", () => openProjectModal(activeStage.modalId));
+    }
+
+    // Don't fade the card away while it is being read or used
+    card.addEventListener("mouseenter", () => clearTimeout(cardFadeTimeout));
+    card.addEventListener("focusin", () => clearTimeout(cardFadeTimeout));
+    // a card with a button (the current role) stays longer, so there is time to reach it
+    const fadeDelay = activeStage.modalId ? 15000 : 6000;
+    card.addEventListener("mouseleave", () => {
+      if (!autoTimer) startCardFadeTimer(fadeDelay);
+    });
 
     journeyContainer.appendChild(card);
 
-    // Show card instantly with light ray animation
-    card.style.opacity = "1";
-    card.classList.add("light-ray-active");
-
-    // Remove animation class after it completes
-    setTimeout(() => {
-      card.classList.remove("light-ray-active");
-    }, 800);
-
-    startCardFadeTimer();
+    // "Play my career" keeps each card until the next one replaces it
+    if (!auto) startCardFadeTimer(fadeDelay);
   };
 
-  // Add window resize listener to handle layout changes
-  window.addEventListener("resize", () => {
-    const activeCard = document.querySelector(
-      '.career-journey-card[style*="opacity: 1"]'
-    );
-    if (activeCard) {
-      const activeStage = careerStages.find(
-        (stage) =>
-          stage.title === activeCard.querySelector(".text-lg").textContent
-      );
-      if (activeStage) {
-        updateJourneyCard(activeStage);
-      }
-    }
-  });
 
   // Add audio ended event listener
   window.mainAudio.addEventListener("ended", () => {
@@ -2440,14 +2511,14 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       title: "Wonder",
       artist: "Tony Ann",
-      file: "/assets/audio/wonder.mp3", // Current default song
+      file: "assets/audio/wonder.mp3", // Current default song
       color: "#d97706", // Amber-600 color to match journey cards
       visualizer: "bars", // wave, bars, circle
     },
     {
       title: "Divenire",
       artist: "Ludovico Einaudi",
-      file: "/assets/audio/divenire.mp3",
+      file: "assets/audio/divenire.mp3",
       color: "#b45309", // Amber-800 color
       visualizer: "bars",
     },

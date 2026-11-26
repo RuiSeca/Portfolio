@@ -1,5 +1,5 @@
 /*=============== GOOGLE FONTS ===============*/
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+/* Poppins is loaded from index.html (a <link> downloads in parallel; an @import here would chain) */
 
 /*=============== VARIABLES CSS ===============*/
 :root {
@@ -2600,108 +2600,6 @@ body.modal-open {
   align-items: center;
 }
 
-.career-journey-card {
-  position: absolute;
-  width: 280px;
-  padding: 1rem;
-  border-radius: 8px;
-  background: rgba(92, 73, 52, 0.1);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(139, 115, 85, 0.3);
-  box-shadow: 0 0 30px rgba(139, 115, 85, 0.2),
-    inset 0 0 30px rgba(139, 115, 85, 0.1);
-  transform-style: preserve-3d;
-  z-index: 10;
-  overflow: hidden;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/*
-OLD STYLE
-background: #f4e4d4;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-*/
-
-/* Shine effect */
-.career-journey-card::before {
-  content: "";
-  position: absolute;
-  top: -150%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.2) 30%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0.2) 70%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  filter: blur(5px);
-  transform: rotate(45deg);
-  animation: modernShineAnimation 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  pointer-events: none;
-}
-
-@keyframes modernShineAnimation {
-  0% {
-    top: -150%;
-    left: -50%;
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    top: 150%;
-    left: 150%;
-    opacity: 0.5;
-  }
-}
-
-.career-journey-card.visible {
-  opacity: 1;
-  transform: none;
-}
-
-/* Hover effect - white glow on dark mode */
-.career-journey-card:hover {
-  border-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4),
-    inset 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-/* Hover effect - black glow on light mode */
-body.light-theme .career-journey-card:hover {
-  border-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2),
-    inset 0 0 20px rgba(0, 0, 0, 0.05);
-}
-
-/* Card Content Styles */
-.career-journey-card .font-bold {
-  font-size: 1.1rem;
-  color: #5c4934;
-  margin-bottom: 0.5rem;
-}
-
-.career-journey-card .text-lg {
-  font-size: 1.2rem;
-  color: #8b7355;
-  margin-bottom: 0.5rem;
-}
-
-.career-journey-card .text-sm {
-  font-size: 0.9rem;
-  color: #a69585;
-  line-height: 1.4;
-}
-
 html {
   scroll-behavior: smooth;
 }
@@ -2709,13 +2607,6 @@ html {
 .career.section {
   scroll-margin-top: 2rem; /* Adjusts scroll stopping point */
   padding-bottom: 1rem; /* Reduce gap to services section */
-}
-
-/* Journey Cards - Desktop - keep centered with margin auto */
-@media screen and (min-width: 769px) {
-  .career-journey-card {
-    /* No transform needed, margin: auto handles centering */
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -2776,22 +2667,6 @@ html {
     width: 100%;
   }
 
-  .career-journey-card {
-    width: 250px;
-    padding: 0.875rem;
-  }
-
-  .career-journey-card .font-bold {
-    font-size: 1rem;
-  }
-
-  .career-journey-card .text-lg {
-    font-size: 1.1rem;
-  }
-
-  .career-journey-card .text-sm {
-    font-size: 0.85rem;
-  }
 }
 
 /* Mobile Screens */
@@ -2831,56 +2706,8 @@ html {
     overflow: hidden;
   }
 
-  .career-journey-card {
-    width: 260px;
-    padding: 0.9rem;
-  }
-
-  .career-journey-card .font-bold {
-    font-size: 1rem;
-  }
-
-  .career-journey-card .text-lg {
-    font-size: 1.1rem;
-  }
-
-  .career-journey-card .text-sm {
-    font-size: 0.85rem;
-  }
   .career.section {
     scroll-margin-top: 0.5rem;
-  }
-}
-
-/* Animation for cards appearing one by one */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 20px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-
-/* Add JS animation classes */
-.career-journey-card[data-index="0"] {
-  animation-delay: 0s;
-}
-.career-journey-card[data-index="1"] {
-  animation-delay: 0.3s;
-}
-.career-journey-card[data-index="2"] {
-  animation-delay: 0.6s;
-}
-
-@keyframes cardShine {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
   }
 }
 
@@ -2904,11 +2731,6 @@ html {
     margin-right: auto;
   }
 
-  .career-journey-card {
-    width: 160px;
-    padding: 1rem;
-  }
-
   .section__title {
     font-size: 2rem;
   }
@@ -2921,11 +2743,6 @@ html {
     margin-bottom: 4rem;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .career-journey-card {
-    width: 140px;
-    padding: 0.8rem;
   }
 
   .section__title {
