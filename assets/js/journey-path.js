@@ -50,15 +50,15 @@ function init(root, main) {
         <stop offset="0" class="jp-st-w0"/><stop offset="1" class="jp-st-w1"/>
       </linearGradient>
       <linearGradient id="jp-g-glass" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#c4f1ff"/><stop offset="1" stop-color="#2f86c4"/>
+        <stop offset="0" class="jp-st-g0"/><stop offset="1" class="jp-st-g1"/>
       </linearGradient>
       <linearGradient id="jp-g-flame" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#4cc9ff" stop-opacity="0"/>
-        <stop offset=".55" stop-color="#4cc9ff" stop-opacity=".75"/>
-        <stop offset="1" stop-color="#e8f8ff" stop-opacity="1"/>
+        <stop offset="0" class="jp-st-fl" stop-opacity="0"/>
+        <stop offset=".55" class="jp-st-fl" stop-opacity=".75"/>
+        <stop offset="1" class="jp-st-flt" stop-opacity="1"/>
       </linearGradient>
       <radialGradient id="jp-g-aura">
-        <stop offset="0" stop-color="#4cc9ff" stop-opacity=".2"/><stop offset="1" stop-color="#4cc9ff" stop-opacity="0"/>
+        <stop offset="0" class="jp-st-fl" stop-opacity=".2"/><stop offset="1" class="jp-st-fl" stop-opacity="0"/>
       </radialGradient>
       <linearGradient id="jp-g-face" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" class="jp-st-f0"/><stop offset="1" class="jp-st-f1"/>
@@ -77,8 +77,8 @@ function init(root, main) {
         <g class="jp-ship-line">
           <path d="M8 12 L35 -22 L35 -31 L8 -26 Z" fill="url(#jp-g-wing)"/>
           <path d="M-8 12 L-35 -22 L-35 -31 L-8 -26 Z" fill="url(#jp-g-wing)"/>
-          <path d="M27 -11 L35 -22 L35 -31 L25 -28 Z" fill="#ff7a3d"/>
-          <path d="M-27 -11 L-35 -22 L-35 -31 L-25 -28 Z" fill="#ff7a3d"/>
+          <path class="jp-accent" d="M27 -11 L35 -22 L35 -31 L25 -28 Z"/>
+          <path class="jp-accent" d="M-27 -11 L-35 -22 L-35 -31 L-25 -28 Z"/>
           <rect x="-11" y="-33" width="7" height="7" rx="1.6" fill="#1b2136"/>
           <rect x="4" y="-33" width="7" height="7" rx="1.6" fill="#1b2136"/>
           <path d="M-9.5 -24 L-16 -37 L-9.5 -34 Z" fill="#8798c0"/>
@@ -198,7 +198,7 @@ function init(root, main) {
        <g class="jp-conns"></g>
      </g>
      <g class="jp-bases"></g>
-     <g class="jp-ship"><g class="jp-ship__bob"><use href="#jp-ship-art"/></g></g>
+     <g class="jp-ship"><circle class="jp-ship__hit" r="44"><title>Click to change the ship's colours</title></circle><circle class="jp-ship__ring" r="36"/><g class="jp-ship__bob"><g class="jp-ship__roll"><use href="#jp-ship-art"/></g></g></g>
      </svg>`;
   main.insertBefore(overlay, main.firstChild);
 
@@ -208,6 +208,54 @@ function init(root, main) {
   const connsG = svg.querySelector(".jp-conns");
   const basesG = svg.querySelector(".jp-bases");
   const shipG = svg.querySelector(".jp-ship");
+  const shipHit = svg.querySelector(".jp-ship__hit");
+  const shipRing = svg.querySelector(".jp-ship__ring");
+  const shipRoll = svg.querySelector(".jp-ship__roll");
+
+  /* ====================================================================
+   * SHIP LIVERIES: click the ship to cycle through colour schemes.
+   * The colours live in journey-path.css as :root[data-ship="<id>"] variable sets ("classic" = no
+   * attribute = the original ship). The choice is remembered, and the Contact form's little ship reads
+   * the same variables, so it matches.
+   * ==================================================================== */
+  const LIVERIES = ["classic", "ember", "aurora", "violet", "solar", "rose"];
+  const LIVERY_KEY = "ship-livery";
+  let livery = 0;
+
+  function applyLivery(i) {
+    livery = i;
+    if (i === 0) document.documentElement.removeAttribute("data-ship");
+    else document.documentElement.setAttribute("data-ship", LIVERIES[i]);
+  }
+
+  try {
+    const saved = LIVERIES.indexOf(localStorage.getItem(LIVERY_KEY));
+    if (saved > 0) applyLivery(saved);
+  } catch (e) {
+    /* storage blocked: start with the Classic ship */
+  }
+
+  // restart a CSS animation class even if it is still running
+  const replay = (el, cls) => {
+    el.classList.remove(cls);
+    void el.getBoundingClientRect();
+    el.classList.add(cls);
+  };
+
+  shipHit.addEventListener("click", () => {
+    applyLivery((livery + 1) % LIVERIES.length);
+    try {
+      localStorage.setItem(LIVERY_KEY, LIVERIES[livery]);
+    } catch (e) {
+      /* not remembered, still works for this visit */
+    }
+    if (!reduced.matches) {
+      replay(shipRoll, "is-rolling");
+      replay(shipRing, "is-burst");
+    }
+  });
+  shipRoll.addEventListener("animationend", () => shipRoll.classList.remove("is-rolling"));
+  shipRing.addEventListener("animationend", () => shipRing.classList.remove("is-burst"));
   const clipRect = svg.querySelector("#jp-clip-rect");
 
   const baseEls = BASES.map((b) => {

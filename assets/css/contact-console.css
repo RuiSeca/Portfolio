@@ -306,20 +306,22 @@
   transform: translateY(-50%);
 }
 
+/* The ship follows the colour scheme chosen by clicking the About ship (--ship-* set on <html> by
+   journey-path.js); with no choice made these fall back to the original colours. */
 .cx__hull {
-  fill: #e6edff;
+  fill: var(--ship-h2, #e6edff);
 }
 
 .cx__wing {
-  fill: #ff7a3d;
+  fill: var(--ship-accent, #ff7a3d);
 }
 
 .cx__glass {
-  fill: #4cc9ff;
+  fill: var(--ship-glass1, #4cc9ff);
 }
 
 .cx__flame {
-  fill: #ffb24a;
+  fill: var(--ship-flame, #ffb24a);
   transform-origin: 12px 12px;
   animation: cx-flame 0.18s ease-in-out infinite alternate;
 }

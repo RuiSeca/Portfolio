@@ -108,6 +108,11 @@
   max-width: 46rem;
   margin: 0 auto;
   text-align: center;
+  pointer-events: none; /* the box itself lets clicks through to the ship; its text opts back in below */
+}
+
+.jp__head > * {
+  pointer-events: auto;
 }
 
 .jp__kicker {
@@ -192,6 +197,11 @@
   margin: 0;
   padding: 0 0 4rem;
   list-style: none;
+  pointer-events: none; /* the empty middle column must let clicks reach the ship... */
+}
+
+.jp-step__body {
+  pointer-events: auto; /* ...while the text blocks (selectable text, the role button) stay interactive */
 }
 
 .jp-step {
@@ -388,12 +398,24 @@
   z-index: 1;
 }
 
-/* theme-driven gradient stops */
-.jp-st-h0 { stop-color: var(--jp-h0); }
-.jp-st-h1 { stop-color: var(--jp-h1); }
-.jp-st-h2 { stop-color: var(--jp-h2); }
-.jp-st-w0 { stop-color: var(--jp-w0); }
-.jp-st-w1 { stop-color: var(--jp-w1); }
+/* theme-driven gradient stops. The ship's stops read the livery variables (--ship-*, set on <html> by a
+   click on the ship, see "ship liveries" below) and fall back to the theme colours = the Classic ship. */
+.jp-st-h0 { stop-color: var(--ship-h0, var(--jp-h0)); }
+.jp-st-h1 { stop-color: var(--ship-h1, var(--jp-h1)); }
+.jp-st-h2 { stop-color: var(--ship-h2, var(--jp-h2)); }
+.jp-st-w0 { stop-color: var(--ship-w0, var(--jp-w0)); }
+.jp-st-w1 { stop-color: var(--ship-w1, var(--jp-w1)); }
+.jp-st-g0 { stop-color: var(--ship-glass0, #c4f1ff); }
+.jp-st-g1 { stop-color: var(--ship-glass1, #2f86c4); }
+.jp-st-fl { stop-color: var(--ship-flame, #4cc9ff); }
+.jp-st-flt { stop-color: var(--ship-flame-tip, #e8f8ff); }
+.jp-accent { fill: var(--ship-accent, #ff7a3d); }
+
+/* colours fade when the livery changes */
+.jp-st-h0, .jp-st-h1, .jp-st-h2, .jp-st-w0, .jp-st-w1, .jp-st-g0, .jp-st-g1, .jp-st-fl, .jp-st-flt {
+  transition: stop-color 0.6s ease;
+}
+.jp-accent { transition: fill 0.6s ease; }
 .jp-st-f0 { stop-color: var(--jp-f0); }
 .jp-st-f1 { stop-color: var(--jp-f1); }
 .jp-st-s0 { stop-color: var(--jp-s0); }
@@ -568,6 +590,110 @@
   animation: jp-bob 3.4s ease-in-out infinite;
 }
 
+/* ---- click the ship to change its colours (see journey-path.js, "ship liveries") ---- */
+.jp-ship__hit {
+  fill: transparent;
+  pointer-events: all; /* the layer itself ignores the pointer; only the ship answers it */
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jp-ship__ring {
+  fill: none;
+  stroke: var(--ship-flame, var(--jp-blue));
+  stroke-width: 1.6;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition: opacity 0.25s ease, stroke 0.6s ease;
+}
+
+.jp-ship__hit:hover + .jp-ship__ring {
+  opacity: 0.55;
+}
+
+.jp-ship__ring.is-burst {
+  animation: jp-burst 0.75s ease-out;
+}
+
+.jp-ship__roll {
+  transform-origin: 0 0; /* the ship's own centre line: scaling x turns it like a barrel roll */
+}
+
+.jp-ship__roll.is-rolling {
+  animation: jp-roll 0.7s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+@keyframes jp-roll {
+  0% {
+    transform: scaleX(1);
+  }
+  25% {
+    transform: scaleX(0.06);
+  }
+  50% {
+    transform: scaleX(-1);
+  }
+  75% {
+    transform: scaleX(-0.06);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes jp-burst {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.75);
+    stroke-width: 3;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+    stroke-width: 0.4;
+  }
+}
+
+/* ---- ship liveries: set as data-ship="<id>" on <html>; no attribute = the Classic ship ----
+   h0..h2 hull (tail -> nose), w0/w1 wings, accent = wing tips, glass0/1 = canopy, flame = engines + aura.
+   The Contact form's little ship reads the same variables. */
+:root[data-ship="ember"] {
+  --ship-h0: #b8360f; --ship-h1: #f08a4b; --ship-h2: #fff1e6;
+  --ship-w0: #7a1d12; --ship-w1: #f0603f;
+  --ship-accent: #ffd166;
+  --ship-glass0: #fff0d4; --ship-glass1: #e2681f;
+  --ship-flame: #ff9138; --ship-flame-tip: #fff3dc;
+}
+:root[data-ship="aurora"] {
+  --ship-h0: #0b7a6f; --ship-h1: #4fd8c4; --ship-h2: #effffb;
+  --ship-w0: #065a4a; --ship-w1: #3fcf9b;
+  --ship-accent: #e9ff70;
+  --ship-glass0: #dffff6; --ship-glass1: #12a893;
+  --ship-flame: #2de0a7; --ship-flame-tip: #e9fff6;
+}
+:root[data-ship="violet"] {
+  --ship-h0: #5b28c8; --ship-h1: #a98bfa; --ship-h2: #f6f1ff;
+  --ship-w0: #3f1b92; --ship-w1: #8b6cf0;
+  --ship-accent: #ff7ac8;
+  --ship-glass0: #f1e8ff; --ship-glass1: #7a3ee0;
+  --ship-flame: #b980ff; --ship-flame-tip: #f6ecff;
+}
+:root[data-ship="solar"] {
+  --ship-h0: #b3590a; --ship-h1: #ffc23d; --ship-h2: #fff8dc;
+  --ship-w0: #7a3b09; --ship-w1: #f5a524;
+  --ship-accent: #38bdf8;
+  --ship-glass0: #d7f3ff; --ship-glass1: #2a8fd0;
+  --ship-flame: #ffb938; --ship-flame-tip: #fff6d6;
+}
+:root[data-ship="rose"] {
+  --ship-h0: #a3123e; --ship-h1: #fb7a98; --ship-h2: #fff0f3;
+  --ship-w0: #5c0a24; --ship-w1: #f0486f;
+  --ship-accent: #ffffff;
+  --ship-glass0: #ffe9ef; --ship-glass1: #d62956;
+  --ship-flame: #ff5c7c; --ship-flame-tip: #ffe9ef;
+}
+
 .jp-flame {
   transform-box: fill-box;
   transform-origin: 50% 100%;
@@ -649,9 +775,17 @@
   .jp__cue span,
   .jp-ship__bob,
   .jp-flame,
+  .jp-ship__roll.is-rolling,
+  .jp-ship__ring.is-burst,
   [data-state="current"] .jp-beacon,
   [data-state="current"] .jp-ring,
   [data-state="current"].jp-step .jp-step__kicker i {
     animation: none;
+  }
+
+  /* a livery change is instant */
+  .jp-st-h0, .jp-st-h1, .jp-st-h2, .jp-st-w0, .jp-st-w1, .jp-st-g0, .jp-st-g1, .jp-st-fl, .jp-st-flt,
+  .jp-accent, .jp-ship__ring {
+    transition: none;
   }
 }
