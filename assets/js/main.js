@@ -108,47 +108,52 @@ const sendEmail = async (e) => {
 
 contactForm.addEventListener("submit", sendEmail);
 
-/*=============== SHOW SCROLL UP BUTTON ===============*/
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}
-window.onscroll = function () {
-  var button = document.getElementById("scrollTopButton");
-  if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    button.style.display = "block";
-  } else {
-    button.style.display = "none";
-  }
-};
-
-/*=============== SHOW SCROLL UP ===============*/
-// Get the header element
+/*=============== SCROLL TO TOP BUTTON ===============*/
+// One rule: the button is available whenever the page is scrolled past the first screen,
+// whichever way you are moving. (It used to hide on ANY upward scroll - even the few pixels
+// a phone's address bar or momentum scrolling nudges - and two handlers fought over it.)
 const scrollTopButton = document.getElementById("scrollTopButton");
-const scrollDistance = 100; // Adjust this value as needed
-let lastScrollY = window.scrollY; // Store the last scroll position
+const SCROLL_TOP_SHOW_AT = 400; // px scrolled before the button appears
 
-// Function to handle scroll events
-function handleScroll() {
-  const currentScrollY = window.scrollY;
-
-  if (currentScrollY > lastScrollY && currentScrollY > scrollDistance) {
-    // Scrolling down, show the scroll button with zoom-in effect
-    scrollTopButton.classList.add("scroll-show");
-    scrollTopButton.classList.remove("scroll-hide");
-  } else if (currentScrollY < lastScrollY) {
-    // Scrolling up, hide the scroll button with zoom-out effect
-    scrollTopButton.classList.add("scroll-hide");
-    scrollTopButton.classList.remove("scroll-show");
-  }
-
-  lastScrollY = currentScrollY; // Update the last scroll position
+function scrollToTop() {
+  const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: calm ? "instant" : "smooth" });
 }
 
-// Attach the scroll event listener
-window.addEventListener("scroll", handleScroll);
+if (scrollTopButton) {
+  let scrollTopTicking = false;
+  const updateScrollTopButton = () => {
+    scrollTopTicking = false;
+    scrollTopButton.classList.toggle("scroll-show", window.scrollY > SCROLL_TOP_SHOW_AT);
+  };
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (scrollTopTicking) return;
+      scrollTopTicking = true;
+      requestAnimationFrame(updateScrollTopButton);
+    },
+    { passive: true }
+  );
+  scrollTopButton.addEventListener("click", scrollToTop);
+  updateScrollTopButton(); // correct state when the browser restores a scrolled position on reload
+
+  // The Drift live-chat launcher is a fixed iframe in this same bottom-right corner, drawn above everything
+  // (z-index 2147483647). Even when it paints nothing it swallows the clicks meant for this button, so while
+  // the launcher exists the button sits above it. (Drift injects it a few seconds after load, hence the observer.)
+  const clearChatLauncher = () => {
+    const found = !!document.getElementById("drift-frame-controller");
+    document.documentElement.classList.toggle("has-chat-launcher", found);
+    return found;
+  };
+  if (!clearChatLauncher()) {
+    const watch = new MutationObserver(() => {
+      if (clearChatLauncher()) watch.disconnect();
+    });
+    watch.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => watch.disconnect(), 60000); // not coming (blocked / offline): stop watching
+  }
+}
 
 /*=============== SCROLL REVEAL ANIMATION ===============*/
 // One smooth, shared preset: short travel, gentle scale, long ease-out tail.
